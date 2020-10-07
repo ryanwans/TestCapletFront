@@ -1,0 +1,17 @@
+{
+  "name": "electron-test",
+  "version": "1.0.0",
+  "description": "",
+  "productName": "Test Caplet Live",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "electron ."
+  },
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "electron": "^10.1.3",
+    "electron-builder": "^22.8.1"
+  }
+}

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+    <base href="./">
+    <link rel="stylesheet" href="./launch.css">
+    <link rel="stylesheet" href="../patch/farlert.view.css">
+    <script type="text/javascript">
+      if (typeof module === 'object') {
+        window.module = module; 
+        module = undefined;
+      }
+    </script>
+    <script src="../patch/jquery.view.js"></script>
+    <script src="../patch/define.view.js"></script>
+    <script src="../patch/farlert.view.js"></script>
+    <script src="../patch/wp.view.js"></script>
+
+    <script type="text/javascript" src="../patch/launch.js"></script>
+    <script>if (window.module) module = window.module;</script>
+  </head>
+  <body>
+    <div class="xx2master xx2delete" id="xx2-fadeout">
+      <span class="xx2-welcome">Welcome to <b>Test Caplet</b></span>
+      <img src="../hard/TestCapletLogo.png" class="xx2-logo" />
+      <div class="xx2-lower">
+        <span class="xx2-load">application is initializing...</span>
+        <span class="xx2-version">Version 20-8.1.6a</span>
+      </div>
+    </div>
+
+    <div class="xx2master xx2temp" id="xx2-fadein">
+      <span class="xx2-welcome">Access Test Caplet Accounts</span>
+      <div class="xx2-access">
+        <button onclick="window.Login.teacher()" class="xx2-teacher">I am a Teacher</button><br>
+        <button onclick="window.Login.student()" class="xx2-student">I am a Student</button>
+      </div>
+      <div class="xx2-notice">
+        <b>NOTE:</b> To register for an account, visit the Test Caplet website.
+      </div>
+      <div class="xx2-lower">
+        <span class="xx2-load">initialization completed</span>
+        <span class="xx2-version">Version 20-8.1.6a</span>
+      </div>
+    </div>
+
+    <div class="xx2master xx2teacher" id="xx2-temp-hide">
+      <span class="xx2-welcome">Test Caplet <b>Teacher Login</b></span>
+      <div class="xx2-login">
+        <h3 class="xx2-form-above">USERNAME</h3>
+        <input class="xx2-form-input xx2-bm" id="t-l-u" />
+        <h3 class="xx2-form-above">PASSWORD</h3>
+        <input type="password" class="xx2-form-input xx2-password" id="t-l-p" />
+        <button class="xx2-student">LOGIN</button>
+      </div>
+      <div class="xx2-error xx2-error-t" id="xx2-temp-hide">
+        <b>ERROR:</b> The username and/or password entered is incorrect.
+      </div>
+      <div class="xx2-lower">
+        <br>
+        <span class="xx2-version">Version 20-8.1.6a</span>
+      </div>
+    </div>
+
+    <div class="xx2master xx2student" id="xx2-temp-hide">
+      <span class="xx2-welcome">Test Caplet <b>Test Access</b></span>
+      <div class="xx2-login">
+        <h3 class="xx2-form-above">TEST CODE</h3>
+        <input maxlength="6" class="xx2-form-input" id="s-t" placeholder="XXXXXX" />
+        <button class="xx2-student">Join This Test</button>
+      </div>
+      <div class="xx2-error xx2-error-s" id="xx2-temp-hide">
+        <b>ERROR:</b><span style="display:inline!important;" id="studentError"> The test code you provided could not be found.</span>
+      </div>
+      <div class="xx2-lower">
+        <br>
+        <span class="xx2-version">Version 20-8.1.6a</span>
+      </div>
+    </div>
+  </body>
+</html>
