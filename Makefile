@@ -36,15 +36,15 @@ watch:
 .PHONY: watch
 
 pull:
-	git pull origin master
+	git pull origin main
 
 push:
 	git add -A
 	git commit -m "Automated Push"
-	git push origin master
+	git push origin main
 	
 fetch:
-	git fetch origin master
+	git fetch origin main
 
 status:
 	git status
