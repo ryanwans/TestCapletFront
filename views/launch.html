@@ -40,19 +40,20 @@
         <b>NOTE:</b> To register for an account, visit the Test Caplet website.
       </div>
       <div class="xx2-lower">
-        <span class="xx2-load">initialization completed</span>
+        <span style="font-size: 15px!important;" class="xx2-load">Ryan Wans Development &copy; 2020</span>
         <span class="xx2-version">Version 20-8.1.6a</span>
       </div>
     </div>
 
     <div class="xx2master xx2teacher" id="xx2-temp-hide">
+      <img onclick="window.Login.teacher()" src="../hard/backArrow.svg" class="xx2-back">
       <span class="xx2-welcome">Test Caplet <b>Teacher Login</b></span>
       <div class="xx2-login">
         <h3 class="xx2-form-above">USERNAME</h3>
         <input class="xx2-form-input xx2-bm" id="t-l-u" />
         <h3 class="xx2-form-above">PASSWORD</h3>
         <input type="password" class="xx2-form-input xx2-password" id="t-l-p" />
-        <button class="xx2-student">LOGIN</button>
+        <button onclick="window.Login.attempt('teacher', '#t-l-u', '#t-l-p', true);" class="xx2-student">LOGIN</button>
       </div>
       <div class="xx2-error xx2-error-t" id="xx2-temp-hide">
         <b>ERROR:</b> The username and/or password entered is incorrect.
@@ -64,10 +65,11 @@
     </div>
 
     <div class="xx2master xx2student" id="xx2-temp-hide">
+      <img onclick="window.Login.student()" src="../hard/backArrow.svg" class="xx2-back">
       <span class="xx2-welcome">Test Caplet <b>Test Access</b></span>
-      <div class="xx2-login">
+      <div class="xx2-login xx2more">
         <h3 class="xx2-form-above">TEST CODE</h3>
-        <input maxlength="6" class="xx2-form-input" id="s-t" placeholder="XXXXXX" />
+        <input oninput="this.value = this.value.toUpperCase()" maxlength="6" class="xx2-form-input" id="s-t" placeholder="XXXXXX" />
         <button class="xx2-student">Join This Test</button>
       </div>
       <div class="xx2-error xx2-error-s" id="xx2-temp-hide">

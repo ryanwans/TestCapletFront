@@ -11,7 +11,8 @@ function createLauncher() {
       disableHtmlFullscreenWindowResize: true,
       resizable: false,
       title: "Test Caplet Viewer",
-      fullscreen: false
+      fullscreen: false,
+      enableRemoteModule: true
     }
   })
   win.setResizable(false);
