@@ -1,3 +1,7 @@
+# CUSTOMS
+## To Protect Code With Sensetive Data:
+remote/
+
 # Logs
 logs
 *.log
