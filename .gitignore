@@ -1,6 +1,9 @@
 # CUSTOMS
 ## To Protect Code With Sensetive Data:
 remote/
+remote
+.remote/
+.remote
 
 # Logs
 logs
