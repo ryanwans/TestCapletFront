@@ -8,12 +8,10 @@
 
     const makeid = length => {
         let text = "";
-        const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789--";
-    
+        const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
         for (let i = 0; i < length; i++) {
             text += possible.charAt(Math.floor(Math.random() * possible.length));
         }
-    
         return text;
     }
 
@@ -36,21 +34,53 @@
             fifo('#xx2-fadeout', '#xx2-fadein', false);
         }, 100)
     }
-    window.Login['attempt'] = (method, target1, target2, useFool) => {
-        var username = $(target1).val(), password = btoa($(target2).val());
-        const t = "https://caplet.ryanwans.com/api3/login/q/attempt/login?form=js&stamp="+Date.now();
-        const form = {
-            u: username,
-            p: password,
-            stamp: Date.now(),
-            license: window.license
-        };
-        const parse = btoa(JSON.stringify(form));
-        var xhr = new XMLHttpRequest();
-        function callback(response) {
-            callback = JSON.parse(callback) || callback;
-
+    window.Login['errPassT'] = () => {
+        $('.xx2-error-t').attr("id", "xx2-priority");
+    }
+    window.Login['errPassS'] = () => {
+        $('.xx2-error-s').attr('id', 'xx2-priority');
+    }
+    window.Login['attempt'] = (method, target1, target2) => {
+        var username, password, code, form;
+        if("teacher" == method) {
+            username = $(target1).val(), password = btoa($(target2).val());
+            form = {
+                u: username,
+                p: password,
+                stamp: Date.now(),
+                license: window.license
+            };
+        } else {
+            code = $(target1).val();
+            form = {
+                c: code,
+                stamp: Date.now(),
+                license: window.license
+            }
         }
+        (async () => {
+            let { remote } = require('electron');
+            let RemotePortal = remote.require('./remote/login.js');
+            let ReturnPromise = new Promise((reslove, reject) => {
+                reslove(RemotePortal.Attempt(btoa(JSON.stringify(form))))
+            });
+            let Login = await ReturnPromise;
+            if(!Login) {
+                if("teacher" == method) {
+                    $('#t-l-u').val('');
+                    $('#t-l-p').val('');
+                    window.Login['errPassT']();
+                } else {
+                    $('#s-t').val('');
+                    window.Login['errPassS']();
+                }
+            } else {
+                $('.xx2-m-'+method).remove();
+                $('.xx2-b-'+method).remove();
+                $('.xx2-w-'+method).text("Loading...");
+            }
+        })();
+        
     }
 }()
 // post init goes here

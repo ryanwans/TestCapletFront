@@ -46,9 +46,9 @@
     </div>
 
     <div class="xx2master xx2teacher" id="xx2-temp-hide">
-      <img onclick="window.Login.teacher()" src="../hard/backArrow.svg" class="xx2-back">
-      <span class="xx2-welcome">Test Caplet <b>Teacher Login</b></span>
-      <div class="xx2-login">
+      <img onclick="window.Login.teacher()" src="../hard/backArrow.svg" class="xx2-back xx2-b-teacher">
+      <span class="xx2-welcome xx2-w-teacher">Test Caplet <b>Teacher Login</b></span>
+      <div class="xx2-login xx2-m-teacher">
         <h3 class="xx2-form-above">USERNAME</h3>
         <input class="xx2-form-input xx2-bm" id="t-l-u" />
         <h3 class="xx2-form-above">PASSWORD</h3>
@@ -65,12 +65,12 @@
     </div>
 
     <div class="xx2master xx2student" id="xx2-temp-hide">
-      <img onclick="window.Login.student()" src="../hard/backArrow.svg" class="xx2-back">
-      <span class="xx2-welcome">Test Caplet <b>Test Access</b></span>
-      <div class="xx2-login xx2more">
+      <img onclick="window.Login.student()" src="../hard/backArrow.svg" class="xx2-back xx2-b-student">
+      <span class="xx2-welcome xx2-w-student">Test Caplet <b>Test Access</b></span>
+      <div class="xx2-login xx2more xx2-m-student">
         <h3 class="xx2-form-above">TEST CODE</h3>
         <input oninput="this.value = this.value.toUpperCase()" maxlength="6" class="xx2-form-input" id="s-t" placeholder="XXXXXX" />
-        <button class="xx2-student">Join This Test</button>
+        <button onclick="window.Login.attempt('student', '#s-t');" class="xx2-student">Join This Test</button>
       </div>
       <div class="xx2-error xx2-error-s" id="xx2-temp-hide">
         <b>ERROR:</b><span style="display:inline!important;" id="studentError"> The test code you provided could not be found.</span>
