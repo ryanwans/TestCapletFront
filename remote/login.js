@@ -1,3 +1,5 @@
+var _ = new Object();
+
 exports.Attempt = async (FormData) => {
     const fetch = require('electron-fetch').default
 
@@ -10,29 +12,39 @@ exports.Attempt = async (FormData) => {
     };
 
     let QueryPromise = new Promise((resolve, reject) => {
-        resolve((() => {
-            let f;
-            fetch(endpoint, { 
-                    method: 'POST',
-                    body:    toSend,
-                    headers: { 'Content-Type': 'application/json' },
-                })
-                .then(res => res.json())
-                .then(json => f=json);
-            console.log("Fetch Request Completed.");
-            return f;
+        return resolve((async () => {
+
+            const res = await fetch(endpoint, {
+                method: 'POST',
+                body: JSON.stringify(toSend),
+                headers: { 'Content-Type': 'application/json' },
+            });
+
+            const response = await res;
+            let json;
+
+            if(200 <= response.status && response.status < 400) {
+                json = response.json();
+            } else {
+                json = {auth: false, serr: true};
+            }
+
+            return json;
         })());
     });
 
-    let AuthTrue = await QueryPromise;
+    let Ret = await QueryPromise;
 
-    if("undefined" == typeof AuthTrue) {
-        AuthTrue = new Object();
-        AuthTrue.auth = 0;
-    }
-    if("object" != typeof AuthTrue) {
-        AuthTrue = JSON.parse(AuthTrue);
+    if("object" != typeof Ret) {
+        Ret = {auth: 0};
     }
 
-    return AuthTrue.auth;
+    if(Ret.auth) {
+        _.Continue(Ret.method);
+    }
+
+    return Ret;
+}
+_['Continue'] = (method) => {
+    // push the window resterization to a later process time
 }

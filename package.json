@@ -18,6 +18,9 @@
     "electron-builder": "^22.8.1"
   },
   "dependencies": {
-    "electron-fetch": "^1.7.1"
+    "electron-fetch": "^1.7.1",
+    "electron-osx-sign": "^0.4.17",
+    "electron-packager": "^15.1.0",
+    "update-electron-app": "^2.0.1"
   }
 }

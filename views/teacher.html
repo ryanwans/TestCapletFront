@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+    <base href="./">
+    <link rel="stylesheet" href="./teacher.css">
+    <link rel="stylesheet" href="../patch/farlert.view.css">
+    <script type="text/javascript">
+      if (typeof module === 'object') {
+        window.module = module; 
+        module = undefined;
+      }
+    </script>
+    <script src="../patch/jquery.view.js"></script>
+    <script src="../patch/define.view.js"></script>
+    <script src="../patch/moment.view.js"></script>
+    <script src="../patch/farlert.view.js"></script>
+    <script type="text/javascript" src="../patch/teacher.js"></script>
+    <script>if (window.module) module = window.module;</script>
+  </head>
+  <body>
+      <div class="x-master">
+          <div class="x-sidebar-main">
+              <img onclick="window.sP('home');" src="../hard/home.svg" class="x-icon">
+              <img onclick="window.sP('tests');" src="../hard/form.svg" class="x-icon">
+              <img onclick="window.sP('users');" src="../hard/user-group.svg" class="x-icon">
+              <img onclick="window.sP('reports');" src="../hard/bar-graph.svg" class="x-icon">
+              <img onclick="window.sP('you');" src="../hard/profile-user.svg" class="x-icon-bottom">
+          </div>
+          <div class="MASTER">
+            
+          </div>
+      </div>
+  </body>
+</html>

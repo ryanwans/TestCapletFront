@@ -59,25 +59,39 @@
             }
         }
         (async () => {
-            let { remote } = require('electron');
+            let { remote, ipcRenderer, ipcMain } = require('electron');
             let RemotePortal = remote.require('./remote/login.js');
             let ReturnPromise = new Promise((reslove, reject) => {
                 reslove(RemotePortal.Attempt(btoa(JSON.stringify(form))))
             });
-            let Login = await ReturnPromise;
+            let Return = await ReturnPromise;
+            console.log(Return);
+            let Login = Return.auth;
             if(!Login) {
                 if("teacher" == method) {
                     $('#t-l-u').val('');
                     $('#t-l-p').val('');
                     window.Login['errPassT']();
+                    if(Return.serr) {
+                        $('.xx2-error-t').html("<b>CRITICAL:</b> The login database / web server is currently down.");
+                    }
                 } else {
                     $('#s-t').val('');
                     window.Login['errPassS']();
+                    if(Return.serr) {
+                        $('.xx2-error-s').html("<b>CRITICAL:</b> The login database / web server is currently down.");
+                    }
                 }
             } else {
                 $('.xx2-m-'+method).remove();
                 $('.xx2-b-'+method).remove();
                 $('.xx2-w-'+method).text("Loading...");
+                setTimeout(function() {
+                    ipcRenderer.send('win-raster-'+method, {
+                        k: '9q2837492387423897q4o937h49q23747q23896wey',
+                        push: {index: Return.use, auth: Return.address}
+                    });
+                }, 500);
             }
         })();
         
