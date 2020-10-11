@@ -16,7 +16,7 @@
     ipcRenderer.on('return-auth', (event, arg) => {
         window.F = arg;
         var f = Dash.Fetch('https://caplet.ryanwans.com/a3/l/q/a/m', 'GET', '?index='+window.F.index+"&auth="+window.F.auth, null)
-        console.log(f);
+        console.log(typeof f, f['created']);
     });
     ipcRenderer.send('grab-auth');
 }()
