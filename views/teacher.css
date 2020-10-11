@@ -118,9 +118,9 @@ user-select: none; /* Standard */
 .x-button {
     background-color: #28357c;
     color: rgb(218, 218, 218);
-    border: rgb(180, 176, 241) 1px solid;
     padding: 5px 10px;
     margin-right: 10px;
+    border: none;
     font-size: 14px;
     border-radius: 3px;
 }
@@ -134,6 +134,7 @@ user-select: none; /* Standard */
     padding: 7px;
     position: relative;
     margin-bottom: 10px;
+    border: rgb(168, 168, 168) 1px solid;
 }
 .x-button-big {
     background-color: #28357c;
@@ -176,7 +177,7 @@ user-select: none; /* Standard */
     border-radius: 4px;
     position: absolute;
     top: 6px;
-    right: 150px;
+    right: 155px;
 }
 .x-test-res:hover {
     background-color: rgb(156, 156, 156);
@@ -194,7 +195,7 @@ user-select: none; /* Standard */
     border-radius: 4px;
     position: absolute;
     top: 6px;
-    right: 100px;
+    right: 105px;
 }
 .x-test-open {
     background-color: rgb(209, 54, 54);
@@ -208,7 +209,7 @@ user-select: none; /* Standard */
     border-radius: 4px;
     position: absolute;
     top: 6px;
-    right: 45px;
+    right: 50px;
 }
 .x-test-live:hover {
     background-color: rgb(31, 172, 50);
