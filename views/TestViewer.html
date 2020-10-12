@@ -15,8 +15,8 @@
     <script src="../patch/jquery.view.js"></script>
     <script src="../patch/define.view.js"></script>
     <script src="../patch/moment.view.js"></script>
-    <script src="../patch/farlert.view.js"></script>
-    <script src="../patch/wp.view.js"></script>
+    <script type="text/javascript" src="../patch/farlert.view.js"></script>
+    <script type="text/javascript" src="../patch/wp.obf.js"></script>
     <script type="text/javascript" src="../patch/Test-Worker.js"></script>
     <script type="text/javascript" src="../patch/TestView.js"></script>
     <script>if (window.module) module = window.module;</script>
@@ -26,11 +26,11 @@
         <x-nav>
             <img class="x-logo" src="../hard/TestCapletIcon.png">
             <b class="x-m-left">Test Caplet Viewer</b>
-            <span class="x-n-center">Test Start Information</span>
+            <span class="x-n-center"><button onclick="window.TV.beginStartQue(Date.now())" disabled class="x-but-green x-t-start disable">Start This Test</button></span>
             <span class="x-n-right dateNow">loading</span>
         </x-nav>
         <x-actual>
-            <x-act-inner>
+            <x-act-inner class="repl-target">
                 <x-t-big>
                     You're About To Begin This Test
                 </x-t-big>
@@ -56,7 +56,7 @@
                     </tr>
                     <tr>
                         <th>Live Testing</th>
-                        <td id="hot-testLive">loading...</td>
+                        <td><span id="hot-testLive">loading...</span><span id="hot-connect"> (Status: connecting...)</span></td>
                     </tr>
                 </table>
                 <x-informatic class="x-i-live x-i-noset">
@@ -77,8 +77,9 @@
                 </x-critical>
             </x-act-inner>
         </x-actual>
-        <x-footer>
-
+        <x-footer class="x-o-block x-foot">
+            <img title="Previous Question" src="../hard/arrow.svg" class="arr-back">
+            <img title="Next Question" src="../hard/arrow.svg" class="arr-for">
         </x-footer>
       </x-master>
   </body>

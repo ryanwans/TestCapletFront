@@ -67,7 +67,6 @@
                 reslove(RemotePortal.Attempt(btoa(JSON.stringify(form))))
             });
             let Return = await ReturnPromise;
-            console.log(Return);
             let Login = Return.auth;
             if(!Login) {
                 if("teacher" == method) {
@@ -85,6 +84,7 @@
                     }
                 }
             } else {
+                if(method == "student") { Return.studentName = $('#s-n').val() }
                 $('.xx2-m-'+method).remove();
                 $('.xx2-b-'+method).remove();
                 $('.xx2-w-'+method).text("Loading...");

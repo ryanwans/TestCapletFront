@@ -67,9 +67,11 @@
     <div class="xx2master xx2student" id="xx2-temp-hide">
       <img onclick="window.Login.student()" src="../hard/backArrow.svg" class="xx2-back xx2-b-student">
       <span class="xx2-welcome xx2-w-student">Test Caplet <b>Test Access</b></span>
-      <div class="xx2-login xx2more xx2-m-student">
+      <div class="xx2-login xx2-m-student">
         <h3 class="xx2-form-above">TEST CODE</h3>
-        <input oninput="this.value = this.value.toUpperCase()" maxlength="8" class="xx2-form-input" id="s-t" placeholder="XXXXXXXX" />
+        <input required oninput="this.value = this.value.toUpperCase()" maxlength="8" class="xx2-form-input" id="s-t" placeholder="XXXXXXXX" />
+        <h3 class="xx2-form-above">FULL NAME</h3>
+        <input required class="xx2-form-input" id="s-n" placeholder="" />
         <button onclick="window.Login.attempt('student', '#s-t');" class="xx2-student">Access This Test</button>
       </div>
       <div class="xx2-error xx2-error-s" id="xx2-temp-hide">

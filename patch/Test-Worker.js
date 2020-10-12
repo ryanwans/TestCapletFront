@@ -1,0 +1,95 @@
+window.TestWorker = {
+    active: 1,
+    begin: (Test) => {
+        window.TestWorker.QuestionBank = Test.shuffle(Test.bank);
+        window.TestWorker.pro = Test.metadata.meta.meta.wProtect
+        window.TestWorker.total = Test.count;
+        window.TestWorker.startTime = Test.metadata.start;
+        if(Test.endTime) {
+            window.TestWorker.endTime = Test.endTime;
+        }
+        var Addition = (Test.metadata.meta.meta.wProtect) ? "This test uses Window Protection. Once you start, you cannot click away until you submit or your test will be locked.<br><br>": ""
+        window.TestWorker.alert(
+            "Test Caplet Alert",
+            Addition+"Are you sure you want this test? Once you start this test, you cannot start it again unless your teacher unlocks it for you.",
+            window.TestWorker.start,
+            "Start"
+        );
+    },
+    start: () => {
+        window.FAR.selfClose();
+        var Prot = new Protector((json) => {
+            window.alert("User clicked away after " + json.totalDuration+ " ms");
+        })
+        Prot.start();
+        if(TestWorker.endTime) {
+            clearInterval(window.CLOCK);
+            TestWorker.startTimer();
+        }
+        TestWorker.showFooter();
+        TestWorker.setHeader();
+        $('.repl-target').html("");
+    },
+    alert: (title, text, bypass, btxt) => {
+        window.TestWorker.ALERT_TEMP_FUNCTION = bypass;
+        var buttons;
+        if(bypass) {
+            buttons = [
+                {
+                    name: btxt,
+                    func:  "window.TestWorker.ALERT_TEMP_FUNCTION()"
+                },
+                {
+                    name: 'Cancel',
+                    func: "window.FAR.selfClose()"
+                }
+            ]
+        } else {
+            buttons = [
+                {
+                    name: 'Cancel',
+                    func: "window.FAR.selfClose()"
+                }
+            ]
+        }
+        var options = {
+            moveable: false,
+            title: title,
+            html: text,
+            jQuery: false,
+            pageBlur: true,
+            escapeKey: false,
+            buttons: buttons
+        }
+        var Alert = new FAR.popup(options);
+        Alert.hoist();
+    },
+    setHeader: () => {
+        $('.x-n-center').text("Question "+ TestWorker.active +" of " + TestWorker.total);
+    },
+    showFooter: () => {
+        $('.x-foot').removeClass('x-o-block');
+    },
+    timeExpired: () => {
+        clearInterval(window.TIMER);
+        TestWorker.submitTest();
+        TestWorker.alert("Test Caplet Alert", "Your test has been automatically submitted because the alotted testing time has expired.");
+    },
+    submitTest: () => {
+        TestWorker.submitTime = Date.now();
+        $('.dateNow').html("test was submitted");
+        $('.x-n-center').text("Completed");
+        $('.x-foot').addClass('x-o-block');
+        $('.repl-target').html("<x-t-big>Your Test Has Been Submitted</x-t-big><x-t-sub>You may now quit the application</x-t-sub><br><table class='x-pre-table'><tr><th>Your Grade</th><td id='hot-grade'><i>Grading Disabled</i></td></tr><tr><th>Questions Answered&nbsp;&nbsp;&nbsp;</th><td id='hot-qs'>loading...</td></tr><tr><th>Time Spent</th><td id='hot-time'>loading...</td></tr></table><x-informatic class='x-i-live x-i-noset'><b>TESTING INFORMATION</b><ixr> </ixr>If your teacher has immediate grading enable, your grade should appear here.</x-informatic>")
+        $('#hot-time').text((((TestWorker.submitTime - TestWorker.startTime)/1000)<<0) + " seconds");
+    },
+    startTimer: () => {
+        window.TIMER = setInterval(function() {
+            time = (((TestWorker.endTime - Date.now())/1000)<<0);
+            if(time == 0) { TestWorker.timeExpired();} else {
+                if(time > 60) {time = Math.round(time/60) + " minutes </b>"} else {time = time + " seconds </b>"}
+                $('.dateNow').html("Time Remaining: <b>" + time);
+            }
+        }, 1000);
+    }
+}
