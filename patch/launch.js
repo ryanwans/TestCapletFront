@@ -48,6 +48,7 @@
                 u: username,
                 p: password,
                 stamp: Date.now(),
+                m: "teacher",
                 license: window.license
             };
         } else {
@@ -55,6 +56,7 @@
             form = {
                 c: code,
                 stamp: Date.now(),
+                m: "student",
                 license: window.license
             }
         }
@@ -87,6 +89,7 @@
                 $('.xx2-b-'+method).remove();
                 $('.xx2-w-'+method).text("Loading...");
                 setTimeout(function() {
+                    ipcRenderer.send('set-test-meta', Return);
                     ipcRenderer.send('win-raster-'+method, {
                         k: '9q2837492387423897q4o937h49q23747q23896wey',
                         push: {index: Return.use, auth: Return.address}

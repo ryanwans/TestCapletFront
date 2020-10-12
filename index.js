@@ -86,7 +86,39 @@ function createTeacher() {
   });
 }
 function createStudent() {
-  console.log("STUDENT")
+  const win = new BrowserWindow({
+    width: 900,
+    height: 600,
+    webPreferences: {
+      nodeIntegration: true,
+      devTools: USEDEVTOOLS,
+      disableHtmlFullscreenWindowResize: true,
+      resizable: false,
+      title: "Test Caplet",
+      fullscreen: false,
+      enableRemoteModule: true,
+      ico: './hard/ICON.ico'
+    }
+  })
+  win.setResizable(false);
+  win.setFullScreenable(false);
+  // and load the index.html of the app.
+  win.loadFile('./views/TestViewer.html');
+
+  var template = [{label: "Menu", 
+    submenu: [{
+        label: 'Close App',
+        accelerator: process.platform == "darwin" ? 'Command+Q' : 'Ctrl+Q',
+        click() {
+          app.quit();
+        }
+    }]}
+  ];
+  var overrideMenu = Menu.buildFromTemplate(template);
+  // Menu.setApplicationMenu(overrideMenu);
+  
+  // Make instance public for closure
+  public['student'] = win;
 }
 
 ipcMain.on('win-raster-student', (event, arg) => {
@@ -101,6 +133,12 @@ ipcMain.on('win-raster-teacher', (event, arg) => {
 });
 ipcMain.on('grab-auth', (event, arg) => {
   event.reply('return-auth', public.auth);
+})
+ipcMain.on('set-test-meta', (event, arg) => {
+  public.test = arg;
+})
+ipcMain.on('get-test-meta', (event, arg) => {
+  event.reply('return-meta', public.test);
 })
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.

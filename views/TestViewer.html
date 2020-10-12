@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8">
+    <meta http-equiv="Content-Security-Policy" content="script-src 'self' 'unsafe-inline';" />
+    <base href="./">
+    <link rel="stylesheet" href="./test-window.css">
+    <link rel="stylesheet" href="../patch/farlert.view.css">
+    <script type="text/javascript">
+      if (typeof module === 'object') {
+        window.module = module; 
+        module = undefined;
+      }
+    </script>
+    <script src="../patch/jquery.view.js"></script>
+    <script src="../patch/define.view.js"></script>
+    <script src="../patch/moment.view.js"></script>
+    <script src="../patch/farlert.view.js"></script>
+    <script src="../patch/wp.view.js"></script>
+    <script type="text/javascript" src="../patch/Test-Worker.js"></script>
+    <script type="text/javascript" src="../patch/TestView.js"></script>
+    <script>if (window.module) module = window.module;</script>
+  </head>
+  <body>
+      <x-master _tcode="89347h2938746e9q278342789364eiq2873964734">
+        <x-nav>
+            <img class="x-logo" src="../hard/TestCapletIcon.png">
+            <b class="x-m-left">Test Caplet Viewer</b>
+            <span class="x-n-center">Test Start Information</span>
+            <span class="x-n-right dateNow">loading</span>
+        </x-nav>
+        <x-actual>
+            <x-act-inner>
+                <x-t-big>
+                    You're About To Begin This Test
+                </x-t-big>
+                <x-t-sub>
+                    Here's some important information to note before starting...
+                </x-t-sub>
+                <table class="x-pre-table">
+                    <tr>
+                        <th>Test Name</th>
+                        <td id="hot-testName">loading...</td>
+                    </tr>
+                    <tr>
+                        <th>Question Count</th>
+                        <td id="hot-testQs">loading...</td>
+                    </tr>
+                    <tr>
+                        <th>Test Time Limit</th>
+                        <td id="hot-testTime">loading...</td>
+                    </tr>
+                    <tr>
+                        <th>Window Protection&nbsp;&nbsp;&nbsp;</th>
+                        <td id="hot-testWin">loading...</td>
+                    </tr>
+                    <tr>
+                        <th>Live Testing</th>
+                        <td id="hot-testLive">loading...</td>
+                    </tr>
+                </table>
+                <x-informatic class="x-i-live x-i-noset">
+                    <b>TESTING INFORMATION</b>
+                    <ixr> </ixr>
+                    This test has live testing disabled and window protection disabled. You may begin when ready.
+                </x-informatic>
+                <x-informatic class="x-i-live x-o-hide">
+                    <b>TESTING INFORMATION</b>
+                    <ixr> </ixr>
+                    This test is a live test. Your teacher or test administrator can actively view your test progress in real time.
+                </x-informatic>
+                <x-critical class="x-i-wp x-o-hide">
+                    <b>CRITICAL INFORMATION</b>
+                    <cxr> </cxr>
+                    This test is using Window Protection. If you click away from this window at any point during the test, it will 
+                    automatically lock. Only your test administrator can unlock this test.
+                </x-critical>
+            </x-act-inner>
+        </x-actual>
+        <x-footer>
+
+        </x-footer>
+      </x-master>
+  </body>
+</html>

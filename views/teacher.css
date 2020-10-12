@@ -184,7 +184,7 @@ user-select: none; /* Standard */
     cursor: pointer;
 }
 .x-test-live {
-    background-color: rgb(35, 211, 59);
+    background-color: rgb(33, 189, 54);
     color: white;
     text-transform: uppercase;
     font-size: 11px;
@@ -231,9 +231,24 @@ user-select: none; /* Standard */
     border-radius: 4px;
     position: absolute;
     top: 6px;
-    right: 45px;
+    right: 50px;
 }
 .x-test-lock:hover {
     background-color: rgb(192, 130, 49);
     cursor: pointer;
+}
+.x-test-live-disable {
+    background-color: rgb(19, 100, 30);
+    color: rgb(149, 206, 161);
+    text-transform: uppercase;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: .05em;
+    border: 0;
+    padding: 3px 8px;
+    opacity: 0.3;
+    border-radius: 4px;
+    position: absolute;
+    top: 6px;
+    right: 105px;
 }

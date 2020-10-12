@@ -1,8 +1,8 @@
 {
   "name": "electron-test",
-  "version": "1.0.0",
-  "description": "Student Testing Platform",
-  "productName": "Test Caplet Live",
+  "version": "1.2.8",
+  "description": "Modern Student Testing Platform",
+  "productName": "Test Caplet",
   "main": "index.js",
   "scripts": {
     "test": "electron .",
