@@ -1,6 +1,7 @@
 // TEST VIEWER
 let { remote, ipcRenderer, ipcMain } = require('electron');
 let Overwatch = remote.require('./remote/Overwatch.js');
+let SocketPatch = window.SocketPatch || new Object();
 
 window.TV = new Object();
 
@@ -30,6 +31,9 @@ window.TV = new Object();
         window.TV.Test = await window.TV.renderTestBank(data.tuid);
         
         // Establish socket if needed here
+        if(data.meta.useLive) {
+            SocketPatch.Portal.start();
+        } else {}
 
         setTimeout(function() {
             $('.xs-load').html("<b>STATE: </b> Ready");
