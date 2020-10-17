@@ -9,7 +9,7 @@ window.TV = new Object();
     window.TV.state = 'pre';
 
     // Get Test Meta Data
-    var setTestData = (data) => {
+    var setTestData = async (data) => {
         $('#hot-testName').text(data.name);
         $('#hot-testQs').text(data.meta.count + " Questions");
         $('#hot-testTime').text((data.meta.time == null) ? "No Time Limit" : data.meta.time/60000 + " Minutes");
@@ -25,7 +25,18 @@ window.TV = new Object();
         }
         window.CLOCK = setInterval(function() {
             $('.dateNow').text(moment().format('MMM Do YYYY, h:mm:ss a'));
-        }, 1000)
+        }, 1000);
+
+        window.TV.Test = await window.TV.renderTestBank(data.tuid);
+        
+        // Establish socket if needed here
+
+        setTimeout(function() {
+            $('.xs-load').html("<b>STATE: </b> Ready");
+            $('.xs-load').addClass("xs-ready");
+            $('.xs-ready').removeAttr("xs-load");
+        }, 1200)
+        
     }
     ipcRenderer.on("return-meta", (event, arg) => {
         window.TV.meta = arg;
@@ -39,9 +50,13 @@ window.TV = new Object();
         $('.x-t-start').removeAttr('disabled');
     };
     window.TV.beginStartQue = (time) => {
-        let TestBank = [];
+        window.TV.state = "testing";
+        let TestBank = window.TV.Test;
         let TestState = Overwatch.test(time, window.TV.meta, TestBank);
         window.TestWorker.begin(TestState);
+    };
+    window.TV.renderTestBank = async (TestCode) => {
+        return await Overwatch.Fetch("https://caplet.ryanwans.com/a3/ported/t/gTD/a", "GET", "?testCode="+TestCode);
     }
 }()
 

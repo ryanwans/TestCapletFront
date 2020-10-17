@@ -200,3 +200,29 @@ ixr {
   transform: rotate(90deg) scale(1.2);
   cursor: pointer;
 }
+x-state {
+  position: absolute;
+  height: 10px;
+  padding: 12px;
+  padding-top: 7px!important;
+  padding-left: 13px!important;
+  padding-bottom: 20px!important;
+  border-top-left-radius: 6px;
+  bottom: 0;
+  right: 0;
+  display: none;
+  background-color: rgb(231, 231, 231);
+}
+.xs-load {
+  border-left: rgb(224, 165, 0) 4px solid;
+  border-top: rgb(224, 165, 0) 4px solid;
+}
+.xs-ready {
+  border-left: rgb(85, 194, 12) 4px solid;
+  border-top: rgb(85, 194, 12) 4px solid;
+}
+questionhead {
+  display: block;
+  font-size: 20px;
+  font-weight: 500;
+}

@@ -1,5 +1,5 @@
 window.TestWorker = {
-    active: 1,
+    active: 0,
     begin: (Test) => {
         window.TestWorker.QuestionBank = Test.shuffle(Test.bank);
         window.TestWorker.pro = Test.metadata.meta.meta.wProtect
@@ -11,7 +11,7 @@ window.TestWorker = {
         var Addition = (Test.metadata.meta.meta.wProtect) ? "This test uses Window Protection. Once you start, you cannot click away until you submit or your test will be locked.<br><br>": ""
         window.TestWorker.alert(
             "Test Caplet Alert",
-            Addition+"Are you sure you want this test? Once you start this test, you cannot start it again unless your teacher unlocks it for you.",
+            Addition+"Are you sure you want to start this test? Once you start this test, you cannot start it again unless your teacher unlocks it for you.",
             window.TestWorker.start,
             "Start"
         );
@@ -29,6 +29,33 @@ window.TestWorker = {
         TestWorker.showFooter();
         TestWorker.setHeader();
         $('.repl-target').html("");
+        window.TestWorker.displayQuestion(TestWorker.active);
+    },
+    next: function() {
+        TestWorker.active++;
+        TestWorker.displayQuestion(TestWorker.active);
+    },
+    prev: function() {
+        TestWorker.active--;
+        TestWorker.displayQuestion(TestWorker.active);
+    },
+    displayQuestion: (targetIndex) => {
+        if(targetIndex >= window.TestWorker.QuestionBank.length || targetIndex < 0) {
+            if(targetIndex < 0) {
+                TestWorker.active = 0;
+            } else {
+                TestWorker.active = window.TestWorker.QuestionBank.length-1;
+            }
+            return false;
+        } else {
+            TestWorker.setHeader();
+            var q = window.TestWorker.QuestionBank[targetIndex];
+            var qHead = "<QuestionHead>"+q.questionValue+"</QuestionHead>";
+            var qType = "<QuestionType>Response Type: "+TestWorker.qtype.split("!!")[q.questionType]+"</QuestionType>";
+
+            var finalQuestionHTML = qHead+qType;
+            $('.repl-target').html(finalQuestionHTML);
+        }
     },
     alert: (title, text, bypass, btxt) => {
         window.TestWorker.ALERT_TEMP_FUNCTION = bypass;
@@ -65,11 +92,12 @@ window.TestWorker = {
         Alert.hoist();
     },
     setHeader: () => {
-        $('.x-n-center').text("Question "+ TestWorker.active +" of " + TestWorker.total);
+        $('.x-n-center').text("Question "+ (TestWorker.active+1) +" of " + TestWorker.total);
     },
     showFooter: () => {
         $('.x-foot').removeClass('x-o-block');
     },
+    qtype: "Multiple Choice, Single Answer!!Matching!!Fill In The Blank!!True or False!!Multiple Choise, Multiple Answers!!Choice Slider!!Table Selection",
     timeExpired: () => {
         clearInterval(window.TIMER);
         TestWorker.submitTest();

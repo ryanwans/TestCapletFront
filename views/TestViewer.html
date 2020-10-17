@@ -56,7 +56,7 @@
                     </tr>
                     <tr>
                         <th>Live Testing</th>
-                        <td><span id="hot-testLive">loading...</span><span id="hot-connect"> (Status: connecting...)</span></td>
+                        <td><span id="hot-testLive">loading...</span></td>
                     </tr>
                 </table>
                 <x-informatic class="x-i-live x-i-noset">
@@ -78,9 +78,12 @@
             </x-act-inner>
         </x-actual>
         <x-footer class="x-o-block x-foot">
-            <img title="Previous Question" src="../hard/arrow.svg" class="arr-back">
-            <img title="Next Question" src="../hard/arrow.svg" class="arr-for">
+            <img onclick="window.TestWorker.prev()" title="Previous Question" src="../hard/arrow.svg" class="arr-back">
+            <img onclick="window.TestWorker.next()" title="Next Question" src="../hard/arrow.svg" class="arr-for">
         </x-footer>
+        <x-state class="xs-load">
+            <b>STATE: </b>loading...
+        </x-state>
       </x-master>
   </body>
 </html>
