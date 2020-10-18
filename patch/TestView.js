@@ -1,7 +1,6 @@
 // TEST VIEWER
 let { remote, ipcRenderer, ipcMain } = require('electron');
 let Overwatch = remote.require('./remote/Overwatch.js');
-let SocketPatch = window.SocketPatch || new Object();
 
 window.TV = new Object();
 
@@ -32,7 +31,9 @@ window.TV = new Object();
         
         // Establish socket if needed here
         if(data.meta.useLive) {
-            SocketPatch.Portal.start();
+            setTimeout(function() {
+                window.SocketPatch.Portal.start({key: 'value'});
+            }, 600)
         } else {}
 
         setTimeout(function() {
@@ -52,6 +53,7 @@ window.TV = new Object();
         console.log("Test -> Main: test is now unlocked.")
         $('.x-t-start').removeClass('disable');
         $('.x-t-start').removeAttr('disabled');
+        $('.x-t-start').text('Start This Test');
     };
     window.TV.beginStartQue = (time) => {
         window.TV.state = "testing";

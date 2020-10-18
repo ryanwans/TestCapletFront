@@ -16,10 +16,6 @@
     <script src="../patch/define.view.js"></script>
     <script src="../patch/moment.view.js"></script>
     <script src="../patch/socket.view.js"></script>
-    <script>
-        const SocketGlobalObject = SocketGlobalObject || new Object();
-        SocketGlobalObject[Date.now()] = "_drafted";
-    </script>
     <script type="text/javascript" src="../patch/farlert.view.js"></script>
     <script type="text/javascript" src="../patch/wp.obf.js"></script>
     <script type="text/javascript" src="../patch/Test-Worker.js"></script>
@@ -32,7 +28,7 @@
         <x-nav>
             <img class="x-logo" src="../hard/TestCapletIcon.png">
             <b class="x-m-left">Test Caplet Viewer</b>
-            <span class="x-n-center"><button onclick="window.TV.beginStartQue(Date.now())" disabled class="x-but-green x-t-start disable">Start This Test</button></span>
+            <span class="x-n-center"><button onclick="window.TV.beginStartQue(Date.now())" disabled class="x-but-green x-t-start disable">Test is Locked</button></span>
             <span class="x-n-right dateNow">loading</span>
         </x-nav>
         <x-actual>
