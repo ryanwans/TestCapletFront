@@ -32,8 +32,18 @@ window.TV = new Object();
         // Establish socket if needed here
         if(data.meta.useLive) {
             setTimeout(function() {
-                window.SocketPatch.Portal.start({key: 'value'});
-            }, 600)
+                window.SocketPatch.Portal.start({
+                    purpose: 'routing',
+                    routing: {
+                        target: window.TV.meta.tuid,
+                        name: window.TV.meta.studentName,
+                        stage: window.TV.state,
+                        time: Date.now(),
+                        id: null
+                    },
+                    return: null
+                });
+            }, 200)
         } else {}
 
         setTimeout(function() {
@@ -54,9 +64,9 @@ window.TV = new Object();
         $('.x-t-start').removeClass('disable');
         $('.x-t-start').removeAttr('disabled');
         $('.x-t-start').text('Start This Test');
+        SocketPatch.statusUpd();
     };
     window.TV.beginStartQue = (time) => {
-        window.TV.state = "testing";
         let TestBank = window.TV.Test;
         let TestState = Overwatch.test(time, window.TV.meta, TestBank);
         window.TestWorker.begin(TestState);
@@ -67,8 +77,5 @@ window.TV = new Object();
 }()
 
 $(document).ready(() => {
-    document.title = "Test Caplet - Live Viewer"
-    setTimeout(() => {
-        window.TV.enableStart();
-    }, 5000);
+    document.title = "Test Caplet - Live Viewer";
 })
