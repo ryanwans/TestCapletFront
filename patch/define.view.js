@@ -19,3 +19,11 @@ function fi(t1) {
     $(t2).toggleClass('xx2-mainin')
     $(t2).toggleClass('mainIn');
 }
+!function() {
+    window.debugLastTime = Date.now();
+    console.debug = (a) => {
+        let diff = Date.now() - window.debugLastTime;
+        window.debugLastTime = Date.now();
+        console.log("%c"+diff+" - "+a, 'color: #4661ff;')
+    }
+}();

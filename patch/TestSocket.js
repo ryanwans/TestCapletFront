@@ -7,6 +7,7 @@ let Export = (Key, Value) => {
     let obj = new Object();
     obj.Portal = {
         start: (Authentication) => {
+            console.debug("Hoisting web socketing pipe...")
             var key = {
                 raw: btoa(window.TV.meta.studentName.replaceAll(' ', '').toLowerCase()),
                 full: 'tcio-stu'+Math.floor((Math.random()*10))+'-'+btoa(window.TV.meta.studentName.replaceAll(' ', '').toLowerCase())
@@ -32,6 +33,7 @@ let Export = (Key, Value) => {
                 obj.onData(importData);
             })
             obj.socket.emit('approval-request', Authentication);
+            console.debug("Hoisted. Running on ID "+btoa(Date.now())+"XX");
         }
     }
     obj.Emit = (a) => {
@@ -39,6 +41,7 @@ let Export = (Key, Value) => {
     }
     obj.onData = (data) => {
         // parse code first
+        console.debug("Socket Dialog Received");
         if(data.code == 'xx1') {
             TestWorker.alert("Test Caplet Alert", "The test administrator has not opened live testing yet. You must wait for your administrator to unlock the test to begin.");
         } else if(data.code == 'xx3') {
@@ -49,6 +52,7 @@ let Export = (Key, Value) => {
         }
     }
     obj.statusUpd = () => {
+        console.debug("Socketing new status...");
         obj.status.testing = (TV.state == "testing") ? true : false;
         obj.status.activeQ = TestWorker.active; 
         obj.status.answers = TestWorker.AnswerBank;
@@ -63,6 +67,7 @@ let Export = (Key, Value) => {
         })
     }
     obj.testSubmit = (a) => {
+        console.debug("Socketing submission state...");
         obj.status.testing = false;
         obj.status.activeQ = TestWorker.active; 
         obj.status.answers = TestWorker.AnswerBank;
@@ -78,7 +83,10 @@ let Export = (Key, Value) => {
         // depart socket
         if(a == 'locked') {
             // listen for an unlock from admin
+            console.debug("Socket will remain open for an unlock event");
         } else {
+            console.debug("Closing socketing pipe; test completed.");
+            console.debug("Test file destroyed, ready to close.");
             obj.socket.disconnect();
         }
     }

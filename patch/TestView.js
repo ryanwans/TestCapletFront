@@ -8,6 +8,8 @@ window.TV = new Object();
     // Set Necessary Values
     window.TV.state = 'pre';
 
+    console.debug("Testing file initializing...")
+
     // Get Test Meta Data
     var setTestData = async (data) => {
         $('#hot-testName').text(data.name);
@@ -60,14 +62,16 @@ window.TV = new Object();
     ipcRenderer.send('get-test-meta');
 
     window.TV.enableStart = () => {
-        console.log("Test -> Main: test is now unlocked.")
+        console.debug("Client has been authorized to begin the test.")
         $('.x-t-start').removeClass('disable');
         $('.x-t-start').removeAttr('disabled');
         $('.x-t-start').text('Start This Test');
         SocketPatch.statusUpd();
     };
     window.TV.beginStartQue = (time) => {
+        console.debug("Creating an instance of Test object")
         let TestBank = window.TV.Test;
+        console.debug("Running OVERWATCH initialization");
         let TestState = Overwatch.test(time, window.TV.meta, TestBank);
         window.TestWorker.begin(TestState);
     };

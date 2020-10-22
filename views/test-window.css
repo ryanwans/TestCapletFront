@@ -226,3 +226,72 @@ questionhead {
   font-size: 20px;
   font-weight: 500;
 }
+answerbank {
+  display: block;
+  margin-top: 25px;
+}
+multiplechoice {
+
+}
+mchoice {
+  display: block;
+  border-radius: 4px;
+  background-color: #EBEBEB;
+  border: rgb(173, 173, 173) 1px solid;
+  width: 90%;
+  padding: 8px 14px;
+  font-size: 14px;
+  margin-bottom: 15px;
+  cursor: pointer;
+}
+mtf {
+  display: inline-block;
+  border-radius: 4px;
+  background-color: #EBEBEB;
+  border: rgb(173, 173, 173) 1px solid;
+  width: 40%;
+  padding: 8px 14px;
+  font-size: 14px;
+  margin-right: 15px;
+  cursor: pointer;
+  text-align: center;
+  font-weight: 500;
+}
+mchoice:hover {
+  background-color: #dfdfdf;
+  border: rgb(156, 156, 156) 1px solid;
+}
+mtf:hover {
+  background-color: #dfdfdf;
+  border: rgb(156, 156, 156) 1px solid;
+}
+mind {
+  font-size: 13px;
+  color: rgb(122, 122, 122)!important;
+  font-weight: 300;
+  display: inline-block;
+  width: 20px;
+  text-align: left;
+  max-width: 21px;
+  min-width: 19px;
+  border-right: rgb(153, 153, 153) 1px solid;
+  margin-right: 12px;
+}
+mans {
+  display: inline-block;
+}
+.x-a-selected {
+  background-color: #bcbbe9 !important;
+  border: rgb(121, 116, 167) 1px solid !important;
+}
+slidetext {
+  width: 20%;
+  margin-left: 10px;
+  display: inline-block;
+}
+.x-slide {
+  width: 70%;
+}
+testerrrrrrr {
+  color: #4661ff;
+}
