@@ -33,7 +33,7 @@ window.TestWorker = {
             TestWorker.lockTest();
         })
         if(TestWorker.useWP) {
-            // Prot.start();
+            Prot.start();
             console.debug("Window Protection has started");
         } else {
             console.debug("Bypassing window protection (disabled?)");

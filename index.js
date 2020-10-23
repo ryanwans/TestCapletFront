@@ -7,6 +7,8 @@ const feed = `${server}/update/${process.platform}/${app.getVersion()}`;
 // autoUpdater.setFeedURL(feed)
 
 var USEDEVTOOLS = true;
+console.log("Rasterizing Test Caplet window version "+app.getVersion());
+public.version = app.getVersion();
 
 function createLauncher() {
   // Create the browser window.
@@ -139,6 +141,9 @@ ipcMain.on('set-test-meta', (event, arg) => {
 })
 ipcMain.on('get-test-meta', (event, arg) => {
   event.reply('return-meta', public.test);
+})
+ipcMain.on('version', (event, arg) => {
+  event.reply('on-version', public.version);
 })
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.

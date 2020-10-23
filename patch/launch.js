@@ -3,6 +3,12 @@
 // init process goes here
 -function() {
     document.title = "Test Caplet - Live";
+    let { remote, ipcRenderer, ipcMain } = require('electron');
+    ipcRenderer.on('on-version', (event, arg) => {
+        window.version = arg;
+        $('.v').text(window.version)
+    });
+    ipcRenderer.send('version');
     $('.xx2-error-t').hide();
     $('.xx2-error-s').hide();
 

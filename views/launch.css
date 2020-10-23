@@ -35,6 +35,9 @@ head, body, html {
     bottom: 0;
     position: absolute;
 }
+.v {
+    display: inline;
+}
 span {
     display: block;
 }
