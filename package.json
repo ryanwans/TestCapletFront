@@ -1,28 +1,31 @@
 {
-  "name": "electron-test",
-  "version": "1.2.10",
-  "description": "Modern Student Testing Platform",
-  "productName": "Test Caplet",
-  "main": "index.js",
-  "scripts": {
-    "test": "electron .",
-    "start": "npm install && electron ./app",
-    "pack": "npm build --dir",
-    "dist": "electron-builder -mwl",
-    "deps": "install-app-deps",
-    "postinstall": "patch-package && install-app-deps"
-  },
-  "author": "Ryan Wans <ryan@ryanwans.com>",
-  "license": "MIT",
-  "devDependencies": {
-    "electron": "^10.1.3",
-    "electron-builder": "^22.9.1",
-    "patch-package": "^6.2.2"
-  },
-  "dependencies": {
-    "electron-fetch": "^1.7.1",
-    "electron-osx-sign": "^0.4.17",
-    "electron-packager": "^15.1.0",
-    "update-electron-app": "^2.0.1"
-  }
+    "name": "electron-test",
+    "version": "1.3.4",
+    "description": "Modern Student Testing Platform",
+    "productName": "Test Caplet",
+    "main": "index.js",
+    "scripts": {
+        "test": "electron .",
+        "start": "npm install && electron ./app",
+        "pack": "npm build --dir",
+        "dist": "electron-builder -mwl",
+        "deps": "install-app-deps",
+        "postinstall": "patch-package && install-app-deps",
+        "bump": "node bump.js",
+        "version": "node version.js"
+    },
+    "author": "Ryan Wans <ryan@ryanwans.com>",
+    "license": "MIT",
+    "devDependencies": {
+        "electron": "^10.1.3",
+        "electron-builder": "^22.9.1",
+        "patch-package": "^6.2.2"
+    },
+    "dependencies": {
+        "electron-fetch": "^1.7.1",
+        "electron-osx-sign": "^0.4.17",
+        "electron-packager": "^15.1.0",
+        "grunt-bump": "^0.8.0",
+        "update-electron-app": "^2.0.1"
+    }
 }

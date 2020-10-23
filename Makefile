@@ -37,8 +37,10 @@ watch:
 
 pull:
 	git pull origin main
+	npm run version
 
 push:
+	npm run bump
 	git add -A
 	git commit -m "Automated Push"
 	git push origin main
