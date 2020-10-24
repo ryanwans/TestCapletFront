@@ -8,6 +8,7 @@ window.TestWorker = {
         window.TestWorker.pro = Test.metadata.meta.meta.wProtect
         window.TestWorker.total = Test.count;
         window.TestWorker.useWP = Test.metadata.meta.meta.wProtect;
+        window.TestWorker.live = Test.metadata.meta.meta.useLive;
         window.TestWorker.startTime = Test.metadata.start;
         if(Test.endTime) {
             window.TestWorker.endTime = Test.endTime;
@@ -24,7 +25,9 @@ window.TestWorker = {
     start: () => {
         console.debug("Starting test! Yay!!!!");
         window.TV.state = "testing";
-        SocketPatch.statusUpd();
+        if(TestWorker.live) {
+            SocketPatch.statusUpd();
+        }
         window.FAR.selfClose();
         var Prot = new Protector((json) => {
             try {
@@ -33,7 +36,7 @@ window.TestWorker = {
             TestWorker.lockTest();
         })
         if(TestWorker.useWP) {
-            Prot.start();
+            //Prot.start();
             console.debug("Window Protection has started");
         } else {
             console.debug("Bypassing window protection (disabled?)");
@@ -50,12 +53,16 @@ window.TestWorker = {
     next: function() {
         TestWorker.active++;
         TestWorker.displayQuestion(TestWorker.active);
-        SocketPatch.statusUpd();
+        if(TestWorker.live) {
+            SocketPatch.statusUpd();
+        }
     },
     prev: function() {
         TestWorker.active--;
         TestWorker.displayQuestion(TestWorker.active);
-        SocketPatch.statusUpd();
+        if(TestWorker.live) {
+            SocketPatch.statusUpd();
+        }
     },
     displayQuestion: (targetIndex) => {
         if(targetIndex >= window.TestWorker.QuestionBank.length || targetIndex < 0) {
@@ -97,6 +104,24 @@ window.TestWorker = {
             // matching
         } else if(qType == 2) {
             // fill in the blank
+            Q = Q + "<FillBlank ind='"+qInd+"'>"
+            // set word bank - field set
+            Q = Q + "<fieldset><legend>WORD BANK</legend>"
+            for(let i=0; i<qOpts.values.length; i++) {
+                Q = Q + "<xword draggable='true' ondragstart='TestWorker.onDrag(event, "+i+")' class='word noselect' id='drag"+i+"' index='"+i+"' value='"+qOpts.values[i]+"'>"+qOpts.values[i]+"</xword>";
+            }
+            Q = Q + "</fieldset>"
+            // set fillable sentences
+            Q = Q + "<fillable>"
+            for(let i=0; i<qOpts.keys.length; i++) {
+                var f = qOpts.keys[i];
+                f = f.replace('::$', '<filler ondrop="TestWorker.onDrop(event, '+i+')" ondragover="TestWorker.allowDrop(event)" index="'+i+'"></filler>');
+                f = (i+1) + ". "+f;
+                Q = Q + "<fillSent class='noselect'>"+f+"</fillSent>";
+            }
+            Q = Q + "</fillable>"
+
+            Q = Q + "</FillBlank>"
         } else if(qType == 3) {
             // true or false
             Q = Q + "<MultipleChoice class='x-own' singleanswer xl='2'><mtf class='x-opt' onclick='window.TestWorker.dispatchAnswer("+qInd+", 1)' id='index1'><mid>TRUE</mid></mtf><mtf class='x-opt' onclick='window.TestWorker.dispatchAnswer("+qInd+", 0)' id='index0'><mid>FALSE</mid></mtf></MultipleChoice>"
@@ -112,9 +137,25 @@ window.TestWorker = {
             // choice slider
             // max answer length: 15 characters total
             Q = Q + "<Slider><SlideText>"+qOpts[0]+"</SlideText><SlideText>"+qOpts[1]+"</SlideText><SlideText>"+qOpts[2]+"</SlideText><SlideText>"+qOpts[3]+"</SlideText><br><input ind="+qInd+" type='range' class='x-slide' step='33.3'></Slider>"
-            
         } else if(qType == 6) {
             // table selection ;(
+            Q = Q + "<SelectTable><table class='x-table' ind='"+qInd+"' len='"+qOpts.R.length+"'>"
+            // table headers
+            Q = Q + "<tr><th class='x-td'></th>";
+            for(let i=0; i<qOpts.C.length; i++) {
+                Q = Q + "<th class='x-td'>"+qOpts.C[i]+"</th>"
+            }
+            Q = Q + "</tr>";
+            // table rows
+            for(let i=0; i<qOpts.R.length; i++) {
+                Q = Q + "<tr>";
+                Q = Q + "<td class='x-td'>"+qOpts.R[i]+"</td>";
+                for(let r=0; r<qOpts.C.length; r++) {
+                    Q = Q + "<td class='x-td'><input rwx='test' type='radio' class='x-row-input' name='row"+i.toString()+"' value='__"+r.toString()+"'><span class='x-radio'></td>";
+                }
+                Q = Q + "</tr>";
+            }
+            Q = Q + "</table></SelectTable>"
         }
         
 
@@ -133,6 +174,29 @@ window.TestWorker = {
                 TestWorker.AnswerBank[index] = ans;
                 console.log(TestWorker.AnswerBank);
             });
+        } else if (qType == 6) {
+            var index = $('.x-table').attr('ind');
+            var length = $('.x-table').attr('len');
+            if(TestWorker.AnswerBank[index]) {
+                for(let g=0; g<TestWorker.AnswerBank[index].length; g++) {
+                    $('input[name=row'+g+"][value=__"+TestWorker.AnswerBank[index][g]+"]").prop("checked", true);
+                }
+            }
+            TestWorker.AnswerBank[index] = TestWorker.AnswerBank[index] || new Array(length).fill(0) 
+            console.log(TestWorker.AnswerBank);
+            $('input[type=radio][rwx=test]').change((elm) => {
+                var ans = $(elm.target).val();
+                ans = parseInt(ans.split("__")[1]);
+
+                var ind = $(elm.target).attr('name');
+                ind = parseInt(ind.split("row")[1]);
+                
+                TestWorker.AnswerBank[index][ind] = ans;
+                console.log(TestWorker.AnswerBank);
+            });
+        } else if(qType == 2) {
+            var index = $('fillblank').attr('ind');
+            TestWorker.AnswerBank[index] = TestWorker.AnswerBank[index] || {};
         }
     },
     removeValue: function(arr, v) {
@@ -229,7 +293,9 @@ window.TestWorker = {
         console.debug("Test is being submitted...");
         clearInterval(window.TIMER);
         clearInterval(window.UpdatePolling);
-        SocketPatch.testSubmit();
+        if(TestWorker.live) {
+            SocketPatch.statusUpd();
+        }
         $('.dateNow').html("test was submitted");
         $('.x-n-center').text("Completed");
         $('.x-foot').addClass('x-o-block');
@@ -241,14 +307,17 @@ window.TestWorker = {
         console.debug("Test has been locked. Beginning lock que...")
         clearInterval(window.TIMER);
         clearInterval(window.UpdatePolling);
-        SocketPatch.testSubmit('locked');
+        if(TestWorker.live) {
+            SocketPatch.statusUpd();
+        }
         TestWorker.wpFire = true;
         $('.dateNow').html("test was locked");
         $('.x-n-center').text("Locked");
         $('.x-foot').addClass('x-o-block');
         $('.repl-target').html("<x-t-big>Your Test Has Been Locked</x-t-big><x-t-sub>You clicked away from the window during the test</x-t-sub><br><table class='x-pre-table'><tr><th>Lock Status</th><td id='hot-grade'><i>null</i></td></tr><tr><th>Test Progress&nbsp;&nbsp;&nbsp;</th><td id='hot-qs'>progress stored</td></tr><tr><th>Time Spent</th><td id='hot-time'>loading...</td></tr></table><x-informatic class='x-i-live x-i-noset'><b>TESTING INFORMATION</b><ixr> </ixr>Your teacher has the availability to unlock your test and they can see that you have been locked out.</x-informatic>")
         $('#hot-time').text((((TestWorker.submitTime - TestWorker.startTime)/1000)<<0) + " seconds");
-
+        // pain, i live in pain, this is pain. pain.
+        // a short poem, by ryan wans :( 
     },
     startTimer: () => {
         window.TIMER = setInterval(function() {
@@ -258,5 +327,21 @@ window.TestWorker = {
                 $('.dateNow').html("Time Remaining: <b>" + time);
             }
         }, 1000);
+    },
+    allowDrop: (event) => {
+        event.preventDefault();
+    },
+    onDrag: (event, ind) => {
+        event.dataTransfer.setData("Value",event.target.id);
+        event.dataTransfer.setData("Index", ind)
+    },
+    onDrop: (event, ind) => {
+        event.preventDefault();
+        var index = $('fillblank').attr('ind');
+        var data = event.dataTransfer.getData("Value");
+        event.target.parentNode.replaceChild(document.getElementById(data), event.target);
+        document.getElementById(data).className = "";
+        TestWorker.AnswerBank[index][ind] = event.dataTransfer.getData("Index");
+        console.log(TestWorker.AnswerBank)
     }
 }

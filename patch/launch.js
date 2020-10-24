@@ -2,6 +2,7 @@
 
 // init process goes here
 -function() {
+    console.debug("Initializing Test Caplet Launcher...");
     document.title = "Test Caplet - Live";
     let { remote, ipcRenderer, ipcMain } = require('electron');
     ipcRenderer.on('on-version', (event, arg) => {
@@ -48,63 +49,68 @@
     }
     window.Login['attempt'] = (method, target1, target2) => {
         var username, password, code, form;
-        if("teacher" == method) {
-            username = $(target1).val(), password = btoa($(target2).val());
-            form = {
-                u: username,
-                p: password,
-                stamp: Date.now(),
-                m: "teacher",
-                license: window.license
-            };
+        if($('#s-n').val() === "" && method == "student") {
+            window.Login['errPassS']();
+            $('.xx2-error-s').html("<b>ERROR:</b> Please enter your full name where required.");
         } else {
-            code = $(target1).val();
-            form = {
-                c: code,
-                stamp: Date.now(),
-                m: "student",
-                license: window.license
+            if("teacher" == method) {
+                username = $(target1).val(), password = btoa($(target2).val());
+                form = {
+                    u: username,
+                    p: password,
+                    stamp: Date.now(),
+                    m: "teacher",
+                    license: window.license
+                };
+            } else {
+                code = $(target1).val();
+                form = {
+                    c: code,
+                    stamp: Date.now(),
+                    m: "student",
+                    license: window.license
+                }
             }
-        }
-        (async () => {
-            let { remote, ipcRenderer, ipcMain } = require('electron');
-            let RemotePortal = remote.require('./remote/login.js');
-            let ReturnPromise = new Promise((reslove, reject) => {
-                reslove(RemotePortal.Attempt(btoa(JSON.stringify(form))))
-            });
-            let Return = await ReturnPromise;
-            let Login = Return.auth;
-            if(!Login) {
-                if("teacher" == method) {
-                    $('#t-l-u').val('');
-                    $('#t-l-p').val('');
-                    window.Login['errPassT']();
-                    if(Return.serr) {
-                        $('.xx2-error-t').html("<b>CRITICAL:</b> The login database / web server is currently down.");
+            (async () => {
+                let { remote, ipcRenderer, ipcMain } = require('electron');
+                let RemotePortal = remote.require('./remote/login.js');
+                let ReturnPromise = new Promise((reslove, reject) => {
+                    reslove(RemotePortal.Attempt(btoa(JSON.stringify(form))))
+                });
+                let Return = await ReturnPromise;
+                let Login = Return.auth;
+                if(!Login) {
+                    if("teacher" == method) {
+                        $('#t-l-u').val('');
+                        $('#t-l-p').val('');
+                        window.Login['errPassT']();
+                        if(Return.serr) {
+                            $('.xx2-error-t').html("<b>CRITICAL:</b> The login database / web server is currently down.");
+                        }
+                    } else {
+                        $('#s-t').val('');
+                        window.Login['errPassS']();
+                        if(Return.serr) {
+                            $('.xx2-error-s').html("<b>CRITICAL:</b> The login database / web server is currently down.");
+                        }
                     }
                 } else {
-                    $('#s-t').val('');
-                    window.Login['errPassS']();
-                    if(Return.serr) {
-                        $('.xx2-error-s').html("<b>CRITICAL:</b> The login database / web server is currently down.");
-                    }
+                    if(method == "student") { Return.studentName = $('#s-n').val() }
+                    $('.xx2-m-'+method).remove();
+                    $('.xx2-b-'+method).remove();
+                    $('.xx2-w-'+method).text("Loading...");
+                    setTimeout(function() {
+                        ipcRenderer.send('set-test-meta', Return);
+                        ipcRenderer.send('win-raster-'+method, {
+                            k: '9q2837492387423897q4o937h49q23747q23896wey',
+                            push: {index: Return.use, auth: Return.address}
+                        });
+                    }, 500);
                 }
-            } else {
-                if(method == "student") { Return.studentName = $('#s-n').val() }
-                $('.xx2-m-'+method).remove();
-                $('.xx2-b-'+method).remove();
-                $('.xx2-w-'+method).text("Loading...");
-                setTimeout(function() {
-                    ipcRenderer.send('set-test-meta', Return);
-                    ipcRenderer.send('win-raster-'+method, {
-                        k: '9q2837492387423897q4o937h49q23747q23896wey',
-                        push: {index: Return.use, auth: Return.address}
-                    });
-                }, 500);
-            }
-        })();
-        
+            })();
+        }
     }
+    console.debug("Initialization completed");
 }()
 // post init goes here
 -function() {

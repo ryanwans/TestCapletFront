@@ -82,6 +82,8 @@
         </x-actual>
         <x-footer class="x-o-block x-foot">
             <img onclick="window.TestWorker.prev()" title="Previous Question" src="../hard/arrow.svg" class="arr-back">
+            <button onclick="TestWorker.pauseTest()" class="x-but-org x-t-pause" style="margin-top: 3px">Pause Test</button>
+            <button onclick="TestWorker.userSubmit()" title="You have more questions to answer" disabled class="x-but-green x-t-submit disable" style="margin-top: 2px">Submit Test</button>
             <img onclick="window.TestWorker.next()" title="Next Question" src="../hard/arrow.svg" class="arr-for">
         </x-footer>
         <x-state class="xs-load">

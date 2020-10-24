@@ -46,7 +46,7 @@ window.TV = new Object();
                     return: null
                 });
             }, 200)
-        } else {}
+        } else {window.TV.enableStart()}
 
         setTimeout(function() {
             $('.xs-load').html("<b>STATE: </b> Ready");
@@ -66,7 +66,9 @@ window.TV = new Object();
         $('.x-t-start').removeClass('disable');
         $('.x-t-start').removeAttr('disabled');
         $('.x-t-start').text('Start This Test');
-        SocketPatch.statusUpd();
+        try {
+            SocketPatch.statusUpd();
+        } catch(e) {}
     };
     window.TV.beginStartQue = (time) => {
         console.debug("Creating an instance of Test object")
