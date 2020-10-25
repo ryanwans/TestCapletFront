@@ -27,6 +27,9 @@ window.TV = new Object();
         }
         window.CLOCK = setInterval(function() {
             $('.dateNow').text(moment().format('MMM Do YYYY, h:mm:ss a'));
+            try {
+                TestWorker.ifFinish();
+            } catch(e) {}
         }, 1000);
 
         window.TV.Test = await window.TV.renderTestBank(data.tuid);

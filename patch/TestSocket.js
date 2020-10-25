@@ -59,7 +59,7 @@ let Export = (Key, Value) => {
         obj.status.elapsed = (Date.now() - TestWorker.startTime);
         obj.status.wpFire = TestWorker.wpFire;
         obj.status.score = null;
-        obj.status.submit = false;
+        obj.status.submit = TestWorker.submit;
         obj.socket.emit('tcio-data', {
             purpose: 'status-update',
             routing: obj.routing,
@@ -89,6 +89,9 @@ let Export = (Key, Value) => {
             console.debug("Test file destroyed, ready to close.");
             obj.socket.disconnect();
         }
+    },
+    obj.close = () => {
+        obj.socket.disconnect();
     }
     Export("SocketPatch", obj);
 }();

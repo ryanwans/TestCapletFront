@@ -425,3 +425,24 @@ filler {
 filler:hover {
   background-color: #b8b8b8;
 }
+x-hint {
+  padding: 4px 10px;
+  background-color: rgb(238, 238, 238);
+  border: gray 1px solid;
+  border-radius: 5px;
+  position: absolute;
+  font-size: 13px;
+  bottom: 63px;
+  left: 410px;
+  box-shadow: 0 30px 60px #0000001f;
+}
+x-hint-after {
+    width: 0;
+    height: 0;
+    border-left: 7px solid transparent;
+    border-right: 7px solid transparent;
+    border-top: 12px solid gray;
+    position: absolute;
+    left: 90px;
+    bottom: -12px;
+}

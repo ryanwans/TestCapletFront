@@ -2,6 +2,7 @@ window.TestWorker = {
     active: 0,
     wpFire: false,
     submit: false,
+    hintShown: false,
     AnswerBank: new Object(),
     begin: (Test) => {
         window.TestWorker.QuestionBank = Test.shuffle(Test.bank);
@@ -102,6 +103,8 @@ window.TestWorker = {
             Q = Q + "</MultipleChoice>"
         } else if(qType == 1) {
             // matching
+            Q = Q + "This question type is no longer supported, please skip this question.<br>You will be awarded a full point for this question.";
+            TestWorker.AnswerBank[qInd] = true;
         } else if(qType == 2) {
             // fill in the blank
             Q = Q + "<FillBlank ind='"+qInd+"'>"
@@ -288,19 +291,26 @@ window.TestWorker = {
         TestWorker.submitTest();
         TestWorker.alert("Test Caplet Alert", "Your test has been automatically submitted because the alotted testing time has expired.");
     },
-    submitTest: () => {
+    submitTest: async () => {
         TestWorker.submitTime = Date.now();
+        TestWorker.submit = true;
         console.debug("Test is being submitted...");
         clearInterval(window.TIMER);
         clearInterval(window.UpdatePolling);
         if(TestWorker.live) {
+            TV.state = "submitted";
             SocketPatch.statusUpd();
+            SocketPatch.close();
+            console.debug("Socket has been closed. Test submitted successfully.");
         }
         $('.dateNow').html("test was submitted");
         $('.x-n-center').text("Completed");
         $('.x-foot').addClass('x-o-block');
-        $('.repl-target').html("<x-t-big>Your Test Has Been Submitted</x-t-big><x-t-sub>You may now quit the application</x-t-sub><br><table class='x-pre-table'><tr><th>Your Grade</th><td id='hot-grade'><i>Grading Disabled</i></td></tr><tr><th>Questions Answered&nbsp;&nbsp;&nbsp;</th><td id='hot-qs'>loading...</td></tr><tr><th>Time Spent</th><td id='hot-time'>loading...</td></tr></table><x-informatic class='x-i-live x-i-noset'><b>TESTING INFORMATION</b><ixr> </ixr>If your teacher has immediate grading enable, your grade should appear here.</x-informatic>")
+        $('.repl-target').html("<x-t-big>Your Test Has Been Submitted</x-t-big><x-t-sub>You may now quit the application</x-t-sub><br><table class='x-pre-table'><tr><th>Your Grade</th><td id='hot-grade'>Grading Test...</td></tr><tr><th>Questions Answered&nbsp;&nbsp;&nbsp;</th><td id='hot-qs'>loading...</td></tr><tr><th>Time Spent</th><td id='hot-time'>loading...</td></tr></table><x-informatic class='x-i-live x-i-noset'><b>TESTING INFORMATION</b><ixr> </ixr>If your teacher has immediate grading enable, your grade should appear above.</x-informatic>")
         $('#hot-time').text((((TestWorker.submitTime - TestWorker.startTime)/1000)<<0) + " seconds");
+        $('#hot-qs').text(Object.keys(TestWorker.AnswerBank).length +" of "+TestWorker.total+" Answered");
+        TestWorker.SCORE = await TestWorker.grabGrade(TestWorker.AnswerBank);
+        $('#hot-grade').text(TestWorker.SCORE.formatted);
     },
     lockTest: () => {
         TestWorker.submitTime = Date.now();
@@ -308,6 +318,7 @@ window.TestWorker = {
         clearInterval(window.TIMER);
         clearInterval(window.UpdatePolling);
         if(TestWorker.live) {
+            TV.state = "locked";
             SocketPatch.statusUpd();
         }
         TestWorker.wpFire = true;
@@ -316,11 +327,13 @@ window.TestWorker = {
         $('.x-foot').addClass('x-o-block');
         $('.repl-target').html("<x-t-big>Your Test Has Been Locked</x-t-big><x-t-sub>You clicked away from the window during the test</x-t-sub><br><table class='x-pre-table'><tr><th>Lock Status</th><td id='hot-grade'><i>null</i></td></tr><tr><th>Test Progress&nbsp;&nbsp;&nbsp;</th><td id='hot-qs'>progress stored</td></tr><tr><th>Time Spent</th><td id='hot-time'>loading...</td></tr></table><x-informatic class='x-i-live x-i-noset'><b>TESTING INFORMATION</b><ixr> </ixr>Your teacher has the availability to unlock your test and they can see that you have been locked out.</x-informatic>")
         $('#hot-time').text((((TestWorker.submitTime - TestWorker.startTime)/1000)<<0) + " seconds");
+        $('#hot-qs').text(Object.keys(TestWorker.AnswerBank).length +" of "+TestWorker.total+" Answered");
         // pain, i live in pain, this is pain. pain.
         // a short poem, by ryan wans :( 
     },
     startTimer: () => {
         window.TIMER = setInterval(function() {
+            TestWorker.ifFinish();
             time = (((TestWorker.endTime - Date.now())/1000)<<0);
             if(time == 0) { TestWorker.timeExpired();} else {
                 if(time > 60) {time = Math.round(time/60) + " minutes </b>"} else {time = time + " seconds </b>"}
@@ -343,5 +356,49 @@ window.TestWorker = {
         document.getElementById(data).className = "";
         TestWorker.AnswerBank[index][ind] = event.dataTransfer.getData("Index");
         console.log(TestWorker.AnswerBank)
-    }
+    },
+    ifFinish: () => {
+        if(Object.keys(TestWorker.AnswerBank).length == TestWorker.total && !TestWorker.hintShown) {
+            console.debug("All questions answered, unlocked submit button");
+            $('.x-t-submit').removeClass('disable');
+            $('.x-t-submit').removeAttr('disabled');
+                $('.x-hint').removeClass('x-o-block');
+                setTimeout(function() {
+                    $('.x-hint').addClass('x-o-block');
+                    
+                }, 10000);
+            TestWorker.hintShown = true;
+        } 
+        return !1;
+    },
+    userSubmit: () => {
+        TestWorker.tempBank = TestWorker.AnswerBank;
+        clearInterval(window.TIMER);
+        clearInterval(window.CLOCK);
+        TestWorker.submitTest();
+    },
+    grabGrade: async (Answers) => {
+        Answers = btoa(JSON.stringify(Answers));
+        let FetchHead = remote.require('./remote/Overwatch.js');
+
+        var final = {
+            tuid: window.TV.meta.tuid,
+            name: window.TV.meta.studentName,
+            now: Date.now(),
+            data: Answers
+        }
+
+        var backwards = await FetchHead.Fetch('https://caplet.ryanwans.com/a3/ported/qgr/enco/new/now/result=json', 'POST', '', JSON.stringify(final));
+        backwards = backwards[0]
+        var ret = {
+            percent: (Math.round((parseInt(backwards)/TestWorker.total)*100)),
+            raw: parseInt(backwards),
+        };
+        ret['formatted'] = backwards + " of " + TestWorker.total + " Correct ("+ret.percent+"%)";
+
+        await TestWorker.wait(1000);
+
+        return ret;
+    },
+    wait: async (a) => {setTimeout(()=>{}, a)}
 }

@@ -40,7 +40,6 @@ exports.Fetch = async (endpoint, method, query, data) => {
                 body: ("POST" == method) ? data : null,
                 headers: { 'Content-Type': 'application/json' },
             });
-
             now = await res.json();
         })());
     });
