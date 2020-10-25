@@ -383,7 +383,7 @@ window.TestWorker = {
 
         var final = {
             tuid: window.TV.meta.tuid,
-            name: window.TV.meta.studentName,
+            name: btoa(window.TV.meta.studentName.replaceAll(' ', '').toLowerCase()),
             now: Date.now(),
             data: Answers
         }
