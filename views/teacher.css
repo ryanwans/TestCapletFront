@@ -237,7 +237,7 @@ user-select: none; /* Standard */
     background-color: rgb(192, 130, 49);
     cursor: pointer;
 }
-.x-test-live-disable {
+.x-test-live-disabled {
     background-color: rgb(19, 100, 30);
     color: rgb(149, 206, 161);
     text-transform: uppercase;
@@ -251,4 +251,38 @@ user-select: none; /* Standard */
     position: absolute;
     top: 6px;
     right: 105px;
+}
+.overlay {
+    position: fixed;
+    display: block;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #000000c7;
+    z-index: 2;
+    cursor: pointer;
+}
+.overImg {
+    position: absolute;
+    z-index: 50;
+    width: 100px;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    font-size: 50px;
+    color: #bebebe;
+    transform: translate(-50%,-65%);
+    -ms-transform: translate(-50%,-65%);
+    text-align: center;
+    padding: 10px;
+}
+.inLoading {
+    width: 100%;
+    font-size: 16px;
+    font-weight: 600;
+    text-transform: uppercase;
+    text-align: center;
 }

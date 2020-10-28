@@ -33,7 +33,7 @@ window.LoadTestList = async () => {
         $(".x-test-list").text("");
         for(i=0; i < f.length; i++) {
             var ops = [
-                (f[i].meta.useLive) ? "live" : "live-disable",
+                (f[i].meta.useLive) ? "live" : "live-disabled",
                 (f[i].meta.open) ? "lock" : "open",
                 (f[i].meta.useLive) ? true : false,
                 (f[i].meta.open) ? true : false
@@ -41,9 +41,9 @@ window.LoadTestList = async () => {
             var fString = '<div class="x-test" id="x-TCODE-'+f[i].code+'">'+
                 '<span class="x-test-title">'+f[i].name+'</span>'+
                 '<span class="x-test-opts">'+
-                '<button class="x-test-res">results</button>'+
-                '<button class="x-test-'+ops[0]+'">live</button>'+
-                '<button class="x-test-'+ops[1]+'">'+ops[1]+'</button>'+
+                '<button onclick="window.testResults(\''+f[i].code+'\')" class="x-test-res">results</button>'+
+                '<button '+ops[0].split("-")[1]+' onclick="window.liveTesting(\''+f[i].code+'\')" class="x-test-'+ops[0]+'">live</button>'+
+                '<button onclick="window.'+ops[1]+'Test(\''+f[i].code+'\')" class="x-test-'+ops[1]+'">'+ops[1]+'</button>'+
                 '<img src="../hard/dots.svg" class="x-test-more"/>'+
                 '</span> '+
                 '</div>';
@@ -51,6 +51,13 @@ window.LoadTestList = async () => {
         }
     }
     console.log("New Test List Rendered");
+}
+
+window.showLoading = (duration) => {
+    $('.x-master').append("<div class='overlay'><img src='../hard/loading.gif' class='overImg'></div>");
+    setTimeout(function() {
+        $('.overlay').remove();
+    }, duration)
 }
 
 window.sP = (target) => {
@@ -81,7 +88,33 @@ window.closeMe = () => {
     w.close();
 }
 
+window.openTest = (code) => {
+    window.showLoading(800);
+    setTimeout(function() {
+        $('#x-TCODE-'+code+" .x-test-open").text("LOCK");
+        $('#x-TCODE-'+code+" .x-test-open").addClass('x-test-lock');
+        $('#x-TCODE-'+code+" .x-test-open").attr("onclick", "window.lockTest(\""+code+"\")");
+        $('#x-TCODE-'+code+" .x-test-open").removeClass('x-test-open');
+    }, 600)
+}
+
+window.liveTesting = (code) => {
+    window.showLoading(2200);
+}
+
+window.lockTest = (code) => {
+    window.showLoading(800);
+    setTimeout(function() {
+        $('#x-TCODE-'+code+" .x-test-lock").text("OPEN");
+        $('#x-TCODE-'+code+" .x-test-lock").addClass('x-test-open');
+        $('#x-TCODE-'+code+" .x-test-lock").attr("onclick", "window.openTest(\""+code+"\")");
+        $('#x-TCODE-'+code+" .x-test-lock").removeClass('x-test-lock');
+    }, 600)
+    
+}
+
 $(document).ready(() => {
+    showLoading(1000);
     $(".MASTER").html(window.pages.home);
     $('.x-date').text(moment().format('MMMM Do YYYY, h:mm a'));
 });
