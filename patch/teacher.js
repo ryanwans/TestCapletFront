@@ -24,6 +24,7 @@ let Dash = remote.require('./remote/dash.js');
 }()
 
 window.LoadTestList = async () => {
+    window.showLoading(500);
     var f = await Dash.Fetch('https://caplet.ryanwans.com/a3/l/q/a/t/tl', 'GET', '?index='+window.F.index+"&auth="+window.F.auth, null);
     window.TestData = f;
     var i = 0;
@@ -96,6 +97,7 @@ window.openTest = (code) => {
         $('#x-TCODE-'+code+" .x-test-open").attr("onclick", "window.lockTest(\""+code+"\")");
         $('#x-TCODE-'+code+" .x-test-open").removeClass('x-test-open');
     }, 600)
+    Dash.Fetch('https://caplet.ryanwans.com/a3/ported/t/sTD/state', 'GET', '?code='+code+"&state=open&index="+window.F.index+"&auth="+window.F.auth)
 }
 
 window.liveTesting = (code) => {
@@ -110,7 +112,7 @@ window.lockTest = (code) => {
         $('#x-TCODE-'+code+" .x-test-lock").attr("onclick", "window.openTest(\""+code+"\")");
         $('#x-TCODE-'+code+" .x-test-lock").removeClass('x-test-lock');
     }, 600)
-    
+    Dash.Fetch('https://caplet.ryanwans.com/a3/ported/t/sTD/state', 'GET', '?code='+code+"&state=lock&index="+window.F.index+"&auth="+window.F.auth)
 }
 
 $(document).ready(() => {

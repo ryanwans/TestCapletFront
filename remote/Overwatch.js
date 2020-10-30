@@ -29,7 +29,8 @@ exports.test = (StartTime, TestMetadata, Bank) => {
 }
 
 exports.Fetch = async (endpoint, method, query, data) => {
-    console.debug("Fetching...");
+    var start = Date.now();
+    console.debug("Fetching at "+start+"...");
     const fetch = require('electron-fetch').default;
     let now;
     let QueryPromise = new Promise((resolve, reject) => {
@@ -45,5 +46,6 @@ exports.Fetch = async (endpoint, method, query, data) => {
     });
 
     await QueryPromise;
+    console.debug("Fetched: "+endpoint+" in "+ (Date.now()-start) +"ms");
     return now;
 }

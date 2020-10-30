@@ -23,7 +23,7 @@ window.TV = new Object();
         } 
         if(data.meta.useLive) {
             $('.x-i-noset').addClass('x-o-block');
-            $('.x-i-live').removeClass('x-o-hide')
+            $('.x-i-liv').removeClass('x-o-block')
         }
         window.CLOCK = setInterval(function() {
             $('.dateNow').text(moment().format('MMM Do YYYY, h:mm:ss a'));
@@ -49,7 +49,27 @@ window.TV = new Object();
                     return: null
                 });
             }, 200)
-        } else {window.TV.enableStart()}
+        } else if(data.meta.open) {
+            window.TV.enableStart();
+        } else {
+            console.debug("Testing locked.");
+            $('.repl-target').remove();
+            var alert = new FAR.popup({
+                moveable: false,
+                title: "Test Caplet Alert",
+                html: "This test is currently locked and you cannot access it until your administrator unlocks it.<br><br><b>Test Caplet Will Automatically Close</b>",
+                jQuery: false,
+                pageBlur: true,
+                escapeKey: false,
+                buttons: [
+                    {
+                        name: 'Close',
+                        func: 'window.closeNow()'
+                    }
+                ]
+            }).hoist();
+            window.TV = null;
+        }
 
         setTimeout(function() {
             $('.xs-load').html("<b>STATE: </b> Ready");
@@ -82,6 +102,11 @@ window.TV = new Object();
     };
     window.TV.renderTestBank = async (TestCode) => {
         return await Overwatch.Fetch("https://caplet.ryanwans.com/a3/ported/t/gTD/a", "GET", "?testCode="+TestCode);
+    }
+    window.closeNow = () => {
+        var remote = require('electron').remote;
+        var w = remote.getCurrentWindow();
+        w.close();
     }
 }()
 
