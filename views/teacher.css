@@ -184,7 +184,7 @@ user-select: none; /* Standard */
     cursor: pointer;
 }
 .x-test-live {
-    background-color: rgb(33, 189, 54);
+    background-color: #21bd36;
     color: white;
     text-transform: uppercase;
     font-size: 11px;
@@ -198,7 +198,7 @@ user-select: none; /* Standard */
     right: 105px;
 }
 .x-test-open {
-    background-color: rgb(209, 54, 54);
+    background-color: #d13636;
     color: white;
     text-transform: uppercase;
     font-size: 11px;
@@ -285,4 +285,77 @@ user-select: none; /* Standard */
     font-weight: 600;
     text-transform: uppercase;
     text-align: center;
+}
+live-topbar {
+    display: block;
+    width: 800px!important;
+    height: 195px;
+    overflow: visible;
+}
+live-pie {
+    display: inline-block;
+    width: 185px;
+    height: 185px;
+    border: black 1px solid;
+    padding: 5px;
+    position: absolute;
+
+}
+live-actions {
+    display: inline-block;
+    width: 185px;
+    height: 185px;
+    border: black 1px solid;
+    padding: 5px;
+    position: absolute;
+    left: 222px;
+
+}
+live-timer {
+    display: inline-block;
+    width: 370px;
+    height: 185px;
+    border: black 1px solid;
+    padding: 5px;
+    position: absolute;
+    left: 430px;
+}
+live-s-head {
+    color: rgb(78, 78, 78);
+    text-transform: uppercase;
+    font-size: 13px;
+    display: block;
+    font-weight: 600;
+    margin-top: -1px!important;
+    margin-left: 1px!important;
+}
+live-tnow {
+    text-align: center;
+    font-family: 'Courier New', Courier, monospace;
+    color: rgb(78, 78, 78);
+    font-weight: 600;
+    font-size: 78px;
+    position: absolute;
+    margin-left: 25px;
+    margin-top: 30px;
+}
+#pie-chart {
+    position: absolute;
+    display: inline-block;
+    margin-top: 15px;
+}
+live-b {
+    display: block;
+    width: 100%;
+    margin-bottom: 8px;
+    text-align: center;
+    font-size: 14px;
+    color: rgb(221, 221, 221);
+    background-color: #152168;
+    border-radius: 4px;
+    padding: 5px 0px;
+    cursor: pointer;
+}
+live-b:hover {
+    transform: scale(1.1);
 }

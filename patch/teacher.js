@@ -102,6 +102,9 @@ window.openTest = (code) => {
 
 window.liveTesting = (code) => {
     window.showLoading(2200);
+    setTimeout(function() {
+        LiveTesting.setWindow(".x-main");
+    },800)
 }
 
 window.lockTest = (code) => {
