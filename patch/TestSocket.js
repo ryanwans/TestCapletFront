@@ -26,13 +26,16 @@ let Export = (Key, Value) => {
             Authentication.return = key.full;
             obj.routing = Authentication.routing;
             obj.socket = io("https://caplet.ryanwans.com/a3/sockets/sss");
+            console.debug("Unique Listener: "+key.full);
             obj.socket.on(key.full, (importData) => {
+                console.debug("Socket Unique Received");
                 obj.onData(importData)
             });
             obj.socket.on('tcio-all', (importData) => {
                 obj.onData(importData);
             })
             obj.socket.emit('approval-request', Authentication);
+            window.SOCKET_AUTH = Authentication;
             console.debug("Hoisted. Running on ID "+btoa(Date.now())+"XX");
         }
     }
@@ -48,7 +51,12 @@ let Export = (Key, Value) => {
             window.TV.enableStart();
             TestWorker.alert("Test Caplet Alert", "Your teacher has unlocked the test and you may now begin by pressing the start button.");
         } else if(data.code == 'xx2') {
-            TestWorker.alert("Test Caplet Alert", "The test is currently locked and you must await your administrator to unlock it.")
+            TestWorker.alert("Test Caplet Alert", "Live testing has been opened but the test is currently locked and you must await your administrator to unlock it.")
+        } else if(data.code == 'xx6') {
+            console.debug("Received reconnection code; attempting to reconnect...");
+            obj.socket.emit('approval-request', window.SOCKET_AUTH);
+        } else if(data.code == 'xx7') {
+            TestWorker.alert("Test Caplet Alert", "The test administrator has stopped the test, you will now return to the waiting screen. Your progress has been stored.");
         }
     }
     obj.statusUpd = () => {

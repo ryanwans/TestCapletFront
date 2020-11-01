@@ -4,6 +4,10 @@ head, body, html {
     padding: 0;
     border: 0;
     overflow: hidden;
+    -webkit-user-select: none; /* Safari */        
+-moz-user-select: none; /* Firefox */
+-ms-user-select: none; /* IE10+/Edge */
+user-select: none; /* Standard */
 }
 .x-master {
     top: 0;
@@ -319,6 +323,7 @@ live-timer {
     padding: 5px;
     position: absolute;
     left: 430px;
+    color: black!important;
 }
 live-s-head {
     color: rgb(78, 78, 78);
@@ -332,7 +337,6 @@ live-s-head {
 live-tnow {
     text-align: center;
     font-family: 'Courier New', Courier, monospace;
-    color: rgb(78, 78, 78);
     font-weight: 600;
     font-size: 78px;
     position: absolute;
@@ -356,6 +360,64 @@ live-b {
     padding: 5px 0px;
     cursor: pointer;
 }
+live-sta {
+    display: block;
+    width: 100%;
+    margin-bottom: 8px;
+    text-align: center;
+    font-size: 14px;
+    color: rgb(255, 255, 255);
+    border-radius: 4px;
+    padding: 5px 0px;
+}
+live-sta[stop] {
+    background-color: rgb(223, 35, 35);
+}
+live-sta[start] {
+    background-color: rgb(31, 172, 50);
+}
 live-b:hover {
     transform: scale(1.1);
+}
+live-stud {
+    display: block;
+    width: 785px!important;
+    min-height: 200px;
+    padding: 5px;
+    border: black 1px solid;
+    margin-top: 12px;
+}   
+.x-s-prog {
+    position: absolute;
+    top: 7px;
+    right: 50px;
+}
+.x-s-locked {
+    border: red 1px solid!important;
+    background-color: rgb(250, 198, 198);
+}
+x-loc::after {
+    content: "UNLOCK";
+    background-color: rgb(197, 0, 0);
+    padding: 1px 6px;
+    font-size: 11px!important;
+    color: white;
+    border-radius: 5px;
+    display: inline-block;
+    margin-left: 8px;
+    cursor: pointer;
+}
+x-loc::after:hover {
+    background-color: red;
+}
+live-live {
+    display: block;
+    width: 785px!important;
+    height: 300px;
+    overflow-y: scroll;
+    padding: 5px;
+    border: black 1px solid;
+    margin-top: 12px;
+    font-size: 14px;
+    color: rgb(53, 53, 53);
 }

@@ -43,7 +43,7 @@ window.LoadTestList = async () => {
                 '<span class="x-test-title">'+f[i].name+'</span>'+
                 '<span class="x-test-opts">'+
                 '<button onclick="window.testResults(\''+f[i].code+'\')" class="x-test-res">results</button>'+
-                '<button '+ops[0].split("-")[1]+' onclick="window.liveTesting(\''+f[i].code+'\')" class="x-test-'+ops[0]+'">live</button>'+
+                '<button '+ops[0].split("-")[1]+' onclick="window.liveTesting(\''+f[i].tuid+'\', '+i+')" class="x-test-'+ops[0]+'">live</button>'+
                 '<button onclick="window.'+ops[1]+'Test(\''+f[i].code+'\')" class="x-test-'+ops[1]+'">'+ops[1]+'</button>'+
                 '<img src="../hard/dots.svg" class="x-test-more"/>'+
                 '</span> '+
@@ -100,10 +100,11 @@ window.openTest = (code) => {
     Dash.Fetch('https://caplet.ryanwans.com/a3/ported/t/sTD/state', 'GET', '?code='+code+"&state=open&index="+window.F.index+"&auth="+window.F.auth)
 }
 
-window.liveTesting = (code) => {
+window.liveTesting = (tuid, index) => {
     window.showLoading(2200);
     setTimeout(function() {
         LiveTesting.setWindow(".x-main");
+        LiveTesting.bgPrc.start(tuid, index);
     },800)
 }
 
