@@ -62,6 +62,10 @@ window.showLoading = (duration) => {
 }
 
 window.sP = (target) => {
+    try {
+        LiveTesting.socket.disconnect();
+        LiveTesting.state = "closed";
+    } catch(e){}
     $('.MASTER').html(window.pages[target]);
     window.pageDo[target]();
 }

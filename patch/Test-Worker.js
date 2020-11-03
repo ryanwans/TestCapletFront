@@ -313,6 +313,7 @@ window.TestWorker = {
         $('#hot-grade').text(TestWorker.SCORE.formatted);
     },
     lockTest: () => {
+        TestWorker.wpFire = true;
         TestWorker.submitTime = Date.now();
         console.debug("Test has been locked. Beginning lock que...")
         clearInterval(window.TIMER);

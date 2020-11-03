@@ -16,7 +16,7 @@ window.LiveTesting = new Object();
         TestingHTML += 
         "<livemaster><live-topbar><live-pie>"+
         "<live-s-head>student progress</live-s-head><canvas id='pie-chart' width='185' height='150'></canvas></live-pie>"+
-        "<live-actions><live-s-head>quick actions</live-s-head><br><live-b class='x-ss' onclick='LiveTesting.startTesting()'>Start / Stop Testing</live-b><live-b>Display Test Code</live-b><live-b>Additional Options</live-b><live-sta stop>Testing Stopped</live-sta></live-actions>"+
+        "<live-actions><live-s-head>quick actions</live-s-head><br><live-b class='x-ss' onclick=\"LiveTesting.confirm('start')\">Start / Stop Testing</live-b><live-b>Display Test Code</live-b><live-b>Additional Options</live-b><live-sta stop>Testing Stopped</live-sta></live-actions>"+
         "<live-timer><live-s-head>elapsed time</live-s-head><live-tnow>0:00:00</live-tnow></live-timer></live-topbar>"+
         "<live-stud><live-s-head>student testing progress</live-s-head><br><div class='x-s-repl'></div></live-stud>"+
         "<live-live class='x-l-repl'><live-s-head>live updates log</live-s-head></live-live></livemaster>";
@@ -88,6 +88,7 @@ window.LiveTesting = new Object();
                 console.debug("Received Current Waiting Room: "+ JSON.stringify(data.waiting));
                 LiveTesting.bgPrc.tuid = tuid;
                 LiveTesting.bgPrc.SOCKET_prop();
+                LiveTesting.state = "open";
                 LiveTesting.log(" = = = = = = = = = = <i>BELOW IS LIVE TEST DATA</i> = = = = = = = = = = ");
             })
             LiveTesting.socket.emit('teacher-register', {now: Date.now(), auth: F.auth, namespace: tuid})
@@ -110,6 +111,7 @@ window.LiveTesting = new Object();
     }
     window.LiveTesting.updateSpace = (newData) =>  {
         var t = LiveTesting.Namespace.clients;
+        var avgProgress = [], avgSum = null;
         var stLength = Object.keys(t).length;
         // clear student buffer
         $('.x-s-repl').text("");
@@ -117,16 +119,54 @@ window.LiveTesting = new Object();
             for(let i=0; i<stLength; i++) {
                 let data = Object.values(t)[i];
                 data.status.answers = data.status.answers || {};
-                $(".x-s-repl").append("<div class='x-test'><span class='x-test-title'>"+data.name+"</span><span class='x-test-opts'><progress class='x-s-prog' id='prgRyanW' value='"+(Object.keys(data.status.answers).length || 0)+"' max='"+TestData[LiveTesting.TestingIndex].meta.count+"'></progress><img src='../hard/dots.svg' class='x-test-more'></span></div>")
-                if(newData) {
-                    // LiveTesting.log("Student "+data.name+": Now on question "+((Object.keys(data.status.answers).length || 0)+1));
+                $(".x-s-repl").append("<div class='x-test "+((data.status.wpFire)?"x-s-locked": "")+"'><span class='x-test-title'>"+data.name+" "+((data.status.wpFire)?"<x-loc onclick='LiveTesting.unlockStudent(\""+data.route+"\")'></x-loc>":"")+"</span><span class='x-test-opts'><progress class='x-s-prog' id='prgRyanW' value='"+(Object.keys(data.status.answers).length || 0)+"' max='"+TestData[LiveTesting.TestingIndex].meta.count+"'></progress><img src='../hard/dots.svg' class='x-test-more'></span></div>")
+                LiveTesting.log("Student "+data.name+": currently on question "+data.status.activeQ+" with "+(Object.keys(data.status.answers).length || 0)+" answers.");
+                if(data.status.wpFire) {
+                    LiveTesting.log("Student "+data.name+": <b>test is currently locked, student clicked away!</b>");
                 }
+                avgProgress.push(((Object.keys(data.status.answers).length || 0))/(TestData[LiveTesting.TestingIndex].meta.count));
             }
+            for(let r=0; r<avgProgress.length; r++) {
+                avgSum += avgProgress[r];
+            }
+            avgSum = avgSum/avgProgress.length;
+            avgSum = Math.ceil(avgSum*100);
+            LiveTesting.progress.data.datasets[0].data[0] = avgSum;
+            LiveTesting.progress.data.datasets[0].data[1] = 100 - avgSum;
+            LiveTesting.progress.update();
         } else {
             $('.x-s-repl').html("<h4>There are no students actively testing right now.</h4>");
         }
     }
+    window.LiveTesting.unlockStudent = (studentTarget) => {
+        LiveTesting.socket.emit('teacher-unlockStudent', {
+            student: studentTarget,
+            auth: LiveTesting.bgPrc.tuid,
+            resume: true||1
+        })
+    }
+    window.LiveTesting.confirm = (state) => {
+        var f = new FAR.popup({
+                moveable: false,
+                title: "Test Caplet Alert - Confirmation",
+                html: "<b>Are you sure you want to "+state+" testing?</b>",
+                jQuery: false,
+                pageBlur: true,
+                escapeKey: false,
+                buttons: [
+                    {
+                        name: 'No',
+                        func: 'window.FAR.selfClose()'
+                    },
+                    {
+                        name: 'Yes',
+                        func: 'window.LiveTesting.'+state+"Testing();"
+                    }
+                ]
+        }).hoist();
+    }
     window.LiveTesting.startTesting = () => {
+        window.FAR.selfClose();
         var now = Date.now();
         LiveTesting.startTime = now;
         LiveTesting.timer.start(now);
@@ -136,12 +176,14 @@ window.LiveTesting = new Object();
         })
         LiveTesting.state = "open";
         LiveTesting.log("Testing state is updated to: "+LiveTesting.state);
-        $('.x-ss').attr('onclick', 'LiveTesting.stopTesting()')
+        $('.x-ss').attr('onclick', 'LiveTesting.confirm("stop")')
         $('live-sta').removeAttr("stop");
         $('live-sta').attr("start", "");
         $('live-sta').text("Active Testing");
+        LiveTesting.bgPrc.SOCKET_prop();
     }
     window.LiveTesting.stopTesting = () => {
+        window.FAR.selfClose();
         LiveTesting.timer.stop();
         LiveTesting.state = "closed";
         LiveTesting.socket.emit('teacher-StartStop', {
@@ -149,11 +191,11 @@ window.LiveTesting = new Object();
             namespace: LiveTesting.bgPrc.tuid
         })
         LiveTesting.log("Testing state is updated to: "+LiveTesting.state);
-        $('.x-ss').attr('onclick', 'LiveTesting.startTesting()')
+        $('.x-ss').attr('onclick', 'LiveTesting.confirm("start")')
         $('live-sta').removeAttr("start");
         $('live-sta').attr("stop", "");
         $('live-sta').text("Testing Stopped");
-
+        clearInterval(LiveTesting.SOCKET_PING);
     }
     window.LiveTesting.log = (me) => {
         $('.x-l-repl').append(Date.now() + " - "+me+"<br>");
@@ -178,9 +220,6 @@ window.LiveTesting = new Object();
 
                     return ( hours+":"+minutes+":"+seconds);
                 });
-                LiveTesting.progress.data.datasets[0].data[0]++;
-                LiveTesting.progress.data.datasets[0].data[1]--;
-                LiveTesting.progress.update();
             }, 1000);
         },
         stop: () => {
