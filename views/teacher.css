@@ -66,6 +66,7 @@ user-select: none; /* Standard */
     left: 67px;
     text-align: left;
     overflow-y: scroll!important;
+    overflow-x: hidden!important;
 }
 .x-title {
     margin: 0;
@@ -266,7 +267,7 @@ user-select: none; /* Standard */
     right: 0;
     bottom: 0;
     background-color: #000000c7;
-    z-index: 2;
+    z-index: 999;
     cursor: pointer;
 }
 .overImg {

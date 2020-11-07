@@ -57,6 +57,12 @@ let Export = (Key, Value) => {
             obj.socket.emit('approval-request', window.SOCKET_AUTH);
         } else if(data.code == 'xx7') {
             TestWorker.alert("Test Caplet Alert", "The test administrator has stopped the test, you will now return to the waiting screen. Your progress has been stored.");
+        } else if(data.code == 'xx8') {
+            TestWorker.alert("Test Capler Alert", "An administrator has unlocked your test and you are authorized to begin again",
+            () => {
+                window.TestWorker.start();        
+                TestWorker.wpFire = false;        
+            }, "Begin");
         }
     }
     obj.statusUpd = () => {

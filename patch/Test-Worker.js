@@ -38,6 +38,7 @@ window.TestWorker = {
         })
         if(TestWorker.useWP) {
             Prot.start();
+            window.TestWorker.breaker = Prot.break;
             console.debug("Window Protection has started");
         } else {
             console.debug("Bypassing window protection (disabled?)");
@@ -293,6 +294,7 @@ window.TestWorker = {
     },
     submitTest: async () => {
         TestWorker.submitTime = Date.now();
+        // window.TestWorker.breaker();
         TestWorker.submit = true;
         console.debug("Test is being submitted...");
         clearInterval(window.TIMER);
@@ -306,11 +308,16 @@ window.TestWorker = {
         $('.dateNow').html("test was submitted");
         $('.x-n-center').text("Completed");
         $('.x-foot').addClass('x-o-block');
-        $('.repl-target').html("<x-t-big>Your Test Has Been Submitted</x-t-big><x-t-sub>You may now quit the application</x-t-sub><br><table class='x-pre-table'><tr><th>Your Grade</th><td id='hot-grade'>Grading Test...</td></tr><tr><th>Questions Answered&nbsp;&nbsp;&nbsp;</th><td id='hot-qs'>loading...</td></tr><tr><th>Time Spent</th><td id='hot-time'>loading...</td></tr></table><x-informatic class='x-i-live x-i-noset'><b>TESTING INFORMATION</b><ixr> </ixr>If your teacher has immediate grading enable, your grade should appear above.</x-informatic>")
+        $('.repl-target').html("<x-t-big>Your Test Has Been Submitted</x-t-big><x-t-sub>The application will close in 60 seconds</x-t-sub><br><table class='x-pre-table'><tr><th>Your Grade</th><td id='hot-grade'>Grading Test...</td></tr><tr><th>Questions Answered&nbsp;&nbsp;&nbsp;</th><td id='hot-qs'>loading...</td></tr><tr><th>Time Spent</th><td id='hot-time'>loading...</td></tr></table><x-informatic class='x-i-live x-i-noset'><b>TESTING INFORMATION</b><ixr> </ixr>If your teacher has immediate grading enable, your grade should appear above.</x-informatic>")
         $('#hot-time').text((((TestWorker.submitTime - TestWorker.startTime)/1000)<<0) + " seconds");
         $('#hot-qs').text(Object.keys(TestWorker.AnswerBank).length +" of "+TestWorker.total+" Answered");
         TestWorker.SCORE = await TestWorker.grabGrade(TestWorker.AnswerBank);
         $('#hot-grade').text(TestWorker.SCORE.formatted);
+        setTimeout(function() {
+            var remote = require('electron').remote;
+            var w = remote.getCurrentWindow();
+            w.close();
+        }, 60000);
     },
     lockTest: () => {
         TestWorker.wpFire = true;

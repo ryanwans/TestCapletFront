@@ -180,7 +180,6 @@ window.LiveTesting = new Object();
         $('live-sta').removeAttr("stop");
         $('live-sta').attr("start", "");
         $('live-sta').text("Active Testing");
-        LiveTesting.bgPrc.SOCKET_prop();
     }
     window.LiveTesting.stopTesting = () => {
         window.FAR.selfClose();
@@ -225,5 +224,10 @@ window.LiveTesting = new Object();
         stop: () => {
             clearInterval(window.LiveTesting.timer.interval);
         }
+    }
+    window.LiveTesting.onExit = () => {
+        clearInterval(LiveTesting.SOCKET_PING);
+        LiveTesting.socket.disconnect();
+        LiveTesting.state = "closed";
     }
 })();

@@ -1,0 +1,1 @@
+<input id=\"toggle-on\" name=\"toggle\" type=\"radio\"> <label for=\"toggle-on\">YES</label> <input id=\"toggle-off\" name=\"toggle\" type=\"radio\"> <label for=\"toggle-off\">NO</label>
