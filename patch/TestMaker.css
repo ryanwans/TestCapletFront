@@ -123,3 +123,67 @@ input[type="radio"]:checked + label {
     cursor: default;
     color: black;
 }
+tm-nav {
+    display: block;
+    background-color: #ececec;
+    border-right: rgb(145, 145, 145) 1px solid;
+    height: 520px;
+    padding: 10px;
+    position: absolute;
+    width: 180px;
+    left: 67px;
+    top: 0;
+    overflow-y: scroll;
+}
+navhead {
+    font-size: 20px;
+    font-weight: 600;
+}
+navobj {
+    display: block;
+    width: 90%;
+    padding: 3px 6px;
+    background-color: rgb(219, 219, 219);
+    border: gray 1px solid;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    font-size: 14px;
+    cursor: pointer;
+    z-index: 50;
+}
+[newq] {
+    font-size: 12px!important;
+    text-align: center!important;
+    font-weight: 500;
+    color: rgb(20, 105, 20);
+}
+[broq] {
+    font-size: 12px!important;
+    text-align: center!important;
+    font-weight: 500;
+    color: rgb(136, 42, 18);
+}
+subtr {
+    color: rgb(223, 223, 223);
+    background-color: rgb(216, 17, 17);
+    right: 0;
+    float: right;
+    border-radius: 50%;
+    font-weight: 600;
+    height: 19px;
+    width: 19px;
+    font-size: 14px;
+    text-align: center;
+    z-index: 60;
+}
+subtr:hover {
+    transform: scale(1.1);
+}
+maker {
+    left: 267px;
+    position: absolute;
+    top: 0;
+    width: 613px;
+    padding: 10px;
+    height: 520px;
+}
