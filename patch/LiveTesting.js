@@ -119,7 +119,7 @@ window.LiveTesting = new Object();
             for(let i=0; i<stLength; i++) {
                 let data = Object.values(t)[i];
                 data.status.answers = data.status.answers || {};
-                $(".x-s-repl").append("<div class='x-test "+((data.status.wpFire)?"x-s-locked": "")+"'><span class='x-test-title'>"+data.name+" "+((data.status.wpFire)?"<x-loc onclick='LiveTesting.unlockStudent(\""+data.route+"\")'></x-loc>":"")+"</span><span class='x-test-opts'><progress class='x-s-prog' id='prgRyanW' value='"+(Object.keys(data.status.answers).length || 0)+"' max='"+TestData[LiveTesting.TestingIndex].meta.count+"'></progress><img src='../hard/dots.svg' class='x-test-more'></span></div>")
+                $(".x-s-repl").append("<div class='x-test "+((data.status.wpFire)?"x-s-locked": "")+"'><span class='x-test-title'>"+data.name+" "+((data.status.wpFire)?"<x-loc onclick='LiveTesting.unlockStudent(\""+data.route+"\")'></x-loc>":"")+"</span><span class='x-test-opts'><progress class='x-s-prog' id='prgRyanW' value='"+(Object.keys(data.status.answers).length || 0)+"' max='"+TestData[LiveTesting.TestingIndex].meta.count+"'></progress><img onclick='LiveTesting.studentOpts(\""+data.id+"\")' src='../hard/dots.svg' class='x-test-more'></span></div>")
                 LiveTesting.log("Student "+data.name+": currently on question "+data.status.activeQ+" with "+(Object.keys(data.status.answers).length || 0)+" answers.");
                 if(data.status.wpFire) {
                     LiveTesting.log("Student "+data.name+": <b>test is currently locked, student clicked away!</b>");
@@ -135,7 +135,7 @@ window.LiveTesting = new Object();
             LiveTesting.progress.data.datasets[0].data[1] = 100 - avgSum;
             LiveTesting.progress.update();
         } else {
-            $('.x-s-repl').html("<h4>There are no students actively testing right now.</h4>");
+            $('.x-s-repl').html("There are no students actively testing right now.");
         }
     }
     window.LiveTesting.unlockStudent = (studentTarget) => {
@@ -229,5 +229,18 @@ window.LiveTesting = new Object();
         clearInterval(LiveTesting.SOCKET_PING);
         LiveTesting.socket.disconnect();
         LiveTesting.state = "closed";
+    }
+    window.LiveTesting.studentOpts = (SID) => {
+        var Student = LiveTesting.Namespace.clients[SID];
+        var HTML = "<sm-name>Options for "+Student.name+"</sm-name>";
+        var f = new FAR.popup({
+            moveable: false,
+            title: "Test Caplet Student Options",
+            html: HTML,
+            jQuery: false,
+            pageBlur: true,
+            moveable: true,
+            escapeKey: true
+    }).hoist();
     }
 })();

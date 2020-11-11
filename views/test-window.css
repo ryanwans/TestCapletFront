@@ -303,16 +303,31 @@ testerrrrrrr {
   color: #4661ff;
 }
 .x-but-org {
-  background-color: rgb(199, 158, 23);
-  color: white;
+  background-color: rgb(219, 219, 219);
+  color: rgb(75, 75, 75);
+  padding: 6px 14px;
+  border: none;
+  border-radius: 5px;
+  transform: translateY(-2px);
+  margin-right: 10px;
+  border: gray 1px solid;
+}
+.x-but-org:hover {
+  background-color: grey!important; 
+  color: white!important;
+}
+.x-but-set {
+  background-color: rgb(75, 103, 226);
+  color: rgb(245, 245, 245);
   padding: 6px 14px;
   border: none;
   border-radius: 5px;
   transform: translateY(-2px);
   margin-right: 10px;
 }
-.x-but-org:hover {
-  transform: scale(1.1);
+.x-but-set:hover {
+  background-color: rgb(113, 136, 238);
+  color: rgb(245, 245, 245);
 }
 .x-table {
   min-width: 500px;
@@ -445,4 +460,46 @@ x-hint-after {
     position: absolute;
     left: 90px;
     bottom: -12px;
+}
+x-q-select {
+  width: 200px;
+  height: 260px;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  position: absolute;
+  z-index: 991;
+  left: 350px;
+  bottom: 54px;
+  background-color: rgb(235, 235, 235);
+  border: rgb(139, 139, 139) 1px solid;
+  border-bottom: none!important;
+  overflow-y: scroll;
+  overflow-x: hidden;
+  box-shadow: 0 60px 30px #0000001f;
+}
+x-quest {
+  display: block;
+  width: 180px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 15px;
+}
+x-quest:hover {
+  background-color: rgb(214, 213, 213);
+}
+xq-after {
+  float:right;
+  right: 0;
+  width: 12px;
+  height: 12px;
+  margin-top: 5px;
+  border-radius: 4px;
+  background-color: rgb(184, 184, 184);
+  margin-right: 5px;
+}
+xq-after[done] {
+  background-color: rgb(11, 167, 11)!important;
+}
+x-q-select::-webkit-scrollbar-track {
+  background: rgb(235, 235, 235); 
 }

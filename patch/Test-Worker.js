@@ -3,6 +3,7 @@ window.TestWorker = {
     wpFire: false,
     submit: false,
     hintShown: false,
+    qShown: false,
     AnswerBank: new Object(),
     begin: (Test) => {
         window.TestWorker.QuestionBank = Test.shuffle(Test.bank);
@@ -26,6 +27,7 @@ window.TestWorker = {
     start: () => {
         console.debug("Starting test! Yay!!!!");
         window.TV.state = "testing";
+        TestWorker.populateSelection([]);
         if(TestWorker.live) {
             SocketPatch.statusUpd();
         }
@@ -55,18 +57,14 @@ window.TestWorker = {
     next: function() {
         TestWorker.active++;
         TestWorker.displayQuestion(TestWorker.active);
-        if(TestWorker.live) {
-            SocketPatch.statusUpd();
-        }
     },
     prev: function() {
         TestWorker.active--;
         TestWorker.displayQuestion(TestWorker.active);
-        if(TestWorker.live) {
-            SocketPatch.statusUpd();
-        }
     },
     displayQuestion: (targetIndex) => {
+        SocketPatch.statusUpd();
+        TestWorker.highlightAnswers();
         if(targetIndex >= window.TestWorker.QuestionBank.length || targetIndex < 0) {
             if(targetIndex < 0) {
                 TestWorker.active = 0;
@@ -295,6 +293,8 @@ window.TestWorker = {
     submitTest: async () => {
         TestWorker.submitTime = Date.now();
         // window.TestWorker.breaker();
+        $('x-q-select').attr("style", "display: none;");
+        $('x-hint').attr("style", "display: none;");
         TestWorker.submit = true;
         console.debug("Test is being submitted...");
         clearInterval(window.TIMER);
@@ -320,24 +320,27 @@ window.TestWorker = {
         }, 60000);
     },
     lockTest: () => {
-        TestWorker.wpFire = true;
-        TestWorker.submitTime = Date.now();
-        console.debug("Test has been locked. Beginning lock que...")
-        clearInterval(window.TIMER);
-        clearInterval(window.UpdatePolling);
-        if(TestWorker.live) {
-            TV.state = "locked";
-            SocketPatch.statusUpd();
-        }
-        TestWorker.wpFire = true;
-        $('.dateNow').html("test was locked");
-        $('.x-n-center').text("Locked");
-        $('.x-foot').addClass('x-o-block');
-        $('.repl-target').html("<x-t-big>Your Test Has Been Locked</x-t-big><x-t-sub>You clicked away from the window during the test</x-t-sub><br><table class='x-pre-table'><tr><th>Lock Status</th><td id='hot-grade'><i>null</i></td></tr><tr><th>Test Progress&nbsp;&nbsp;&nbsp;</th><td id='hot-qs'>progress stored</td></tr><tr><th>Time Spent</th><td id='hot-time'>loading...</td></tr></table><x-informatic class='x-i-live x-i-noset'><b>TESTING INFORMATION</b><ixr> </ixr>Your teacher has the availability to unlock your test and they can see that you have been locked out.</x-informatic>")
-        $('#hot-time').text((((TestWorker.submitTime - TestWorker.startTime)/1000)<<0) + " seconds");
-        $('#hot-qs').text(Object.keys(TestWorker.AnswerBank).length +" of "+TestWorker.total+" Answered");
-        // pain, i live in pain, this is pain. pain.
-        // a short poem, by ryan wans :( 
+        if(!TestWorker.submit) {
+            TestWorker.wpFire = true;
+            TestWorker.submitTime = Date.now();
+            console.debug("Test has been locked. Beginning lock que...")
+            clearInterval(window.TIMER);
+            $('x-q-select').attr("style", "display: none;");
+            clearInterval(window.UpdatePolling);
+            if(TestWorker.live) {
+                TV.state = "locked";
+                SocketPatch.statusUpd();
+            }
+            TestWorker.wpFire = true;
+            $('.dateNow').html("test was locked");
+            $('.x-n-center').text("Locked");
+            $('.x-foot').addClass('x-o-block');
+            $('.repl-target').html("<x-t-big>Your Test Has Been Locked</x-t-big><x-t-sub>You clicked away from the window during the test</x-t-sub><br><table class='x-pre-table'><tr><th>Lock Status</th><td id='hot-grade'><i>null</i></td></tr><tr><th>Test Progress&nbsp;&nbsp;&nbsp;</th><td id='hot-qs'>progress stored</td></tr><tr><th>Time Spent</th><td id='hot-time'>loading...</td></tr></table><x-informatic class='x-i-live x-i-noset'><b>TESTING INFORMATION</b><ixr> </ixr>Your teacher has the availability to unlock your test and they can see that you have been locked out.</x-informatic>")
+            $('#hot-time').text((((TestWorker.submitTime - TestWorker.startTime)/1000)<<0) + " seconds");
+            $('#hot-qs').text(Object.keys(TestWorker.AnswerBank).length +" of "+TestWorker.total+" Answered");
+            // pain, i live in pain, this is pain. pain.
+            // a short poem, by ryan wans :( 
+        };
     },
     startTimer: () => {
         window.TIMER = setInterval(function() {
@@ -408,5 +411,24 @@ window.TestWorker = {
 
         return ret;
     },
-    wait: async (a) => {setTimeout(()=>{}, a)}
+    wait: async (a) => {setTimeout(()=>{}, a)},
+    selectQuestion: () => {
+        TestWorker.qShown = !TestWorker.qShown;
+        if(TestWorker.qShown) {
+            $('x-q-select').attr("style", "display: block;");
+        } else {
+            $('x-q-select').attr("style", "display: none;");
+        }
+    },
+    populateSelection: (BANK) => {
+        $('.x-qsl').html("");
+        for(var i=0; i<TestWorker.QuestionBank.length; i++) {
+            $('.x-qsl').append("<x-quest onclick='TestWorker.goto("+i+")' class='xquest-"+(i+1)+"'>Question "+(i+1)+"<xq-after"+((BANK.includes(i.toString())) ? " done " : "")+"/></x-quest>");
+        }
+    },
+    goto: (num) => {TestWorker.active = num;TestWorker.displayQuestion(num);},
+    highlightAnswers: () => {
+        var Answered = Object.keys(TestWorker.AnswerBank);
+        TestWorker.populateSelection(Answered);
+    }
 }

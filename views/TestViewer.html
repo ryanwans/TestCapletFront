@@ -85,7 +85,8 @@
         </x-actual>
         <x-footer class="x-o-block x-foot">
             <img onclick="window.TestWorker.prev()" title="Previous Question" src="../hard/arrow.svg" class="arr-back">
-            <button onclick="TestWorker.pauseTest()" class="x-but-org x-t-pause" style="margin-top: 3px">Pause Test</button>
+            <button onclick="TestWorker.showSettings()" class="x-but-set" style="margin-top: 2px">Test Settings</button>
+            <button onclick="TestWorker.selectQuestion()" class="x-but-org x-t-select" style="margin-top: 3px">Select Question</button>
             <button onclick="TestWorker.userSubmit()" title="You have more questions to answer" disabled class="x-but-green x-t-submit disable" style="margin-top: 2px">Submit Test</button>
             <img onclick="window.TestWorker.next()" title="Next Question" src="../hard/arrow.svg" class="arr-for">
         </x-footer>
@@ -93,6 +94,11 @@
             You can now submit the test 
             <x-hint-after></x-hint-after>
         </x-hint>
+        <x-q-select class="x-qsl" style="display: none;">
+            <!--
+                <x-quest>Question 1 <xq-after done/></x-quest>
+            -->
+        </x-q-select>
         <x-state class="xs-load">
             <b>STATE: </b>loading...
         </x-state>
