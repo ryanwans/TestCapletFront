@@ -1,5 +1,7 @@
 // ah shit, here we go again... 
 
+let Packer = remote.require('./remote/Packer.js');
+
 // run off da bat!
 !(function(bindr) {
 
@@ -23,7 +25,8 @@
                 "view this question",
                 "add a new question",
                 "change test settings",
-                "delete question"
+                "delete question",
+                "enter prompt for this question"
             ],
             frames: [
                 "<h1 class='x-title'>Draft a New Test</h1><h1 class='x-subtitle'>LOADING TEST MAKER...</h1><div class=\"text-make-form\"> <h3 class=\"xx2-form-above\">TEST NAME</h3> <input onmouseout=\"TestMaker.notip()\" onmouseover=\"TestMaker.showTip(1)\" required maxlength=\"32\" class=\"xx2-form-input\" id=\"test-name\" /> <h3 class=\"xx2-form-above\">SHOWN TEST QUESTIONS *</h3> <input onmouseout=\"TestMaker.notip()\" onmouseover=\"TestMaker.showTip(2)\" required class=\"xx2-form-input\" type=\"number\" max=\"100\" id=\"test-max\" placeholder=\"\" /> <h3 class=\"xx2-form-above\">TIME LIMIT (MINUTES) (IF NONE, DO NOT TOUCH)</h3> <input onmouseout=\"TestMaker.notip()\" onmouseover=\"TestMaker.showTip(3)\" required class=\"xx2-form-input\" id=\"text-time\" type=\"number\" value=\"0\" /> <h3 onmouseout=\"TestMaker.notip()\" onmouseover=\"TestMaker.showTip(4)\" class=\"xx2-form-above\">LIVE TESTING</h3> <input id=\"live-on\" name=\"uselive\" value=\"1\" type=\"radio\"> <label value=\"1\" for=\"live-on\">YES</label> <input id=\"live-off\" value=\"0\" name=\"uselive\" type=\"radio\"> <label value=\"0\" for=\"live-off\">NO</label><h3 class=\"xx2-form-above\" onmouseout=\"TestMaker.notip()\" onmouseover=\"TestMaker.showTip(5)\">WINDOW PROTECTION</h3> <input  value=\"1\" id=\"wp-on\" name=\"usewp\" type=\"radio\"> <label value=\"1\" for=\"wp-on\">YES</label> <input value=\"0\" id=\"wp-off\" name=\"usewp\" type=\"radio\"> <label value=\"0\" for=\"wp-off\">NO</label><xbt onmouseout=\"TestMaker.notip()\" onmouseover=\"TestMaker.showTip(0)\" onclick=\"TestMaker.beginMaker()\">START CREATING TEST</xbt><finetext>* This is the amount of questions the students will be shown<br>&nbsp;&nbsp;&nbsp;Can't be greater than 100</finetext></div>"
@@ -53,27 +56,42 @@
                 }
                 return result;
             },
+            makeCode: (length) => {
+                var result           = '';
+                var characters       = 'ABCDEFGHIJKLMNOPQRSTUVWRXYZ1234567890';
+                var charactersLength = characters.length;
+                for ( var i = 0; i < length; i++ ) {
+                result += characters.charAt(Math.floor(Math.random() * charactersLength));
+                }
+                return result;
+            },
             beginMaker: () => {
                 var con = true;
                 var Test_Name = $('#test-name').val();
                 if(Test_Name.length < 5) {con=false;TestMaker.notification("The test name should be longer than 5 characters.");}
-                var Test_Max = parseInt($('#text-max').val());
+                var Test_Max = parseInt($('#test-max').val());
                 if(Test_Name < 1 || Test_Name > 51) {con=false;TestMaker.notification("Show questions should be between 1 and 50");}
                 var Test_Time = parseInt($('#text-time').val());
                 Test_Time = (Test_Time == 0) ? null : Test_Time;
                 var Test_Live = ($('input[name="uselive"]:checked').val() == "1") ? true : false;
                 var Test_WP = ($('input[name="usewp"]:checked').val() == "1") ? true : false;
                 if(con) {
-                    window.TestMakerData = {
+                    var ttt = TestMaker.makeCode(8);
+                    window.TestMakerData = new Object();
+                    window.TestMakerData[ttt] = {
                         name: Test_Name,
-                        max: Test_Max,
-                        time: Test_Time,
-                        live: Test_Time,
-                        wp: Test_WP,
-                        id: TestMaker.ID,
-                        auth: window.F.auth,
-                        created: Date.now()
-                    };
+                        tuid: TestMaker.ID,
+                        "meta": {
+                            "count": Test_Max,
+                            "total": 0,
+                            "randomOrder": true,
+                            "randomQs": true,
+                            "useLive": Test_Live,
+                            "open": false,
+                            "time": Test_Time,
+                            "wProtect": Test_WP
+                        }
+                    }
                     showLoading(1500);
                     $('[autosave]').text("waiting");
                     $('tip').text("");
@@ -88,7 +106,58 @@
                 TestMaker.TEST.meta = STATE;
                 TestMaker.TEST.bank = new Array();
                 TestMaker.ActiveQ = 0;
-                TestMaker.renderQuestionMaker(TestMaker.ActiveQ);
+                // TestMaker.renderQuestionMaker(TestMaker.ActiveQ);
+            },
+            qMake: (index) => {
+                Object.values(TestMaker.TEST.meta)[0].meta.total++;
+                TestMaker.ACTIVE = TestMaker.TEST.bank.length;
+                TestMaker.TEST.bank.push({
+                    "_id": TestMaker.makeID(16),
+                    "_index": TestMaker.TEST.bank.length,
+                    "_meta": {
+                        "useStreaming": true,
+                        "maxAttempts": 1,
+                        "maxTime": null,
+                        "dualAuth": true
+                    },
+                    "_data": {
+                        "qType": index,
+                    }
+                })
+                TestMaker.autosave();
+                TestMaker.enactAutosavePolling();
+                var t = [
+                    "Multiple Choice, Single Answer",
+                    "ERROR",
+                    "Drag & Drop",
+                    'True or False',
+                    "Multiple Choice, Multiple Answers",
+                    "Response Slider",
+                    "Table Selection"
+                ]
+                $('maker-chooser').attr('style', "display: none;");
+                $('maker-maker').attr("style", "display: block;");
+                $('#qTypeSelect').text(t[index]);
+            },
+            autosave: () => {
+                $('[autosave]').html("saving test <miniloader></miniloader>");
+                miniLoader();
+                // save code
+                var EXPORT = [TestMaker.TEST.meta, TestMaker.TEST.bank, window.F.auth];
+                Packer.DataFlushing.RFWR(EXPORT);
+                console.debug("Data Flushing & Syncing Completed");
+
+                setTimeout(function() {
+                    $('[autosave]').text("saved ✓");
+                }, 2300)
+            },
+            MakerMCA: (index) => {
+                $('#makra-'+index).append("<input class=\"makra-mch\" maxlength=\"45\" type=\"text\" placeholder=\"type here...\" >")
+            },
+            enactAutosavePolling: () => {
+                TestMaker.AUTOSAVE_POLL = setInterval(function() {
+                    TestMaker.autosave();
+                }, 60000);
             }
         }
     }

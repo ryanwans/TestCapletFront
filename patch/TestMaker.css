@@ -135,6 +135,9 @@ tm-nav {
     top: 0;
     overflow-y: scroll;
 }
+tm-nav::-webkit-scrollbar-track {
+    background: #ececec; 
+}
 navhead {
     font-size: 20px;
     font-weight: 600;
@@ -186,4 +189,88 @@ maker {
     width: 613px;
     padding: 10px;
     height: 520px;
+}
+maker-title {
+    font-size: 20px;
+    color: rgb(71, 71, 71);
+    font-weight: 600;
+    text-transform: uppercase;
+    display: block;
+    margin: 0;
+    border: 0;
+}
+maker-sub {
+    font-size: 16px;
+    color: rgb(71, 71, 71);
+    text-transform: uppercase;
+    display: block;
+    margin: 0;
+    border: 0;
+}
+maker-ctype {
+    display: block;
+    margin-top: 20px;
+    width: 90%;
+}
+maker-t {
+    padding: 5px 10px;
+    width: 90%;
+    background-color: rgb(228, 228, 228);
+    border: gray 1px solid;
+    border-radius: 4px;
+    margin-bottom: 10px;
+    display: block;
+    color: black;
+    font-size: 14px;
+}
+maker-t:hover {
+    background-color: rgb(204, 204, 204);
+}
+maker-prompt {
+    display: block;
+    color: rgb(75, 75, 75);
+    font-size: 14px;
+    font-weight: 600;
+    text-transform: uppercase;
+    margin-top: 10px;
+}
+.maker-tarea {
+    width: 95%;
+    border: none;
+    resize: none;
+    overflow: hidden;
+    display: block;
+    font: 16px/1.4 Roboto,-apple-system,BlinkMacSystemFont,"Helvetica Neue","Segoe UI","Oxygen","Ubuntu","Cantarell","Open Sans",sans-serif;
+    font-size: 14px;
+    color: black;
+    margin-top: 3px;
+    margin-bottom: 10px;
+}
+.makra-mch {
+    width: 80%;
+    border-radius: 4px;
+    border: gray 1px solid;
+    font-size: 14px;
+    background-color: #ececec;
+    padding: 5px 8px;
+    text-align: left;
+    margin-bottom: 8px;
+    display: inline-block;
+}
+.makra-mcht {
+    display:inline-block;
+    margin-left: 5px;
+    font-size: 14px;
+}
+maker-cans {
+    width: 80%;
+    border-radius: 4px;
+    border: gray 1px solid;
+    font-size: 14px;
+    background-color: #f5f5f5;
+    padding: 4px 8px;
+    margin-bottom: 8px;
+    display: block;
+    text-align: center;
+    font-weight: 600;
 }

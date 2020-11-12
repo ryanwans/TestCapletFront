@@ -57,7 +57,43 @@
           
         </tm-nav>
         <maker>
-          
+          <maker-chooser style="display: block;">
+            <maker-title>
+              Choose Question Type
+            </maker-title>
+            <maker-sub>
+              QUESTION 1
+            </maker-sub>
+            <maker-ctype>
+              <maker-t onclick="TestMaker.qMake(0)">Multiple Choice, Single Answer</maker-t>
+              <maker-t onclick="TestMaker.qMake(1)">Multiple Choice, Multiple Answers</maker-t>
+              <maker-t onclick="TestMaker.qMake(2)">Response Slider</maker-t>
+              <maker-t onclick="TestMaker.qMake(3)">True or False</maker-t>
+              <maker-t onclick="TestMaker.qMake(4)">Drag & Drop</maker-t>
+              <maker-t onclick="TestMaker.qMake(5)">Table Selection</maker-t>
+            </maker-ctype>
+          </maker-chooser>
+          <maker-maker style="display: none;">
+            <maker-title>
+              Create Question Data
+            </maker-title>
+            <maker-sub id="qTypeSelect">
+              
+            </maker-sub>
+            <maker-ctype>
+              <maker-prompt>
+                QUESTION PROMPT
+              </maker-prompt>
+              <textarea onmouseout="TestMaker.notip()" onmouseover="TestMaker.showTip(10)" maxlength="300" autofocus id="currentPrompt" class="maker-tarea" rows="3"></textarea>
+              <maker-prompt>
+                CREATE ANSWER BANK
+              </maker-prompt>
+              <maker-answer id="makra-0">
+                <input class="makra-mch" maxlength="45" type="text" placeholder="type here..." ><makra-mcht>OPTS</makra-mcht>
+              </maker-answer>
+              <maker-cans onclick="TestMaker.MakerMCA(0)">Add Another Option</maker-cans>
+            </maker-ctype>
+          </maker-maker>
         </maker>
       </div>
   </body>

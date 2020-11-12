@@ -26,4 +26,26 @@ function fi(t1) {
         window.debugLastTime = Date.now();
         console.log("%c"+diff+" - "+a, 'color: #4661ff;')
     }
+    window.miniLoader = () => {
+        var start = "[%%]", i=1;
+        $('miniloader').text(start.replace('%%', '--------'));
+        function doe() {
+            setTimeout(function() {
+                start = "[%%]";
+                var final = "-";
+                final = final.repeat(8-i);
+                var hash = "#"
+                hash = hash.repeat(i);
+                var tfinal = hash + final;
+
+                start = start.replace("%%", tfinal);
+                $('miniloader').text(start);
+                if(i<9) {
+                    doe()
+                    i++
+                } else {$('miniloader').text("");}
+            }, 130)
+        }
+        doe();
+    }
 }();
