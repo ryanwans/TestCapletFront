@@ -7,7 +7,7 @@ let Packer = remote.require('./remote/Packer.js');
 
     window.TestMaker = window.TestMaker || new Object();
 
-    if(Object.keys(TestMaker).length > 0) {
+    if(0) {
         console.debug("Test Maker objec already exists. Call .new() to draft a new one");
     } else {
         TestMaker = {
@@ -110,6 +110,7 @@ let Packer = remote.require('./remote/Packer.js');
             },
             qMake: (index) => {
                 Object.values(TestMaker.TEST.meta)[0].meta.total++;
+                TestMaker.QQQINDEX = 0;
                 TestMaker.ACTIVE = TestMaker.TEST.bank.length;
                 TestMaker.TEST.bank.push({
                     "_id": TestMaker.makeID(16),
@@ -152,7 +153,8 @@ let Packer = remote.require('./remote/Packer.js');
                 }, 2300)
             },
             MakerMCA: (index) => {
-                $('#makra-'+index).append("<input class=\"makra-mch\" maxlength=\"45\" type=\"text\" placeholder=\"type here...\" >")
+                TestMaker.QQQINDEX++;
+                $('#makra-'+index).append("<input class=\"makra-mch\" id=\"mkq-"+TestMaker.QQQINDEX+"\" maxlength=\"45\" type=\"text\" placeholder=\"type here...\" >")
             },
             enactAutosavePolling: () => {
                 TestMaker.AUTOSAVE_POLL = setInterval(function() {
