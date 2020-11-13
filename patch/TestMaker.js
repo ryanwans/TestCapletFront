@@ -26,7 +26,8 @@ let Packer = remote.require('./remote/Packer.js');
                 "add a new question",
                 "change test settings",
                 "delete question",
-                "enter prompt for this question"
+                "enter prompt for this question",
+                "quick save current test"
             ],
             frames: [
                 "<h1 class='x-title'>Draft a New Test</h1><h1 class='x-subtitle'>LOADING TEST MAKER...</h1><div class=\"text-make-form\"> <h3 class=\"xx2-form-above\">TEST NAME</h3> <input onmouseout=\"TestMaker.notip()\" onmouseover=\"TestMaker.showTip(1)\" required maxlength=\"32\" class=\"xx2-form-input\" id=\"test-name\" /> <h3 class=\"xx2-form-above\">SHOWN TEST QUESTIONS *</h3> <input onmouseout=\"TestMaker.notip()\" onmouseover=\"TestMaker.showTip(2)\" required class=\"xx2-form-input\" type=\"number\" max=\"100\" id=\"test-max\" placeholder=\"\" /> <h3 class=\"xx2-form-above\">TIME LIMIT (MINUTES) (IF NONE, DO NOT TOUCH)</h3> <input onmouseout=\"TestMaker.notip()\" onmouseover=\"TestMaker.showTip(3)\" required class=\"xx2-form-input\" id=\"text-time\" type=\"number\" value=\"0\" /> <h3 onmouseout=\"TestMaker.notip()\" onmouseover=\"TestMaker.showTip(4)\" class=\"xx2-form-above\">LIVE TESTING</h3> <input id=\"live-on\" name=\"uselive\" value=\"1\" type=\"radio\"> <label value=\"1\" for=\"live-on\">YES</label> <input id=\"live-off\" value=\"0\" name=\"uselive\" type=\"radio\"> <label value=\"0\" for=\"live-off\">NO</label><h3 class=\"xx2-form-above\" onmouseout=\"TestMaker.notip()\" onmouseover=\"TestMaker.showTip(5)\">WINDOW PROTECTION</h3> <input  value=\"1\" id=\"wp-on\" name=\"usewp\" type=\"radio\"> <label value=\"1\" for=\"wp-on\">YES</label> <input value=\"0\" id=\"wp-off\" name=\"usewp\" type=\"radio\"> <label value=\"0\" for=\"wp-off\">NO</label><xbt onmouseout=\"TestMaker.notip()\" onmouseover=\"TestMaker.showTip(0)\" onclick=\"TestMaker.beginMaker()\">START CREATING TEST</xbt><finetext>* This is the amount of questions the students will be shown<br>&nbsp;&nbsp;&nbsp;Can't be greater than 100</finetext></div>"
@@ -41,6 +42,13 @@ let Packer = remote.require('./remote/Packer.js');
                     TestMaker.ID = TestMaker.makeID(20);
                     $('.x-subtitle').text("UNIQUE ID: "+TestMaker.ID);
                 },2500);
+                $(window).keypress(function(event) {
+                    if((event.ctrlKey || event.metaKey) && event.which == 83) {
+                        window.alert("Saved!");
+                        event.preventDefault();
+                        return false;
+                    };
+                });
             },
             frame: (a) => {$('.testmaker').html(TestMaker.frames[a])},
             showTip: (n) => {
@@ -139,6 +147,14 @@ let Packer = remote.require('./remote/Packer.js');
                 $('maker-chooser').attr('style', "display: none;");
                 $('maker-maker').attr("style", "display: block;");
                 $('#qTypeSelect').text(t[index]);
+                $('#currentPrompt').bind('input propertychange', function() {
+                    var t = this.value;
+                    TestMaker.TEST.bank[TestMaker.ACTIVE]["_data"]["qValue"] = t;
+                });
+                $('.makra-mch').bind('input propertychange', function() {
+                    var t = this.value;
+                    console.log(t);
+                });
             },
             autosave: () => {
                 $('[autosave]').html("saving test <miniloader></miniloader>");

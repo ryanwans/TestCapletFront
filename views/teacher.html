@@ -47,6 +47,9 @@
           <navobj broq onmouseout="TestMaker.notip()" onmouseover="TestMaker.showTip(8)">
             Test Settings
           </navobj>
+          <navobj onclick="TestMaker.autosave()" broq onmouseout="TestMaker.notip()" onmouseover="TestMaker.showTip(11)">
+            Quick Save
+          </navobj>
           <navobj newq onmouseout="TestMaker.notip()" onmouseover="TestMaker.showTip(7)">
             Create New Question
           </navobj>
@@ -66,11 +69,11 @@
             </maker-sub>
             <maker-ctype>
               <maker-t onclick="TestMaker.qMake(0)">Multiple Choice, Single Answer</maker-t>
-              <maker-t onclick="TestMaker.qMake(1)">Multiple Choice, Multiple Answers</maker-t>
-              <maker-t onclick="TestMaker.qMake(2)">Response Slider</maker-t>
+              <maker-t onclick="TestMaker.qMake(4)">Multiple Choice, Multiple Answers</maker-t>
+              <maker-t onclick="TestMaker.qMake(5)">Response Slider</maker-t>
               <maker-t onclick="TestMaker.qMake(3)">True or False</maker-t>
-              <maker-t onclick="TestMaker.qMake(4)">Drag & Drop</maker-t>
-              <maker-t onclick="TestMaker.qMake(5)">Table Selection</maker-t>
+              <maker-t onclick="TestMaker.qMake(2)">Drag & Drop</maker-t>
+              <maker-t onclick="TestMaker.qMake(6)">Table Selection</maker-t>
             </maker-ctype>
           </maker-chooser>
           <maker-maker style="display: none;">
@@ -89,7 +92,7 @@
                 CREATE ANSWER BANK
               </maker-prompt>
               <maker-answer id="makra-0">
-                <input class="makra-mch" maxlength="45" type="text" placeholder="type here..." ><makra-mcht>OPTS</makra-mcht>
+                <input class="makra-mch" id="mkq-0" maxlength="45" type="text" placeholder="type here..." ><makra-mcht>OPTS</makra-mcht>
               </maker-answer>
               <maker-cans onclick="TestMaker.MakerMCA(0)">Add Another Option</maker-cans>
             </maker-ctype>

@@ -7,6 +7,8 @@ const feed = `${server}/update/${process.platform}/${app.getVersion()}`;
 // autoUpdater.setFeedURL(feed)
 
 var USEDEVTOOLS = true;
+
+
 console.log("Rasterizing Test Caplet window version "+app.getVersion());
 public.version = app.getVersion();
 
