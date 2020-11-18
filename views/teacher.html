@@ -88,13 +88,17 @@
                 QUESTION PROMPT
               </maker-prompt>
               <textarea onmouseout="TestMaker.notip()" onmouseover="TestMaker.showTip(10)" maxlength="300" autofocus id="currentPrompt" class="maker-tarea" rows="3"></textarea>
+              <current-answer>
+                Current Answer is <b id="curAns1">NONE SELECTED</b>
+              </current-answer>
               <maker-prompt>
                 CREATE ANSWER BANK
               </maker-prompt>
               <maker-answer id="makra-0">
-                <input class="makra-mch" id="mkq-0" maxlength="45" type="text" placeholder="type here..." ><makra-mcht>OPTS</makra-mcht>
+                <input class="makra-mch" ind="0" id="mkq-0" maxlength="45" type="text" placeholder="type here..." ><makra-mcht><input name="makra" value="0" type="radio"></makra-mcht>
               </maker-answer>
               <maker-cans onclick="TestMaker.MakerMCA(0)">Add Another Option</maker-cans>
+              <finetext>Select the correct answer using the circle next to the answer.</finetext>
             </maker-ctype>
           </maker-maker>
         </maker>

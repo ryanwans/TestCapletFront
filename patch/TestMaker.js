@@ -15,6 +15,7 @@ let Packer = remote.require('./remote/Packer.js');
                 TestMaker = new Object();
                 // proceed to initialize again
             },
+            letters: "ABCDEFGHIJKLMNOPQRSTUVWXYZ",
             tips: [
                 "Start making the test",
                 "Name of the test",
@@ -30,7 +31,7 @@ let Packer = remote.require('./remote/Packer.js');
                 "quick save current test"
             ],
             frames: [
-                "<h1 class='x-title'>Draft a New Test</h1><h1 class='x-subtitle'>LOADING TEST MAKER...</h1><div class=\"text-make-form\"> <h3 class=\"xx2-form-above\">TEST NAME</h3> <input onmouseout=\"TestMaker.notip()\" onmouseover=\"TestMaker.showTip(1)\" required maxlength=\"32\" class=\"xx2-form-input\" id=\"test-name\" /> <h3 class=\"xx2-form-above\">SHOWN TEST QUESTIONS *</h3> <input onmouseout=\"TestMaker.notip()\" onmouseover=\"TestMaker.showTip(2)\" required class=\"xx2-form-input\" type=\"number\" max=\"100\" id=\"test-max\" placeholder=\"\" /> <h3 class=\"xx2-form-above\">TIME LIMIT (MINUTES) (IF NONE, DO NOT TOUCH)</h3> <input onmouseout=\"TestMaker.notip()\" onmouseover=\"TestMaker.showTip(3)\" required class=\"xx2-form-input\" id=\"text-time\" type=\"number\" value=\"0\" /> <h3 onmouseout=\"TestMaker.notip()\" onmouseover=\"TestMaker.showTip(4)\" class=\"xx2-form-above\">LIVE TESTING</h3> <input id=\"live-on\" name=\"uselive\" value=\"1\" type=\"radio\"> <label value=\"1\" for=\"live-on\">YES</label> <input id=\"live-off\" value=\"0\" name=\"uselive\" type=\"radio\"> <label value=\"0\" for=\"live-off\">NO</label><h3 class=\"xx2-form-above\" onmouseout=\"TestMaker.notip()\" onmouseover=\"TestMaker.showTip(5)\">WINDOW PROTECTION</h3> <input  value=\"1\" id=\"wp-on\" name=\"usewp\" type=\"radio\"> <label value=\"1\" for=\"wp-on\">YES</label> <input value=\"0\" id=\"wp-off\" name=\"usewp\" type=\"radio\"> <label value=\"0\" for=\"wp-off\">NO</label><xbt onmouseout=\"TestMaker.notip()\" onmouseover=\"TestMaker.showTip(0)\" onclick=\"TestMaker.beginMaker()\">START CREATING TEST</xbt><finetext>* This is the amount of questions the students will be shown<br>&nbsp;&nbsp;&nbsp;Can't be greater than 100</finetext></div>"
+                "<h1 class='x-title'>Draft a New Test</h1><h1 class='x-subtitle'>LOADING TEST MAKER...</h1><div class=\"text-make-form\"> <h3 class=\"xx2-form-above\">TEST NAME</h3> <input onmouseout=\"TestMaker.notip()\" onmouseover=\"TestMaker.showTip(1)\" required maxlength=\"32\" class=\"xx2-form-input\" id=\"test-name\" /> <h3 class=\"xx2-form-above\">SHOWN TEST QUESTIONS *</h3> <input onmouseout=\"TestMaker.notip()\" onmouseover=\"TestMaker.showTip(2)\" required class=\"xx2-form-input\" type=\"number\" max=\"100\" id=\"test-max\" placeholder=\"\" /> <h3 class=\"xx2-form-above\">TIME LIMIT (MINUTES) (IF NONE, DO NOT TOUCH)</h3> <input onmouseout=\"TestMaker.notip()\" onmouseover=\"TestMaker.showTip(3)\" required class=\"xx2-form-input\" id=\"text-time\" type=\"number\" value=\"0\" /> <h3 onmouseout=\"TestMaker.notip()\" onmouseover=\"TestMaker.showTip(4)\" class=\"xx2-form-above\">LIVE TESTING</h3> <input noshow id=\"live-on\" name=\"uselive\" value=\"1\" type=\"radio\"> <label value=\"1\" for=\"live-on\">YES</label> <input noshow id=\"live-off\" value=\"0\" name=\"uselive\" type=\"radio\"> <label value=\"0\" for=\"live-off\">NO</label><h3 class=\"xx2-form-above\" onmouseout=\"TestMaker.notip()\" onmouseover=\"TestMaker.showTip(5)\">WINDOW PROTECTION</h3> <input noshow value=\"1\" id=\"wp-on\" name=\"usewp\" type=\"radio\"> <label value=\"1\" for=\"wp-on\">YES</label> <input noshow value=\"0\" id=\"wp-off\" name=\"usewp\" type=\"radio\"> <label value=\"0\" for=\"wp-off\">NO</label><xbt onmouseout=\"TestMaker.notip()\" onmouseover=\"TestMaker.showTip(0)\" onclick=\"TestMaker.beginMaker()\">START CREATING TEST</xbt><finetext>* This is the amount of questions the students will be shown<br>&nbsp;&nbsp;&nbsp;Can't be greater than 100</finetext></div>"
             ],
             footer: "<tmfoot><b>Autosave Status</b>: <span autosave>Waiting</span><tooltip><b>TIP: </b><tip></tip></tooltip></tmfoot>",
             start: () => {
@@ -151,9 +152,16 @@ let Packer = remote.require('./remote/Packer.js');
                     var t = this.value;
                     TestMaker.TEST.bank[TestMaker.ACTIVE]["_data"]["qValue"] = t;
                 });
-                $('.makra-mch').bind('input propertychange', function() {
+                $("input[name='makra'][value='0']").on('change', function(){
+                    let selected_value = $("input[name='makra']:checked").val();
+                    TestMaker.TEST.bank[TestMaker.ACTIVE]["_data"]["qShorthand"] = selected_value;
+                    $('#curAns1').text(TestMaker.letters.split("")[selected_value]);
+                });
+                $('#mkq-0').bind('input propertychange', function() {
                     var t = this.value;
-                    console.log(t);
+                    var f = this.attributes.ind.value;
+                    TestMaker.TEST.bank[TestMaker.ACTIVE]["_data"]["qAns"] = TestMaker.TEST.bank[TestMaker.ACTIVE]["_data"]["qAns"] || {};
+                    TestMaker.TEST.bank[TestMaker.ACTIVE]["_data"]["qAns"][f.toString()] = t;
                 });
             },
             autosave: () => {
@@ -170,7 +178,18 @@ let Packer = remote.require('./remote/Packer.js');
             },
             MakerMCA: (index) => {
                 TestMaker.QQQINDEX++;
-                $('#makra-'+index).append("<input class=\"makra-mch\" id=\"mkq-"+TestMaker.QQQINDEX+"\" maxlength=\"45\" type=\"text\" placeholder=\"type here...\" >")
+                $('#makra-'+index).append("<input class=\"makra-mch\" ind=\""+TestMaker.QQQINDEX+"\" id=\"mkq-"+TestMaker.QQQINDEX+"\" maxlength=\"45\" type=\"text\" placeholder=\"type here...\" ><makra-mcht><input name=\"makra\" value=\""+TestMaker.QQQINDEX+"\" type=\"radio\"></makra-mcht>")
+                $('#mkq-'+TestMaker.QQQINDEX).bind('input propertychange', function() {
+                    var t = this.value;
+                    var f = this.attributes.ind.value;
+                    TestMaker.TEST.bank[TestMaker.ACTIVE]["_data"]["qAns"] = TestMaker.TEST.bank[TestMaker.ACTIVE]["_data"]["qAns"] || {};
+                    TestMaker.TEST.bank[TestMaker.ACTIVE]["_data"]["qAns"][f.toString()] = t;
+                });
+                $("input[name='makra'][value='"+TestMaker.QQQINDEX+"']").on('change', function(){
+                    let selected_value = $("input[name='makra']:checked").val();
+                    TestMaker.TEST.bank[TestMaker.ACTIVE]["_data"]["qShorthand"] = selected_value;
+                    $('#curAns1').text(TestMaker.letters.split("")[selected_value]);
+                });
             },
             enactAutosavePolling: () => {
                 TestMaker.AUTOSAVE_POLL = setInterval(function() {
