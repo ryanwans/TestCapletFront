@@ -22,6 +22,7 @@
     <script type="text/javascript" src="../patch/teacher.js"></script>
     <script type="text/javascript" src="../patch/LiveTesting.js"></script>
     <script type="text/javascript" src="../patch/socket.view.js"></script>
+    <script type="text/javascript" src="../patch/elemental.view.js"></script>
     <script type="text/javascript" src="../patch/TestMaker.js"></script>
     <script>if (window.module) module = window.module;</script>
   </head>
@@ -50,13 +51,11 @@
           <navobj onclick="TestMaker.autosave()" broq onmouseout="TestMaker.notip()" onmouseover="TestMaker.showTip(11)">
             Quick Save
           </navobj>
-          <navobj newq onmouseout="TestMaker.notip()" onmouseover="TestMaker.showTip(7)">
+          <navobj newq onclick="TestMaker.newQuestion()" onmouseout="TestMaker.notip()" onmouseover="TestMaker.showTip(7)">
             Create New Question
           </navobj>
           <hr>
-          <navobj onmouseout="TestMaker.notip()" onmouseover="TestMaker.showTip(6)">
-            Question 1 <subtr onmouseout="TestMaker.notip()" onmouseover="TestMaker.showTip(9)">X</subtr>
-          </navobj>
+          <navobj onmouseout="TestMaker.notip()" onmouseover="TestMaker.showTip(6)">Question 1 <subtr>X</subtr></navobj>
           
         </tm-nav>
         <maker>

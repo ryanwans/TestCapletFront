@@ -6,6 +6,7 @@ let Packer = remote.require('./remote/Packer.js');
 !(function(bindr) {
 
     window.TestMaker = window.TestMaker || new Object();
+    elemental.retrieveElements("/Users/ryanwans/dev/electron-test/TestMaker.elemental.html");
 
     if(0) {
         console.debug("Test Maker objec already exists. Call .new() to draft a new one");
@@ -36,6 +37,7 @@ let Packer = remote.require('./remote/Packer.js');
             footer: "<tmfoot><b>Autosave Status</b>: <span autosave>Waiting</span><tooltip><b>TIP: </b><tip></tip></tooltip></tmfoot>",
             start: () => {
                 showLoading(800);
+                // load elemental elements
                 $('.x-main').html("<div class='testmaker'></div>");
                 TestMaker.frame(0);
                 $('.MASTER').append(TestMaker.footer);
@@ -51,7 +53,9 @@ let Packer = remote.require('./remote/Packer.js');
                     };
                 });
             },
-            frame: (a) => {$('.testmaker').html(TestMaker.frames[a])},
+            frame: (a) => {
+                $('.x-main').html(elemental.Elements.DraftTest);
+            },
             showTip: (n) => {
                 $('tip').text(TestMaker.tips[n]);
             },
@@ -195,6 +199,17 @@ let Packer = remote.require('./remote/Packer.js');
                 TestMaker.AUTOSAVE_POLL = setInterval(function() {
                     TestMaker.autosave();
                 }, 60000);
+            },
+            newQuestion: () => {
+                // assert question object in QueNav
+                TestMaker.QQQINDEX = 0;
+                TestMaker.ACTIVE++;
+                TestMaker.ActiveQ++;
+                $('.tmnav').append('<navobj onmouseout="TestMaker.notip()" onmouseover="TestMaker.showTip(6)">Question '+(TestMaker.ActiveQ+1)+'<subtr>X</subtr></navobj>');
+
+                // reset maker-maker
+                $('maker-maker').attr('style', 'display: none;');
+                $('maker-chooser').attr("style", 'display: block;');
             }
         }
     }
