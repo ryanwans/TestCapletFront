@@ -168,10 +168,16 @@ window.TryResultAuthentication = async (id) => {
     var pwd = $('#temp_password').val();
     showLoading(500);
     var result = await Dash.Fetch('https://caplet.ryanwans.com/a3/l/q/svr', 'POST', '', JSON.stringify({password: btoa(pwd), auth: window.F.auth, id: id, now: Date.now()})) || {};
+    console.log(result);
     if("object" != typeof result) result = JSON.parse(result);
     window.FAR.selfClose();
     if(result.auth == true) {
-         
+        window.vis = window.vis || [];
+        try {
+            window.vis[0].render(result.data);
+        } catch(e) {
+            window.alert("There was an error trying to render the data.");
+        }
     } else if (result.auth == false) {
         window.ViewTestResults(id, 1);
     } else {
