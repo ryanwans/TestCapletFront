@@ -22,6 +22,8 @@ let Dash = remote.require('./remote/dash.js');
         window.pageDo["home"]();
     });
     ipcRenderer.send('grab-auth');
+    // get preset html
+    elemental.retrieveElements('../TestMaker.elemental.html');
 }()
 
 window.LoadTestList = async () => {
@@ -132,7 +134,56 @@ window.ForgetExtraOptions = () => {
         $('.x-test').addClass('hovrmain')
         $('.x-test-opts').html("<span style='font-size:12px;text-transform:uppercase;position: absolute;right: 13px;top: 8px;'>click to view</span>")
         $('.x-content-in').append("<finetext><b>NOTE: </b>You may have to re-enter your password before viewing reports.</finetext>")
-    },500)
+        var AllElements = document.getElementsByClassName('x-test');
+        for(let i=0; i<AllElements.length; i++) {
+            var id = AllElements[i].id.split("-")[2];
+            $(AllElements[i]).attr('onclick', 'window.ViewTestResults("'+id+'")');
+        }
+    },500);
+}
+
+window.ViewTestResults = (id, err) => {
+    var t = new FAR.popup({
+        moveable: false,
+        title: "User Authentication Required",
+        html: (err) ? elemental.getElement("ResultsError") : elemental.getElement("ResultsAuth"),
+        jQuery: true,
+        pageBlur: true,
+        escapeKey: true,
+        buttons: [
+            {
+                name: "Continue",
+                func: "window.TryResultAuthentication('"+id+"')"
+            },
+            {
+                name: "Cancel",
+                func: "window.FAR.selfClose()"
+            }
+        ]
+    }).hoist();
+    $('#temp_password').focus();
+}
+
+window.TryResultAuthentication = async (id) => {
+    var pwd = $('#temp_password').val();
+    showLoading(500);
+    var result = await Dash.Fetch('https://caplet.ryanwans.com/a3/l/q/svr', 'POST', '', JSON.stringify({password: btoa(pwd), auth: window.F.auth, id: id, now: Date.now()})) || {};
+    if("object" != typeof result) result = JSON.parse(result);
+    window.FAR.selfClose();
+    if(result.auth == true) {
+         
+    } else if (result.auth == false) {
+        window.ViewTestResults(id, 1);
+    } else {
+        var t = new FAR.popup({
+            moveable: true,
+            title: "Error Notice",
+            html: "An error occured while trying to fetch the data.<br>Try again later.",
+            jQuery: true,
+            pageBlur: true,
+            escapeKey: true,
+        }).hoist();
+    }
 }
 
 $(document).ready(() => {

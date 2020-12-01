@@ -6,7 +6,7 @@ let Packer = remote.require('./remote/Packer.js');
 !(function(bindr) {
 
     window.TestMaker = window.TestMaker || new Object();
-    elemental.retrieveElements("/Users/ryanwans/dev/electron-test/TestMaker.elemental.html");
+    elemental.retrieveElements("../TestMaker.elemental.html");
 
     if(0) {
         console.debug("Test Maker objec already exists. Call .new() to draft a new one");

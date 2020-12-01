@@ -167,6 +167,7 @@
         var CLOSESVG = '<svg class="frx-no-select frx-action-close frx-close" viewBox="0 0 150 150" xmlns="http://www.w3.org/2000/svg" xmlns:bx="https://boxy-svg.com"><path d="M 165 95 H 175 V 150 H 235 V 160 H 175 V 220 H 165 V 160 H 110 V 150 H 165 Z" transform="matrix(0.694356, 0.719632, -0.719632, 0.694356, 62.81255, -158.513153)" bx:shape="cross 100 100 100 100 10 10 0.484 1@ecb63048"></path></svg>';
         close.innerHTML = CLOSESVG;
         // continue on to add the insides of tCont and tFot
+        if("object" == typeof that.html) {that.html = that.html.outerHTML;}
         tCont.innerHTML = that.html;
         var buttons = new Array();
         var i = 0, b = that.buttons.length;
