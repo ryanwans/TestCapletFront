@@ -174,7 +174,7 @@ window.TryResultAuthentication = async (id) => {
     if(result.auth == true) {
         window.vis = window.vis || [];
         try {
-            window.vis[0].render(result.data);
+            window.vis[0].render(result.data, '.x-main', id);
         } catch(e) {
             window.alert("There was an error trying to render the data.");
         }

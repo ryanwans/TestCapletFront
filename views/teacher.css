@@ -427,3 +427,48 @@ live-live {
     font-size: 14px;
     color: rgb(53, 53, 53);
 }
+.visBigHalf {
+    width: 374px;
+    margin-right: 10px;
+    border: black 1px solid;
+    display:inline-block;
+    margin-top: 5px;
+    border-radius: 3px;
+    border: rgb(155, 155, 155) 1px solid;
+    height: 250px;
+    top:0!important;
+}
+.visSmallKeystone {
+    width: 230px;
+    margin-right: 28px;
+    height: 180px;
+    margin-top: 15px;
+    border-radius: 3px;
+    border: rgb(155, 155, 155) 1px solid;
+    display:inline-block;
+}
+.visTopper {
+    font-size: 15px;
+    font-weight: 600;
+    padding: 8px 12px;
+    border-bottom: 1px rgb(155, 155, 155) solid;
+    background-color: rgb(192, 192, 192);
+}
+.visHalfGraph {
+    /* 347px by 212px */
+    height: 192px;
+    width: 354px;
+    padding: 10px;
+    top: 34px;
+    background-color: rgb(215, 215, 215);
+}
+.visHalfData {
+    /* 230px by 142px */
+    height: 122px;
+    width: 210px;
+    top: 34px;
+    padding: 10px;
+    text-align: center;
+    font-weight: 700;
+    background-color: rgb(215, 215, 215);
+}
