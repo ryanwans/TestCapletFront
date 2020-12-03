@@ -47,7 +47,7 @@
 <!!element ResultsData>
     <div class="visBigHalf">
         <div class="visTopper">
-            Scores vs. Time
+            Average Score Spread
         </div>
         <div class="visHalfGraph">
             <canvas id="visGraphSVT"></canvas>
@@ -55,9 +55,9 @@
     </div>
     <div class="visBigHalf">
         <div class="visTopper">
-            Test Participants
+            Test Participant Scores
         </div>
-        <div id="visStudents" class="visHalfGraph">
+        <div id="visStudents" class="visHalfGraphNoPad">
 
         </div>
     </div>
@@ -66,7 +66,7 @@
         <div class="visTopper">
             Average Duration
         </div>
-        <div id="visDuration" class="visHalfData">
+        <div id="visDuration" class="visHalfData bigText">
 
         </div>
     </div>
@@ -74,7 +74,7 @@
         <div class="visTopper">
             Average Score
         </div>
-        <div id="visScore" class="visHalfData">
+        <div id="visScore" class="visHalfData bigTextvis">
 
         </div>
     </div>
@@ -82,9 +82,20 @@
         <div class="visTopper">
             Submission Rate
         </div>
-        <div id="visSubmission" class="visHalfData">
+        <div id="visSubmission" class="visHalfData bigText">
 
         </div>
     </div>
-    <br><br><br><br>
+    <br>
+    <div class="visBigFull">
+        <div class="visTopper">
+            Viewing Responses For: Question <span id="visActQue">1</span>
+            <img onclick="window.vis[0].nextQue()" title="Next Question" src="../hard/arrow.svg" class="arr-for">
+            <img onclick="window.vis[0].prevQue()" title="Previous Question" src="../hard/arrow.svg" class="arr-back">
+            <visprompt>VIEW PROMPT</visprompt>
+        </div>
+        <div class="visFullGraph">
+        </div>
+    </div><br>
+    <finetext>Powered by Ryan Wans Analytics</finetext>
 </!!element>
