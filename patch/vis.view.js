@@ -178,6 +178,10 @@ window.vis = [
                     vis[12] = 0; // active question
                     vis[0].loadBigQue(vis[12]);
 
+                    $('.visIntelQue').click(function() {
+                        vis[0].intel(this.getAttribute('viq'));
+                    })
+
             },100); // Give time for elemental to render
         },
         chartColors: (a) => {
@@ -242,7 +246,18 @@ window.vis = [
             var DATA = vis[2][index];
             console.log(DATA);
             DATA = vis[0].parseGraphData(DATA);
-            var LABELS = vis[0].letters.split("").splice(0, DATA.length).join("");
+            var this_data = vis[0].test[vis[12]]._data;
+            var respectType = function(i) {
+                if(i==0){return [Object.keys(this_data.qAns).length, vis[0].letters.split("").splice(0, Object.keys(this_data.qAns).length).join("")]};
+                if(i==1){return [5, "ERROR"]};
+                if(i==2){return [this_data.qAns.values.length, this_data.qAns.values]};
+                if(i==3){return [2, ["TRUE", "FALSE"]]};
+                if(i==4){return [Object.keys(this_data.qAns).length, vis[0].letters.split("").splice(0, Object.keys(this_data.qAns).length).join("")]};
+                if(i==5){return [this_data.qAns.length], this_data.qAns};
+                if(i==6){return [this_data.qAns.R.length, this_data.qAns.R]};
+            }
+            var f = respectType(this_data.qType)
+            var LABELS = f[1];
             new Chart(document.getElementById(vis[8][index]), {
                 type: vis[6][index],
                 data: {
@@ -294,7 +309,44 @@ window.vis = [
 
             } else if (Data[0] instanceof Object) {
 
-            } else {return Data;}
+            }
+            return Data;
+        },
+        showCurrentPrompt: () => {
+            var thisTest = window.vis[0].test[vis[12]]
+            var Question = thisTest._data.qValue;
+            var Shorthand = thisTest._data.qShorthand;
+            if("number" == typeof Shorthand) {Shorthand = vis[0].letters.split("")[Shorthand];}
+            var t = new FAR.popup({
+                moveable: true,
+                title: "View Question Prompt",
+                html: "<b>Prompt for Question "+(vis[12]+1)+":</b><br>"+Question+"<br><br><b>The Answer Is: </b>"+Shorthand,
+                jQuery: true,
+                pageBlur: false,
+                escapeKey: true,
+            }).hoist();
+        },
+        intel: (index) => {
+            var main = ".visSecUnderRevise";
+            $(main).html("<b>Loading analysis...</b>");
+            var r = "";
+            if(index == 0) {
+                r += "<b>Student who invoked the anti-cheat:</b><br>";
+                var target = vis[1].data
+                for(let i=0; i<target.length; i++) {
+                    if(target[i].wpFire) {
+                        r += "-&nbsp;&nbsp;&nbsp;"+vis[1].names[i]+"<br>"
+                    }
+                }
+                
+            } else {
+                r += "<b>Notice:</b><br>This feature is experimental and still under development. Some question may not work at the moment";
+            }
+
+            r +="<finetext style='position:absolute;bottom:5px;'>Powered by Ryan Wans Analytics</finetext>"
+            setTimeout(function() {
+                $(main).html(r)
+            }, 800);
         }
     }
 ]

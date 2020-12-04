@@ -92,9 +92,44 @@
             Viewing Responses For: Question <span id="visActQue">1</span>
             <img onclick="window.vis[0].nextQue()" title="Next Question" src="../hard/arrow.svg" class="arr-for">
             <img onclick="window.vis[0].prevQue()" title="Previous Question" src="../hard/arrow.svg" class="arr-back">
-            <visprompt>VIEW PROMPT</visprompt>
+            <visprompt onclick="window.vis[0].showCurrentPrompt()">VIEW PROMPT</visprompt>
         </div>
         <div class="visFullGraph">
+        </div>
+    </div><br>
+    <div style="margin-bottom: 20px!important;" class="visBigFull">
+        <div class="visTopper">
+            Intelligent Data Insights
+        </div>
+        <div class="visFullGraphNoIN">
+            <div style="border-right: rgb(155, 155, 155) 1px solid;" class="visIntelSide">
+                <div class="visSecTop">
+                    Ask Analytics Intelligence
+                </div>
+                <div class="visSecUnder">
+                    <span viq="0" class="visIntelQue">Which students triggered the anti-cheat?</span>
+                    <span viq="1" class="visIntelQue">What was the hardest test question?</span>
+                    <span viq="2" class="visIntelQue">What was the easiest test question?</span>
+                    <span viq="3" class="visIntelQue">Which student had the longest duration?</span>
+                    <span viq="4" class="visIntelQue">Which students didn't submit the test?</span>
+                    <span viq="5" class="visIntelQue">What was the test duration range?</span>
+                    <span viq="6" class="visIntelQue">How did test duration correlate to final score?</span>
+                    <span viq="7" class="visIntelQue">Which student had the fastest test speed?</span>
+                    <span viq="8" class="visIntelQue">What scores did students who didn't submit get?</span>
+                    <span viq="9" class="visIntelQue">Which students scored the highest?</span>
+                    <span viq="10" class="visIntelQue">Was any suspicious network activity detected?</span>
+                    <span viq="11" class="visIntelQue">What was the median vs. average score?</span>
+                </div>
+            </div>
+            <div class="visIntelSide">
+                <div class="visSecTop">
+                    View Indepth Data With Explaination
+                </div>
+                <div class="visSecUnderRevise">
+                    <i>Click a question to view insights.</i>
+                    <finetext style='position:absolute;bottom:5px;'>Powered by Ryan Wans Analytics</finetext>
+                </div>
+            </div>
         </div>
     </div><br>
     <finetext>Powered by Ryan Wans Analytics</finetext>

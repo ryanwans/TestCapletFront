@@ -557,7 +557,6 @@ vists {
     border: rgb(155, 155, 155) 1px solid;
     height: 400px;
     float: left;
-    margin-bottom: 15px;
 }
 .visFullGraph {
     /* 347px by 212px */
@@ -602,4 +601,54 @@ visprompt {
 visprompt:hover{
     cursor: pointer;
     transform: scale(1.1);
+}
+space {
+    display: block;
+    width: 100%;
+    height: 20px;
+}
+.visFullGraphNoIN {
+    /* 347px by 212px */
+    height: 362px;
+    width: 755px;
+    top: 34px;
+    background-color: rgb(215, 215, 215);
+}
+
+.visIntelSide {
+    width: 377px;
+    height: 100%;
+    float: left;
+}
+.visSecTop {
+    font-size: 15px;
+    font-weight: 500!important;
+    padding: 8px 10px;
+    border-bottom: 1px rgb(155, 155, 155) solid;
+    background-color: rgb(204, 204, 204);
+    width: 357px;
+    text-align: center;
+    text-decoration: underline;
+    top: 0;
+}
+/* 339 -38 */
+.visSecUnder {
+    height: 324px;
+    width: 100%;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+.visIntelQue {
+    font-size: 15px;
+    padding: 5px 10px;
+    display: block;
+    border-bottom: 1px rgb(177, 177, 177) solid;
+    cursor: pointer;
+}
+.visSecUnderRevise {
+    height: 304px;
+    width: 357px;
+    padding: 10px;
+    font-size: 15px;
+    position: relative;
 }
