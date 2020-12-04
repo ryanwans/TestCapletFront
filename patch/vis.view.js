@@ -330,6 +330,12 @@ window.vis = [
             var main = ".visSecUnderRevise";
             $(main).html("<b>Loading analysis...</b>");
             var r = "";
+            Array.max = function( array ){
+                return Math.max.apply( Math, array );
+            };
+            Array.min = function( array ){
+                return Math.min.apply( Math, array );
+            };
             if(index == 0) {
                 r += "<b>Student who invoked the anti-cheat:</b><br>";
                 var target = vis[1].data
@@ -338,14 +344,93 @@ window.vis = [
                         r += "-&nbsp;&nbsp;&nbsp;"+vis[1].names[i]+"<br>"
                     }
                 }
-                
+            } else if (index == 1) {
+                r += "<b>Notice:</b><br>This feature is experimental and still under development. Some question may not work at the moment";
+            } else if (index == 2) {
+                r += "<b>Notice:</b><br>This feature is experimental and still under development. Some question may not work at the moment";
+            } else if (index == 3) {
+                var ind = vis[4].indexOf(Array.max(vis[4]));
+                r += "The student who had the longest duration was <b>"+vis[1].names[ind]+"</b>, taking a total of <b>"+Math.round(vis[4][ind]/1000)+" seconds</b> to complete the test.";
+            } else if (index == 4) {
+                var indices = new Array();
+                for(let i=0; i<vis[3].length; i++) {
+                    if(vis[3][i] == null) {indices.push(i);}
+                }
+                r += "<b>Student who didn't submit the test:</b><br>";
+                for(let i=0; i<indices.length; i++) {
+                    r += "-&nbsp;&nbsp;&nbsp;"+vis[1].names[indices[i]]+"<br>"
+                }
+            } else if (index == 5) {
+                var range = Array.max(vis[4]) - Array.min(vis[4]);
+                range = Math.round(range/1000); // to seconds
+                r += "The spread from longest duration to shortest duration was <b>"+range+" seconds.</b>";
+            }  else if (index == 6) {
+                // Buckle up, this will be HARD :| 
+                // But fun? maybe. 3, 2, 1..... GO
+                var MASTER = new Array(vis[6].length+1);
+                // OK, SO, heres what im thinking:
+                // An array where every index is an average of durations from that score. then plot it
+                for(let i=0; i<vis[4].length; i++) {
+                    var mI = (vis[3][i] == null) ? 0 : vis[3][i];
+                    MASTER[mI] = MASTER[mI] || [];
+                    MASTER[mI].push(vis[4][i]);
+                }
+                for(let i=0; i<MASTER.length; i++) {
+                    MASTER[i] = vis[0].avg(MASTER[i]) || 0;
+                    MASTER[i] = Math.round(MASTER[i]/1000);
+                }
+                var LABELS = new Array();
+                for(let i=0; i<=vis[6].length; i++) {
+                    LABELS.push(i+"/"+vis[6].length)
+                }
+                // Now graph it :P
+                r += "<canvas id='visTempCanvasGrapher'></canvas>";
+                r += "Above is a line graph depicting the relation between score and duration, where the x-axis is occupied by score."
+            } else if (index == 7) {
+                var ind = vis[4].indexOf(Array.min(vis[4]));
+                r += "The student who had the shortest duration was <b>"+vis[1].names[ind]+"</b>, taking a total of <b>"+Math.round(vis[4][ind]/1000)+" seconds</b> to complete the test.";
+            } else if (index == 8) {
+                r += "<b>Notice:</b><br>This feature is experimental and still under development. Some question may not work at the moment";
+            } else if (index == 9) {
+                var g = [];
+                for(let i=0; i<vis[3].length; i++) {
+                    if(vis[3][i] == vis[6].length) {g.push(i)}
+                }
+                for(let i=0; i<g.length; i++) {
+                    g[i] = vis[1].names[i]
+                }
+                r += "<b>Students who had a perfect score:</b><br>";
+                for(let i=0; i<g.length; i++) {
+                    r += "-&nbsp;&nbsp;&nbsp;"+g[i]+"<br>"
+                }
+                if(g.length == 0) {r+="No students matched this query."}
+            } else if (index == 10) {
+                r += "<b>No Suspicious Activity Detected.</b><br>All packets sent to and from Test Caplet during the time of testing were signed and authorized.<br><br>"
+                r += "<finetext><b>NOTE:</b> Test Caplet does not eavsedrop on client network activity, just the activity on our servers network.</finetext>"
             } else {
                 r += "<b>Notice:</b><br>This feature is experimental and still under development. Some question may not work at the moment";
             }
 
             r +="<finetext style='position:absolute;bottom:5px;'>Powered by Ryan Wans Analytics</finetext>"
             setTimeout(function() {
-                $(main).html(r)
+                $(main).html(r);
+                if(index == 6) {
+                    new Chart(document.getElementById('visTempCanvasGrapher'), {
+                        type: 'line',
+                        data: {
+                          labels: LABELS,
+                          datasets: [{
+                              backgroundColor: vis[0].chartColors(1),
+                              data: MASTER
+                          }]
+                        },
+                        options: {
+                          legend: { display: false },
+                          title: {display: false,text: ''},
+                          scales: {yAxes: [{ticks: {beginAtZero: true}, drawBorder: false,}], xAxes: [{gridLines: {color: "rgba(0, 0, 0, 0)",}}]}
+                        }
+                    });
+                }
             }, 800);
         }
     }
