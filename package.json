@@ -1,9 +1,13 @@
 {
     "name": "electron-test",
-    "version": "1.5.9",
+    "version": "1.5.10",
     "description": "Modern Student Testing Platform",
     "productName": "Test Caplet",
     "main": "index.js",
+    "files": [
+        "**/*",
+        "build/icon.*"
+    ],
     "scripts": {
         "test": "electron .",
         "start": "npm install && electron ./app",

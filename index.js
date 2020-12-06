@@ -1,8 +1,11 @@
 const { app, BrowserWindow, Menu, ipcMain, ipcRenderer } = require('electron');
+var path =require('path');
 var public = new Object();
 
 const server = "hazel.ryanwans.vercel.app";
 const feed = `${server}/update/${process.platform}/${app.getVersion()}`;
+
+var icon = path.join(__dirname, 'build/icon.png');
 
 // autoUpdater.setFeedURL(feed)
 
@@ -25,7 +28,8 @@ function createLauncher() {
       title: "Test Caplet Viewer",
       fullscreen: false,
       enableRemoteModule: true,
-      ico: './hard/icon.ico'
+      ico: './build/icon.ico',
+      icon: icon
     }
   })
   win.setResizable(false);
@@ -62,7 +66,8 @@ function createTeacher() {
       title: "Test Caplet Teacher",
       fullscreen: false,
       enableRemoteModule: true,
-      ico: './hard/ICON.ico'
+      ico: './build/icon.ico',
+      icon: icon
     }
   })
   win.setResizable(false);
@@ -101,7 +106,8 @@ function createStudent() {
       title: "Test Caplet",
       fullscreen: false,
       enableRemoteModule: true,
-      ico: './hard/ICON.ico'
+      ico: './build/icon.ico',
+      icon: icon
     }
   })
   win.setResizable(false);
