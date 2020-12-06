@@ -16,7 +16,7 @@ window.LiveTesting = new Object();
         TestingHTML += 
         "<livemaster><live-topbar><live-pie>"+
         "<live-s-head>student progress</live-s-head><canvas id='pie-chart' width='185' height='150'></canvas></live-pie>"+
-        "<live-actions><live-s-head>quick actions</live-s-head><br><live-b class='x-ss' onclick=\"LiveTesting.confirm('start')\">Start / Stop Testing</live-b><live-b>Display Test Code</live-b><live-b>Additional Options</live-b><live-sta stop>Testing Stopped</live-sta></live-actions>"+
+        "<live-actions><live-s-head>quick actions</live-s-head><br><live-b class='x-ss' onclick=\"LiveTesting.confirm('start')\">Start / Stop Testing</live-b><live-b onclick=\"LiveTesting.showCode()\">Display Test Code</live-b><live-b>Additional Options</live-b><live-sta stop>Testing Stopped</live-sta></live-actions>"+
         "<live-timer><live-s-head>elapsed time</live-s-head><live-tnow>0:00:00</live-tnow></live-timer></live-topbar>"+
         "<live-stud><live-s-head>student testing progress</live-s-head><br><div class='x-s-repl'></div></live-stud>"+
         "<live-live class='x-l-repl'><live-s-head>live updates log</live-s-head></live-live></livemaster>";
@@ -46,6 +46,17 @@ window.LiveTesting = new Object();
         });
     }
     window.LiveTesting.state = "closed";
+    window.LiveTesting.showCode = () => {
+        var f = window.tempLiveTestingCode;
+        var t = new FAR.popup({
+            moveable: false,
+            title: "Test Caplet User Alert",
+            html: "<b>TEST JOIN CODE:</b><br><span style='font-weight:500;font-size:42px;'>"+f+"</span>",
+            jQuery: true,
+            pageBlur: true,
+            escapeKey: true
+        }).hoist();
+    }
     window.LiveTesting.bgPrc = {
         socket: false,
         students: false,

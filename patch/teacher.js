@@ -13,6 +13,7 @@ let Dash = remote.require('./remote/dash.js');
         "you": '<div class="x-main x-you"> <h1 class="x-title">Manage Your Profile</h1> <h2 class="x-subtitle">your profile is managed by your organization leader</h2> <br> <div class="x-content"> <div class="x-content-head"> profile metadata </div> <div class="x-content-in"> <table> <tr> <th>Name</th> <td id="x-gName"></td> </tr> <tr> <th>Organization  </th> <td id="x-gOrg"></td> </tr> <tr> <th>Created</th> <td id="x-gMade"></td> </tr> <tr> <th>Org. Leader</th> <td id="x-gLead"></td> </tr> <tr> <th>Role</th> <td id="x-gRole"></td> </tr> </table> </div> </div> <div class="x-content"> <div class="x-content-head"> account actions </div> <div class="x-content-in"> <button class="x-button x-inline hover" onclick="window.closeMe();">Logout</button> <button class="x-button x-inline hover" onclick="window.location=\'mailto:caplet.admin@ryanwans.com\'">Contact Support</button> <button class="x-button x-inline hover" onclick="window.alert(\'No update available (latest version).\');">Update Software</button> </div> </div> <div class="x-content"> <div class="x-content-head"> software metadata </div> <div class="x-content-in"> <table> <tr> <th>Version</th> <td>v20-8.1.6a</td> </tr> <tr> <th>Made by  </th> <td>Ryan Wans Development</td> </tr> <tr> <th>License</th> <td>MIT Software License</td> </tr> <tr> <th>Copyright  </th> <td>Copyright © 2020 Ryan Wans Development. All Right Reserved.</td> </tr> </table> </div> </div> </div>',
         "tests": '<div class="x-main x-you"> <h1 class="x-title"> Test Administration </h1> <H1 class="x-subtitle"> Manage, Administer, and Monitor Tests </H1> <br> <div class="x-content x-t-acts"> <div class="x-content-head"> test quick actions </div> <div class="x-content-in"> <button onclick="TestMaker.start()" class="x-button hover">Create New Test</button> <button class="x-button hover">View Reports</button> <button onclick="window.LoadTestList()" class="x-button hover">Refresh Test List</button></div> </div> <div class="x-content x-tests"> <div class="x-content-head"> manage your tests </div> <div class="x-content-in x-test-list">You have no tests. To make a new test, click "Create New Test"</div> </div> </div>',
         "reports": '<div class="x-main x-you"> <h1 class="x-title"> Test Result Reports </h1> <H1 class="x-subtitle"> Analyze and Compare Student Results </H1> <br> <div class="x-content x-tests"> <div class="x-content-head">select test reults </div> <div class="x-content-in x-test-list">You have no tests. To make a new test, visit the "Tests" tab.</div> </div> </div>',
+        "users": '<div class="x-main x-you"> <h1 class="x-title">Your Students</h1> <H1 class="x-subtitle">This page is still under construction</H1></div>'
     }
     // get meta
     ipcRenderer.on('return-auth', async (event, arg) => {
@@ -46,9 +47,9 @@ window.LoadTestList = async () => {
                 '<span class="x-test-title">'+f[i].name+'</span>'+
                 '<span class="x-test-opts">'+
                 '<button onclick="window.testResults(\''+f[i].code+'\')" class="x-test-res">results</button>'+
-                '<button '+ops[0].split("-")[1]+' onclick="window.liveTesting(\''+f[i].tuid+'\', '+i+')" class="x-test-'+ops[0]+'">live</button>'+
+                '<button '+ops[0].split("-")[1]+' onclick="window.liveTesting(\''+f[i].tuid+'\', '+i+', \''+f[i].code+'\')" class="x-test-'+ops[0]+'">live</button>'+
                 '<button onclick="window.'+ops[1]+'Test(\''+f[i].code+'\')" class="x-test-'+ops[1]+'">'+ops[1]+'</button>'+
-                '<img src="../hard/dots.svg" class="x-test-more"/>'+
+                '<img src="../hard/dots.svg" onclick="window.testMore(\''+f[i].code+'\')" class="x-test-more"/>'+
                 '</span> '+
                 '</div>';
             $('.x-test-list').append(fString);
@@ -91,7 +92,8 @@ window.pageDo = {
     "reports": () => {
         window.LoadTestList();
         window.ForgetExtraOptions();
-    }
+    },
+    "users": () => {}
 }
 window.closeMe = () => {
     var remote = require('electron').remote;
@@ -110,12 +112,23 @@ window.openTest = (code) => {
     Dash.Fetch('https://caplet.ryanwans.com/a3/ported/t/sTD/state', 'GET', '?code='+code+"&state=open&index="+window.F.index+"&auth="+window.F.auth)
 }
 
-window.liveTesting = (tuid, index) => {
+window.liveTesting = (tuid, index, code) => {
     window.showLoading(2200);
+    window.tempLiveTestingCode = code;
     setTimeout(function() {
         LiveTesting.setWindow(".x-main");
         LiveTesting.bgPrc.start(tuid, index);
     },800)
+}
+window.testMore = (tuid) => {
+    var t = new FAR.popup({
+        moveable: false,
+        title: "Test Caplet User Alert",
+        html: "<b>TEST IDENTIFIER:</b> "+tuid+"<br>Sorry, but this feature is currently under construction.",
+        jQuery: true,
+        pageBlur: true,
+        escapeKey: true
+    }).hoist();
 }
 
 window.lockTest = (code) => {

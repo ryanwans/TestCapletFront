@@ -406,7 +406,7 @@ window.vis = [
                 if(g.length == 0) {r+="No students matched this query."}
             } else if (index == 10) {
                 r += "<b>No Suspicious Activity Detected.</b><br>All packets sent to and from Test Caplet during the time of testing were signed and authorized.<br><br>"
-                r += "<finetext><b>NOTE:</b> Test Caplet does not eavsedrop on client network activity, just the activity on our servers network.</finetext>"
+                r += "<finetext><b>NOTE:</b> Test Caplet does not eavesdrop on client network activity, just the activity on our servers network.</finetext>"
             } else {
                 r += "<b>Notice:</b><br>This feature is experimental and still under development. Some question may not work at the moment";
             }
