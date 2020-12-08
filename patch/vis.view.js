@@ -3,6 +3,8 @@
 window.vis = [
     {
         render: (DataSet, targetElement, id, TEST_OBJECT) => {
+            window.TCA.record("StartDataVis");
+            
             window.vis[1]       = new Object();
             window.vis[1].names = Object.keys(DataSet);
             window.vis[1].data  = Object.values(DataSet);

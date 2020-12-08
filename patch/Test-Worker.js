@@ -53,6 +53,7 @@ window.TestWorker = {
         TestWorker.setHeader();
         $('.repl-target').html("");
         window.TestWorker.displayQuestion(TestWorker.active);
+        window.TCA.record("UserStartTest")
     },
     next: function() {
         TestWorker.active++;
@@ -291,6 +292,7 @@ window.TestWorker = {
         TestWorker.alert("Test Caplet Alert", "Your test has been automatically submitted because the alotted testing time has expired.");
     },
     submitTest: async () => {
+        window.TCA.record("UserSubmitTest")
         TestWorker.submitTime = Date.now();
         // window.TestWorker.breaker();
         $('x-q-select').attr("style", "display: none;");
@@ -320,6 +322,7 @@ window.TestWorker = {
         }, 60000);
     },
     lockTest: () => {
+        window.TCA.record("UserLockTest")
         if(!TestWorker.submit) {
             TestWorker.wpFire = true;
             TestWorker.submitTime = Date.now();

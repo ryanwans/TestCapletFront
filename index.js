@@ -1,4 +1,5 @@
 const { app, BrowserWindow, Menu, ipcMain, ipcRenderer } = require('electron');
+var checkInternet = require("check-internet-connected");
 var path =require('path');
 var public = new Object();
 
@@ -51,6 +52,32 @@ function createLauncher() {
   
   // Make instance public for closure
   public['win'] = win;
+
+  const config = {
+    timeout: 5000, //timeout connecting to each try (default 5000)
+    retries: 3,//number of retries to do before failing (default 5)
+    domain: 'google.com'//the domain to check DNS record of
+  }
+
+  var internet = false;
+  checkInternet(config)
+    .then(() => {
+      console.log("Internet connection detected and approved.");          
+      internet = true;
+    }).catch((err) => {
+      console.log("No connection");
+      internet = false;
+    });
+
+    ipcMain.on("get-internet", (event, arg) => {
+      event.reply('internet-status', internet);
+    });
+    win.on('close', (e) => {
+      ipcMain.on('continue-close', (a,b) => {
+        app.quit();
+      })
+      win.webContents.send('try-window-close');
+    })
 }
 
 function createTeacher() {
@@ -93,6 +120,13 @@ function createTeacher() {
   win.once('ready-to-show', () => {
     autoUpdater.checkForUpdatesAndNotify();
   });
+
+  win.on('close', (e) => {
+    ipcMain.on('continue-close', (a,b) => {
+      app.quit();
+    })
+    win.webContents.send('try-window-close');
+  })
 }
 function createStudent() {
   const win = new BrowserWindow({
@@ -129,6 +163,13 @@ function createStudent() {
   
   // Make instance public for closure
   public['student'] = win;
+
+  win.on('close', (e) => {
+    ipcMain.on('continue-close', (a,b) => {
+      app.quit();
+    })
+    win.webContents.send('try-window-close');
+  })
 }
 
 ipcMain.on('win-raster-student', (event, arg) => {
@@ -169,8 +210,12 @@ app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (BrowserWindow.getAllWindows().length === 0) {
-    createLauncher()
+    createLauncher();
+
   }
 })
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
+
+
+// RYAN - Ensure that TCA fires excess data before total close.

@@ -110,6 +110,7 @@ let Packer = remote.require('./remote/Packer.js');
                     $('tip').text("");
                     $('.testmaker').html("");
                     TestMaker.LAUNCH_MAKER(window.TestMakerData);
+                    window.TCA.record('StartTestMaker')
                 }
             },
             notification: (a) => {window.alert("Note from TestMaker: " + a);},

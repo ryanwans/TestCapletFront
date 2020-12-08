@@ -90,6 +90,7 @@ window.LiveTesting = new Object();
             //$('#load-rem').remove();
         },
         SOCKET_start: (tuid) => {
+            window.TCA.record("StartSocketPolling");
             LiveTesting.socket = io("https://caplet.ryanwans.com/a3/sockets/sss");
             LiveTesting.socket.on('return', (data) => {
                 console.debug("socket server emitted bypass");

@@ -28,6 +28,7 @@ let Dash = remote.require('./remote/dash.js');
 }()
 
 window.LoadTestList = async () => {
+    window.TCA.record("RenderTestList")
     window.showLoading(500);
     var f = await Dash.Fetch('https://caplet.ryanwans.com/a3/l/q/a/t/tl', 'GET', '?index='+window.F.index+"&auth="+window.F.auth, null);
     window.TestData = f;
@@ -96,12 +97,14 @@ window.pageDo = {
     "users": () => {}
 }
 window.closeMe = () => {
+    window.TCA.record("EncodedWindowClose")
     var remote = require('electron').remote;
     var w = remote.getCurrentWindow();
     w.close();
 }
 
 window.openTest = (code) => {
+    window.TCA.record("OpenTest")
     window.showLoading(800);
     setTimeout(function() {
         $('#x-TCODE-'+code+" .x-test-open").text("LOCK");
@@ -113,6 +116,7 @@ window.openTest = (code) => {
 }
 
 window.liveTesting = (tuid, index, code) => {
+    window.TCA.record("StartLiveTesting")
     window.showLoading(2200);
     window.tempLiveTestingCode = code;
     setTimeout(function() {
@@ -132,6 +136,7 @@ window.testMore = (tuid) => {
 }
 
 window.lockTest = (code) => {
+    window.TCA.record("LockTest")
     window.showLoading(800);
     setTimeout(function() {
         $('#x-TCODE-'+code+" .x-test-lock").text("OPEN");

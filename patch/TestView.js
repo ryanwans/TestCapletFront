@@ -12,6 +12,7 @@ window.TV = new Object();
 
     // Get Test Meta Data
     var setTestData = async (data) => {
+        window.TCA.record("RenderNewTestData")
         $('#hot-testName').text(data.name);
         $('#hot-testQs').text(data.meta.count + " Questions");
         $('#hot-testTime').text((data.meta.time == null) ? "No Time Limit" : data.meta.time/60000 + " Minutes");
@@ -104,6 +105,7 @@ window.TV = new Object();
         return await Overwatch.Fetch("https://caplet.ryanwans.com/a3/ported/t/gTD/a", "GET", "?testCode="+TestCode);
     }
     window.closeNow = () => {
+        window.TCA.record("EncodedWindowCloseStudent");
         var remote = require('electron').remote;
         var w = remote.getCurrentWindow();
         w.close();

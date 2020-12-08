@@ -9,10 +9,15 @@
         window.version = arg;
         $('.v').text(window.version)
     });
+    ipcRenderer.on('internet-status', (event, arg) => {
+        if(!arg){window.alert("No internet connection was detected. Internet is needed to run this app.");
+        $(document.body).html("<h2>No Internet Connection Detected</h2><br>Please restart when you have connected to the internet.");}
+    })
     ipcRenderer.send('version');
+    ipcRenderer.send('get-internet');
     $('.xx2-error-t').hide();
     $('.xx2-error-s').hide();
-
+    document.cookie += "testcaplet-sessiontoken=1;"
     const makeid = length => {
         let text = "";
         const possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
@@ -23,6 +28,9 @@
     }
 
     window.license = makeid(20);
+
+    window.TCA.record("OpenTestCaplet");
+    window.TCA.patch.license = window.license;
 
     window.Login = new Object();
     window.Login['teacher'] = () => {
@@ -42,9 +50,11 @@
         }, 100)
     }
     window.Login['errPassT'] = () => {
+        window.TCA.record("FailedStudentJoin")
         $('.xx2-error-t').attr("id", "xx2-priority");
     }
     window.Login['errPassS'] = () => {
+        window.TCA.record("FailedTeacherLogin")
         $('.xx2-error-s').attr('id', 'xx2-priority');
     }
     window.Login['attempt'] = (method, target1, target2) => {
@@ -80,6 +90,7 @@
                 let Return = await ReturnPromise;
                 let Login = Return.auth;
                 if(!Login) {
+                    window.TCA.record("WebServerError");
                     if("teacher" == method) {
                         $('#t-l-u').val('');
                         $('#t-l-p').val('');

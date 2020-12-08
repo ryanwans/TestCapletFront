@@ -1,6 +1,6 @@
 {
     "name": "electron-test",
-    "version": "1.5.10",
+    "version": "1.6.0",
     "description": "Modern Student Testing Platform",
     "productName": "Test Caplet",
     "main": "index.js",
@@ -26,6 +26,7 @@
         "patch-package": "^6.2.2"
     },
     "dependencies": {
+        "check-internet-connected": "^2.0.5",
         "electron-fetch": "^1.7.1",
         "electron-osx-sign": "^0.4.17",
         "electron-packager": "^15.1.0",
