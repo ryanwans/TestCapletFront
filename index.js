@@ -1,6 +1,8 @@
 const { app, BrowserWindow, Menu, ipcMain, ipcRenderer } = require('electron');
 var checkInternet = require("check-internet-connected");
 var path =require('path');
+const { v4: uuidv4 } = require('uuid');
+var fs = require('fs');
 var public = new Object();
 
 const server = "hazel.ryanwans.vercel.app";
@@ -9,6 +11,29 @@ const feed = `${server}/update/${process.platform}/${app.getVersion()}`;
 var icon = path.join(__dirname, 'build/icon.png');
 
 // autoUpdater.setFeedURL(feed)
+
+var leaseExists;
+var leaseFile;
+var lease; 
+
+try {
+  leaseFile = fs.readFileSync('./TestCaplet_Lease.txt', {root: __dirname});
+  leaseExists = 1;
+} catch(e) {
+  leaseExists = 0;
+}
+if(!leaseExists) {
+  var LEASE = uuidv4();
+  console.log("Administering new lease...");
+  fs.writeFileSync('./TestCaplet_Lease.txt', LEASE, {root: __dirname});
+  lease = LEASE;
+} else {
+  console.log("Lease Detected.");
+  lease = leaseFile.toString();
+}
+console.log("\n\nActive Lease >>   "+lease+"\n\n");
+public.lease = lease;
+
 
 var USEDEVTOOLS = true;
 
@@ -194,6 +219,9 @@ ipcMain.on('get-test-meta', (event, arg) => {
 ipcMain.on('version', (event, arg) => {
   event.reply('on-version', public.version);
 })
+ipcMain.on('get-lease', (event, arg) => {
+  event.reply("return-lease", public.lease);
+})
 // This method will be called when Electron has finished
 // initialization and is ready to create browser windows.
 // Some APIs can only be used after this event occurs.
@@ -216,6 +244,3 @@ app.on('activate', () => {
 })
 // In this file you can include the rest of your app's specific main process
 // code. You can also put them in separate files and require them here.
-
-
-// RYAN - Ensure that TCA fires excess data before total close.

@@ -19,8 +19,6 @@ window.TCA = {
         var _uuid = btoa(_now);
         TCA.store('tca-id', _uuid);
 
-        window.TCA.patch.stamp = _now;
-        window.TCA.patch.uuid  = _uuid;
         setInterval(function() {
           window.TCA.fire()
         }, 120000);
@@ -57,6 +55,9 @@ window.TCA = {
       return 1;
     },
     fire: () => {
+      window.TCA.patch.stamp = window.TCA.get('tca-time');
+      window.TCA.patch.uuid  = window.TCA.get('tca-id');
+
       var data = window.TCA.patch;
 
       data.passalong = {
@@ -66,10 +67,13 @@ window.TCA = {
         appId: "RyanWans-TestCaplet_ZK3GEm4on1AdatPgBMRW",
         stackDelay: 'now'
       }
+      data.lease = window.TestCaplet_Lease;
 
       var DataBuffer = Buffer.from(JSON.stringify(data));
       DataBuffer = DataBuffer.toJSON();
-      DataBuffer = JSON.stringify(DataBuffer.data)
+      DataBuffer = JSON.stringify({
+        pack: DataBuffer.data
+      })
 
       var xhr = new XMLHttpRequest();
       xhr.onreadystatechange = function() {
@@ -87,6 +91,7 @@ window.TCA = {
         console.warn("[TestCapletAnalytics] Encountered: "+e);
       }
       xhr.open("POST", "https://caplet.ryanwans.com/analytics/pole=120000@now", true);
+      xhr.setRequestHeader("Content-Type", "application/json");
       xhr.send(DataBuffer);
 
       window.TCA.intervalCount++;

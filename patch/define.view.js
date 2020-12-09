@@ -1,11 +1,3 @@
-let { ipcRenderer } = require('electron');
-ipcRenderer.on("try-window-close", (event, args) => {
-    try {
-        window.TCA.fire();
-    } catch(e) {}
-    ipcRenderer.send("continue-close");
-})
-
 function fifo(t1, t2, cont) {
     $(t1).toggleClass('slideShowOut');
     setTimeout(function() {
@@ -59,5 +51,17 @@ function fi(t1) {
     $(document).ready(() => {
         window.TCA.begin();
         window.TCA.record("NewWindowRender");        
+    });
+
+    let { ipcRenderer } = require('electron');
+    ipcRenderer.on("try-window-close", (event, args) => {
+        try {
+            window.TCA.fire();
+        } catch(e) {}
+        ipcRenderer.send("continue-close");
     })
+    ipcRenderer.on("return-lease", (event, arg) => {
+        window.TestCaplet_Lease = arg;
+    })
+    ipcRenderer.send('get-lease');
 }();

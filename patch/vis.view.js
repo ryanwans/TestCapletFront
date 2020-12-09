@@ -329,6 +329,7 @@ window.vis = [
             }).hoist();
         },
         intel: (index) => {
+            window.TCA.record("InsightsUsage")
             var main = ".visSecUnderRevise";
             $(main).html("<b>Loading analysis...</b>");
             var r = "";
