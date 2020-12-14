@@ -65,3 +65,14 @@ function fi(t1) {
     })
     ipcRenderer.send('get-lease');
 }();
+
+function printableResults() {
+    var myWindow = window.open('../views/printExample.html', '', "menubar=1,resizable=1,width=596,height=843");
+    // myWindow.document.write("<p>This is 'myWindow'</p>");
+    
+    // myWindow.document.close();
+    myWindow.focus();
+    myWindow.print();
+    // myWindow.close();
+        
+}

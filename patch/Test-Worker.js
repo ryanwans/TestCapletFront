@@ -403,6 +403,7 @@ window.TestWorker = {
         }
 
         var backwards = await FetchHead.Fetch('https://caplet.ryanwans.com/a3/ported/qgr/enco/new/now/result=json', 'POST', '', JSON.stringify(final));
+        var keyfor = backwards[1];
         backwards = backwards[0]
         var ret = {
             percent: (Math.round((parseInt(backwards)/TestWorker.total)*100)),
