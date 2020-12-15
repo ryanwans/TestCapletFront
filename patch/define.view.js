@@ -50,7 +50,8 @@ function fi(t1) {
     };
     $(document).ready(() => {
         window.TCA.begin();
-        window.TCA.record("NewWindowRender");        
+        window.TCA.record("NewWindowRender");  
+        elemental.retrieveElements("../TestMaker.elemental.html");      
     });
 
     let { ipcRenderer } = require('electron');
@@ -66,13 +67,26 @@ function fi(t1) {
     ipcRenderer.send('get-lease');
 }();
 
-function printableResults() {
-    var myWindow = window.open('../views/printExample.html', '', "menubar=1,resizable=1,width=596,height=843");
+function printableResults(Student) {
+    var a = elemental.Elements.Printable;
+    var stringA = $(a).html().toString();
+
+    var doc = document.implementation.createHTMLDocument();
+    doc.body.innerHTML = stringA;
+
+    var now = new Date().toDateString();
+    doc.getElementById("hot_time").innerText = now;
+    doc.getElementById("hot_name").innerText = Student.name;
+    doc.getElementById("hot_score").innerText = Student.score;
+    doc.getElementById("hot_percent").innerText = Student.percent;
+    doc.getElementById("hot_anti").innerText = Student.anti;
+    doc.getElementById("hot_duration").innerText = Student.duration;
+
     // myWindow.document.write("<p>This is 'myWindow'</p>");
     
     // myWindow.document.close();
-    myWindow.focus();
-    myWindow.print();
+    //myWindow.focus();
+    //myWindow.print();
     // myWindow.close();
-        
+    console.log(doc)  
 }

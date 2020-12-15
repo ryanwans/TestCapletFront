@@ -10,7 +10,7 @@
                     </fbig>
                     <right>
                         <finfo>
-                            generated: 
+                            generated: <span id="hot_time">__time</span>
                         </finfo>
                     </right>
                 </topr>
@@ -26,11 +26,11 @@
                         <th>Time Elapsed</th>
                         </tr>
                         <tr>
-                        <td>Ryan Wans</td>
-                        <td>6/12</td>
-                        <td>50%</td>
-                        <td>PASSED</td>
-                        <td>5m 16s</td>
+                        <td id="hot_name">__student</td>
+                        <td id="hot_score">__score</td>
+                        <td id="hot_percent">__percent</td>
+                        <td id="hot_anti">__anti_status</td>
+                        <td id="hot_duration">__duration</td>
                         </tr>
                     </table>
                 </div>
@@ -39,10 +39,25 @@
                     Student Result Analysis
                 </fbig>
                 <hr>
-
-                <div id="logo">
-                    TEST CAPLET &copy;
+                <div>
+                    <table id="hot_results" style="width: 100%;">
+                        <tr>
+                            <th>Question Number</th>
+                            <th>Correct Answer</th>
+                            <th>Student Answer</th>
+                            <th>Score Delta</th>
+                        </tr>
+                            <!--
+                            <tr>
+                            <td id="hot_name">1</td>
+                            <td id="hot_score">3</td>
+                            <td id="hot_percent">2</td>
+                            <td id="hot_anti">+2</td>
+                            </tr>
+                            -->
+                    </table>
                 </div>
+                <canvas id="logo">
             </div>
         </body>
         <style>
@@ -51,14 +66,17 @@
                 position: absolute;
                 bottom: 10px;
                 right: 10px;
-                color: white;
-                background-color: black;
-                width: 135px!important;
-                text-align: center;
-                -webkit-print-color-adjust: exact;
+                display: block;
+                height: 90px;
+                width: 90px;
             }
             table {
                 margin-top: 5px;
+                border-collapse:collapse;
+            }
+            td {
+                padding-top: 2px;
+                padding-bottom: 2px;
             }
             hr{
                 height: 1px;
@@ -114,6 +132,10 @@
             th {
                 border-bottom: black 1px solid!important;
                 text-align: left!important;
+            }
+            #hot_results tbody tr:nth-child(even)
+            {
+                background: rgb(235, 235, 235);
             }
         </style>
 </html>

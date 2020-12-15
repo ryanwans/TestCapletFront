@@ -142,22 +142,138 @@
         </head>
         <body>
             <div id="master">
-
+                <topr>
+                    <fbig>
+                        Test Caplet Student Results
+                    </fbig>
+                    <right>
+                        <finfo>
+                            generated: <span id="hot_time">__time</span>
+                        </finfo>
+                    </right>
+                </topr>
+                <hr>
+                <div>
+                    <b>Test Administered: </b> Sample Test 10 Questions <br>
+                    <table style="width: 100%;">
+                        <tr>
+                        <th>Student Name</th>
+                        <th>Total Score</th>
+                        <th>Grade Percentage</th>
+                        <th>Anticheat Status</th>
+                        <th>Time Elapsed</th>
+                        </tr>
+                        <tr>
+                        <td id="hot_name">__student</td>
+                        <td id="hot_score">__score</td>
+                        <td id="hot_percent">__percent</td>
+                        <td id="hot_anti">__anti_status</td>
+                        <td id="hot_duration">__duration</td>
+                        </tr>
+                    </table>
+                </div>
+                <br><br>
+                <fbig>
+                    Student Result Analysis
+                </fbig>
+                <hr>
+                <div>
+                    <table id="hot_results" style="width: 100%;">
+                        <tr>
+                            <th>Question Number</th>
+                            <th>Correct Answer</th>
+                            <th>Student Answer</th>
+                            <th>Score Delta</th>
+                        </tr>
+                            <!--
+                            <tr>
+                            <td id="hot_name">1</td>
+                            <td id="hot_score">3</td>
+                            <td id="hot_percent">2</td>
+                            <td id="hot_anti">+2</td>
+                            </tr>
+                            -->
+                    </table>
+                </div>
+                <canvas id="logo">
             </div>
         </body>
         <style>
             /* USE: 595 x 842 */
+            #logo {
+                position: absolute;
+                bottom: 10px;
+                right: 10px;
+                display: block;
+                height: 90px;
+                width: 90px;
+            }
+            table {
+                margin-top: 5px;
+                border-collapse:collapse;
+            }
+            td {
+                padding-top: 2px;
+                padding-bottom: 2px;
+            }
+            hr{
+                height: 1px;
+                background-color: black;
+                border: none;
+            }
+            break {
+                display: block;
+                width: 100%;
+                border-bottom: rgb(48, 48, 48) 2px solid;
+                margin-bottom: 10px;
+                margin-top: 10px;
+                top: 0;
+            }
             body {
+                -webkit-print-color-adjust: exact;
                 position: relative;
-                width: 595px!important;
-                height: 842px!important;
+                height: 100%;
+                width: 100%;
                 margin: 0;
                 padding: 0;
+                font: 16px/1.4 Roboto,-apple-system,BlinkMacSystemFont,"Helvetica Neue","Segoe UI","Oxygen","Ubuntu","Cantarell","Open Sans",sans-serif;
             }
             #master {
-                background-color: #cfcfcf;
+                padding: 20px;
+            }
+            fbig {
+                margin: 0;
+                font-size: 1.5em;
+                font-weight: 600;
+                display: inline-block;
+            }
+            fmed {
+                margin:0;
+                display: inline-block;
+                font-size: 1.2em;
+                font-weight: 500;
+            }
+            topr {
                 width: 100%;
-                height: 100%;
+            }
+            right {
+                float: right;
+            }
+            finfo {
+                font-size: .8em;
+                text-transform: uppercase;
+                font-weight: 600;
+                display: inline-block;
+                margin-top: 11px;
+                color: rgb(82, 82, 82);
+            }
+            th {
+                border-bottom: black 1px solid!important;
+                text-align: left!important;
+            }
+            #hot_results tbody tr:nth-child(even)
+            {
+                background: rgb(235, 235, 235);
             }
         </style>
     </html>

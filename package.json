@@ -1,6 +1,6 @@
 {
     "name": "electron-test",
-    "version": "1.6.3",
+    "version": "1.6.4",
     "description": "Modern Student Testing Platform",
     "productName": "Test Caplet",
     "main": "index.js",
@@ -31,6 +31,7 @@
         "electron-osx-sign": "^0.4.17",
         "electron-packager": "^15.1.0",
         "grunt-bump": "^0.8.0",
+        "qrcode": "^1.4.4",
         "update-electron-app": "^2.0.1",
         "uuid": "^8.3.2"
     }
