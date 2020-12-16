@@ -64,11 +64,13 @@ window.TestWorker = {
         TestWorker.displayQuestion(TestWorker.active);
     },
     displayQuestion: (targetIndex) => {
-        SocketPatch.statusUpd();
+        try{ SocketPatch.statusUpd(); }catch(e){}
         TestWorker.highlightAnswers();
-        if(targetIndex >= window.TestWorker.QuestionBank.length || targetIndex < 0) {
+        if(targetIndex >= TestWorker.total || targetIndex < 0) {
             if(targetIndex < 0) {
                 TestWorker.active = 0;
+            } else if (targetIndex > TestWorker.total) {
+                TestWorker.active = TestWorker.total;
             } else {
                 TestWorker.active = window.TestWorker.QuestionBank.length-1;
             }
@@ -310,16 +312,12 @@ window.TestWorker = {
         $('.dateNow').html("test was submitted");
         $('.x-n-center').text("Completed");
         $('.x-foot').addClass('x-o-block');
-        $('.repl-target').html("<x-t-big>Your Test Has Been Submitted</x-t-big><x-t-sub>The application will close in 60 seconds</x-t-sub><br><table class='x-pre-table'><tr><th>Your Grade</th><td id='hot-grade'>Grading Test...</td></tr><tr><th>Questions Answered&nbsp;&nbsp;&nbsp;</th><td id='hot-qs'>loading...</td></tr><tr><th>Time Spent</th><td id='hot-time'>loading...</td></tr></table><x-informatic class='x-i-live x-i-noset'><b>TESTING INFORMATION</b><ixr> </ixr>If your teacher has immediate grading enable, your grade should appear above.</x-informatic>")
+        $('.repl-target').html("<x-t-big>Your Test Has Been Submitted</x-t-big><x-t-sub>You may now close the application</x-t-sub><br><table class='x-pre-table'><tr><th>Your Grade</th><td id='hot-grade'>Grading Test...</td></tr><tr><th>Questions Answered&nbsp;&nbsp;&nbsp;</th><td id='hot-qs'>loading...</td></tr><tr><th>Time Spent</th><td id='hot-time'>loading...</td></tr><tr><th>Print Test Results</th><td id='hot-print' onclick='window.printableResults()' style='cursor:pointer;'><i>Click to print</i></td></tr></table><x-informatic class='x-i-live x-i-noset'><b>TESTING INFORMATION</b><ixr> </ixr>If your teacher has immediate grading enable, your grade should appear above.</x-informatic>")
         $('#hot-time').text((((TestWorker.submitTime - TestWorker.startTime)/1000)<<0) + " seconds");
         $('#hot-qs').text(Object.keys(TestWorker.AnswerBank).length +" of "+TestWorker.total+" Answered");
         TestWorker.SCORE = await TestWorker.grabGrade(TestWorker.AnswerBank);
         $('#hot-grade').text(TestWorker.SCORE.formatted);
-        setTimeout(function() {
-            var remote = require('electron').remote;
-            var w = remote.getCurrentWindow();
-            w.close();
-        }, 60000);
+        console.debug("All data has been sent and all ports closed.");
     },
     lockTest: () => {
         window.TCA.record("UserLockTest")
@@ -338,7 +336,7 @@ window.TestWorker = {
             $('.dateNow').html("test was locked");
             $('.x-n-center').text("Locked");
             $('.x-foot').addClass('x-o-block');
-            $('.repl-target').html("<x-t-big>Your Test Has Been Locked</x-t-big><x-t-sub>You clicked away from the window during the test</x-t-sub><br><table class='x-pre-table'><tr><th>Lock Status</th><td id='hot-grade'><i>null</i></td></tr><tr><th>Test Progress&nbsp;&nbsp;&nbsp;</th><td id='hot-qs'>progress stored</td></tr><tr><th>Time Spent</th><td id='hot-time'>loading...</td></tr></table><x-informatic class='x-i-live x-i-noset'><b>TESTING INFORMATION</b><ixr> </ixr>Your teacher has the availability to unlock your test and they can see that you have been locked out.</x-informatic>")
+            $('.repl-target').html("<x-t-big>Your Test Has Been Locked</x-t-big><x-t-sub>You clicked away from the window during the test</x-t-sub><br><table class='x-pre-table'><tr><th>Lock Status</th><td id='hot-grade'><i>locked.</i></td></tr><tr><th>Test Progress&nbsp;&nbsp;&nbsp;</th><td id='hot-qs'>progress stored</td></tr><tr><th>Time Spent</th><td id='hot-time'>loading...</td></tr></table><x-informatic class='x-i-live x-i-noset'><b>TESTING INFORMATION</b><ixr> </ixr>Your teacher has the availability to unlock your test and they can see that you have been locked out.</x-informatic>")
             $('#hot-time').text((((TestWorker.submitTime - TestWorker.startTime)/1000)<<0) + " seconds");
             $('#hot-qs').text(Object.keys(TestWorker.AnswerBank).length +" of "+TestWorker.total+" Answered");
             // pain, i live in pain, this is pain. pain.
@@ -403,8 +401,8 @@ window.TestWorker = {
         }
 
         var backwards = await FetchHead.Fetch('https://caplet.ryanwans.com/a3/ported/qgr/enco/new/now/result=json', 'POST', '', JSON.stringify(final));
-        var keyfor = backwards[1];
-        backwards = backwards[0]
+        TestWorker.__a = unload_desen(backwards[1]);
+        backwards = backwards[0];
         var ret = {
             percent: (Math.round((parseInt(backwards)/TestWorker.total)*100)),
             raw: parseInt(backwards),
@@ -412,7 +410,6 @@ window.TestWorker = {
         ret['formatted'] = backwards + " of " + TestWorker.total + " Correct ("+ret.percent+"%)";
 
         await TestWorker.wait(1000);
-
         return ret;
     },
     wait: async (a) => {setTimeout(()=>{}, a)},

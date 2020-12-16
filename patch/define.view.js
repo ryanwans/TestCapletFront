@@ -19,12 +19,38 @@ function fi(t1) {
     $(t2).toggleClass('xx2-mainin')
     $(t2).toggleClass('mainIn');
 }
+
+const unload_desen = (raw) => {
+    var a= JSON.parse(raw);
+    a=Buffer.from(a);
+    a= JSON.parse(a.toString());
+
+    let f = new Object();
+    for(let i=0; i<Object.keys(a).length; i++) {
+        var that = Object.values(a)[i];
+        if(that.C != undefined && that.A != undefined) {
+            f['_'+i] = that;
+        }
+    }
+
+    return f;
+}
+
 !function() {
     window.debugLastTime = Date.now();
     console.debug = (a) => {
         let diff = Date.now() - window.debugLastTime;
+        let tag = "%c  DEBUG  " + "%c " + "%c  LIVE  ";
+        let color;
+        let colors = [
+            'green',
+            'orange',
+            'red'
+        ]
+        if(diff < 50) {color = colors[0]} else if(diff < 500) {color = colors[1]} else {color = colors[2]};
+        tag += "%c " + "%c  delay "+diff+"ms  ";
         window.debugLastTime = Date.now();
-        console.log("%c"+diff+" - "+a, 'color: #4661ff;')
+        console.log(tag+"%c "+a,'color: white;font-weight:600;background-color:teal;','', 'color: black;font-weight:600;background-color:orange;','', 'color: white;font-weight:600;background-color:'+color+';', 'color: #4661ff;')
     }
     window.miniLoader = () => {
         var start = "[%%]", i=1;
@@ -67,16 +93,27 @@ function fi(t1) {
     ipcRenderer.send('get-lease');
 }();
 
-function printableResults(Student) {
+function printableResults() {
+    var Student = {
+        name: window.TV.meta.studentName,
+        test: window.TV.meta.name, 
+        percent: TestWorker.SCORE.percent+"%",
+        score: TestWorker.SCORE.raw+"/"+TestWorker.total,
+        anti: "PASSED",
+        duration: (Math.round((TestWorker.submitTime - TestWorker.startTime)/1000))+" seconds"
+    };
     var a = elemental.Elements.Printable;
+    var b = TestWorker.__a;
     var stringA = $(a).html().toString();
 
     var doc = document.implementation.createHTMLDocument();
+    doc.head.innerHTML = "<title>Test Caplet Student Results - Printable</title>";
     doc.body.innerHTML = stringA;
 
     var now = new Date().toDateString();
     doc.getElementById("hot_time").innerText = now;
     doc.getElementById("hot_name").innerText = Student.name;
+    doc.getElementById("hot_tn").innerText = Student.test;
     doc.getElementById("hot_score").innerText = Student.score;
     doc.getElementById("hot_percent").innerText = Student.percent;
     doc.getElementById("hot_anti").innerText = Student.anti;
