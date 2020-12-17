@@ -178,103 +178,104 @@
                 </fbig>
                 <hr>
                 <div>
-                    <table id="hot_results" style="width: 100%;">
-                        <tr>
-                            <th>Question Number</th>
-                            <th>Correct Answer</th>
-                            <th>Student Answer</th>
-                            <th>Score Delta</th>
-                        </tr>
+                    <table id="bruh" style="width: 100%;">
+                        <tbody id="hot_results">
+                            <tr>
+                                <th>Question Number</th>
+                                <th>Correct Answer</th>
+                                <th>Student Answer</th>
+                                <th>Score Delta</th>
+                            </tr>
+                        </tbody>
                             <!--
                             <tr>
-                            <td id="hot_name">1</td>
-                            <td id="hot_score">3</td>
-                            <td id="hot_percent">2</td>
-                            <td id="hot_anti">+2</td>
+                                <td id="hot_name">1</td>
+                                <td id="hot_score">3</td>
+                                <td id="hot_percent">2</td>
+                                <td id="hot_anti">+2</td>
                             </tr>
                             -->
                     </table>
                 </div>
-                <canvas id="logo">
+                <img src="" id="logo">
             </div>
+            <style>
+                /* USE: 595 x 842 */
+                #logo {
+                    position: absolute;
+                    bottom: 0px;
+                    right: 0px;
+                    display: block;
+                    height: 120px;
+                    width: 120px;
+                }
+                table {
+                    margin-top: 5px;
+                    border-collapse:collapse;
+                }
+                td {
+                    padding-top: 2px;
+                    padding-bottom: 2px;
+                }
+                hr{
+                    height: 1px;
+                    background-color: black;
+                    border: none;
+                }
+                break {
+                    display: block;
+                    width: 100%;
+                    border-bottom: rgb(48, 48, 48) 2px solid;
+                    margin-bottom: 10px;
+                    margin-top: 10px;
+                    top: 0;
+                }
+                body {
+                    -webkit-print-color-adjust: exact;
+                    height: 100%;
+                    width: 100%;
+                    margin: 0;
+                    padding: 0;
+                    font: 16px/1.4 Roboto,-apple-system,BlinkMacSystemFont,"Helvetica Neue","Segoe UI","Oxygen","Ubuntu","Cantarell","Open Sans",sans-serif;
+                }
+                #master {
+                    padding: 20px;
+                }
+                fbig {
+                    margin: 0;
+                    font-size: 1.5em;
+                    font-weight: 600;
+                    display: inline-block;
+                }
+                fmed {
+                    margin:0;
+                    display: inline-block;
+                    font-size: 1.2em;
+                    font-weight: 500;
+                }
+                topr {
+                    width: 100%;
+                }
+                right {
+                    float: right;
+                }
+                finfo {
+                    font-size: .8em;
+                    text-transform: uppercase;
+                    font-weight: 600;
+                    display: inline-block;
+                    margin-top: 11px;
+                    color: rgb(82, 82, 82);
+                }
+                th {
+                    border-bottom: black 1px solid!important;
+                    text-align: left!important;
+                }
+                #bruh tbody tr:nth-child(even)
+                {
+                    background: rgb(210, 210, 210);
+                }
+            </style>
         </body>
-        <style>
-            /* USE: 595 x 842 */
-            #logo {
-                position: absolute;
-                bottom: 10px;
-                right: 10px;
-                display: block;
-                height: 90px;
-                width: 90px;
-            }
-            table {
-                margin-top: 5px;
-                border-collapse:collapse;
-            }
-            td {
-                padding-top: 2px;
-                padding-bottom: 2px;
-            }
-            hr{
-                height: 1px;
-                background-color: black;
-                border: none;
-            }
-            break {
-                display: block;
-                width: 100%;
-                border-bottom: rgb(48, 48, 48) 2px solid;
-                margin-bottom: 10px;
-                margin-top: 10px;
-                top: 0;
-            }
-            body {
-                -webkit-print-color-adjust: exact;
-                position: relative;
-                height: 100%;
-                width: 100%;
-                margin: 0;
-                padding: 0;
-                font: 16px/1.4 Roboto,-apple-system,BlinkMacSystemFont,"Helvetica Neue","Segoe UI","Oxygen","Ubuntu","Cantarell","Open Sans",sans-serif;
-            }
-            #master {
-                padding: 20px;
-            }
-            fbig {
-                margin: 0;
-                font-size: 1.5em;
-                font-weight: 600;
-                display: inline-block;
-            }
-            fmed {
-                margin:0;
-                display: inline-block;
-                font-size: 1.2em;
-                font-weight: 500;
-            }
-            topr {
-                width: 100%;
-            }
-            right {
-                float: right;
-            }
-            finfo {
-                font-size: .8em;
-                text-transform: uppercase;
-                font-weight: 600;
-                display: inline-block;
-                margin-top: 11px;
-                color: rgb(82, 82, 82);
-            }
-            th {
-                border-bottom: black 1px solid!important;
-                text-align: left!important;
-            }
-            #hot_results tbody tr:nth-child(even)
-            {
-                background: rgb(235, 235, 235);
-            }
-        </style>
     </html>
 </!!element>

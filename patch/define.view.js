@@ -29,7 +29,7 @@ const unload_desen = (raw) => {
     for(let i=0; i<Object.keys(a).length; i++) {
         var that = Object.values(a)[i];
         if(that.C != undefined && that.A != undefined) {
-            f['_'+i] = that;
+            f[i] = that;
         }
     }
 
@@ -93,7 +93,10 @@ const unload_desen = (raw) => {
     ipcRenderer.send('get-lease');
 }();
 
-function printableResults() {
+async function printableResults() {
+
+    var qrcode = require('qrcode');
+
     var Student = {
         name: window.TV.meta.studentName,
         test: window.TV.meta.name, 
@@ -108,6 +111,7 @@ function printableResults() {
 
     var doc = document.implementation.createHTMLDocument();
     doc.head.innerHTML = "<title>Test Caplet Student Results - Printable</title>";
+    doc.body.setAttribute("style", "height: 100%;position:abolsute;");
     doc.body.innerHTML = stringA;
 
     var now = new Date().toDateString();
@@ -119,11 +123,27 @@ function printableResults() {
     doc.getElementById("hot_anti").innerText = Student.anti;
     doc.getElementById("hot_duration").innerText = Student.duration;
 
-    // myWindow.document.write("<p>This is 'myWindow'</p>");
-    
-    // myWindow.document.close();
-    //myWindow.focus();
-    //myWindow.print();
-    // myWindow.close();
-    console.log(doc)  
+    for(let i=0; i<Object.keys(b).length; i++) {
+        var current = "";
+        current += "<tr>";
+        current += "<td>"+Object.keys(b)[i]+"</td>";
+        current += "<td>"+Object.values(b)[i].C+"</td>";
+        current += "<td>"+Object.values(b)[i].A+"</td>";
+        current += "<td>"+((Object.values(b)[i].A == Object.values(b)[i].C) ? "+1" : "none")+"</td>";
+        current += "</tr>";
+        doc.getElementById("hot_results").innerHTML += current;
+    }
+
+    var usrname = Student.name.replaceAll(" ", "").toLowerCase();
+    usrname = btoa(usrname);
+
+    var URL = await qrcode.toDataURL(usrname);
+    doc.getElementById("logo").setAttribute("src", URL);
+
+    var previousHTML = window.document.body.innerHTML;
+    window.document.body.innerHTML = doc.body.innerHTML;
+    setTimeout(function() {
+        window.print();
+        window.document.body.innerHTML = previousHTML;
+    },100)
 }
